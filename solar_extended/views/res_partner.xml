@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_partner_form_solar">
+            <field name="name">partner.form.solar</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page name="partner_roofs" string="Daken">
+                        <field name="roofdata_ids">
+                            <form>
+                                <group string="Dak informatie">
+                                    <field name="description"/>
+                                    <field name="roof_length"/>
+                                    <field name="roof_width"/>
+                                    <field name="roofheight"/>
+                                    <field name="rooftype" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="roofslope_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="compass_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="roofcolour" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    <field name="roofcover" options="{'no_create': True, 'no_create_edit':True}"/>
+                                </group>
+                                <group string="Bijlage(n)">
+                                    <field name="photo_1" widget="image" options="{'size':[0,270]}"/>
+                                </group>
+                            </form>
+                            <tree string="Dak informatie">
+                                <field name="description"/>
+                                <field name="roof_length" string="Lengte in M" />
+                                <field name="roof_width" string="Breedte in M" />
+                                <field name="compass_id"/>
+                                <field name="rooftype"/>
+                                <field name="roofslope_id"/>
+                                <field name="photo_1" widget="image" class="oe_avatar oe_left"/>
+                            </tree>
+                        </field>
+                        <group string="Obstakels"> 
+                            <field colspan="2" name="obstacles_ids" nolabel="1">
+                                <form>
+                                <group string="Obstakel">
+                                    <field name="description" placeholder="Schoorsteen"/>
+                                </group>
+                                <group string="Bijlage(n)">
+                                    <field name="photo" widget="image" options="{'size':[0,270]}"/>
+                                </group>
+                            </form>
+                                <tree>
+                                    <field name="description" placeholder="Schoorsteen"/>
+                                    <field name="photo" widget="image" class="oe_avatar oe_left"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                    <page name="partner_cons" string="Energie &amp; ROI">
+                        <group>
+                            <field name="powercon" placeholder="5000"/>
+                            <field name="desireprod" placeholder="4500"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

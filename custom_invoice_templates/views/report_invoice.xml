@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_invoice_document_inherit_custom_invoice" inherit_id="account.report_invoice_document">
+
+	    <!-- Remove of lose fields, so after this we can re-format it -->
+	    <xpath expr="//div[@name='comment']" position="replace">
+	    </xpath>
+
+	    <xpath expr="//p[@name='incoterm']" position="replace">
+	    </xpath>
+
+	    <xpath expr="//p[@name='note']" position="replace">
+	    </xpath>
+
+	    <xpath expr="//div[@id='qrcode']" position="replace">
+	    </xpath>
+
+	    <!--<xpath expr="/t[1]/t[1]/div[1]/p[1]" position="replace">
+	    </xpath>-->
+	   
+	    <!-- Re-format of the closing part of the invoice -->
+	    <xpath expr="//div[@class='clearfix mb-4']" position="after">
+
+	        <!-- Fiscal position note -->
+			<p t-if="o.fiscal_position_id.note" name="note">
+			    <span t-field="o.fiscal_position_id.note"/>
+			</p>
+
+	        <div id="closing_invoice">
+	        	<!-- Payment terms -->
+	            <p t-if="o.invoice_payment_term_id" name="payment_term">
+	                <strong>Betalingscondities: </strong><span t-field="o.invoice_payment_term_id.note"/>
+	            </p>
+
+				<!-- Payment and Bank information -->
+	            <p t-if="o.partner_bank_id">
+	                <strong>Betalingsgegevens:</strong><br/>
+	                <!--<span>Bedrag: </span><span t-field="o.amount_total" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+	                <br/>-->
+	                <span>Bankrekening: </span><span t-field="o.partner_bank_id.acc_number"/>
+	                <br/>
+	                <span>Ten name van </span><span t-field="o.partner_bank_id.acc_holder_name"/>
+	                <br/>
+	                <span>Gebruik a.u.b. de volgende communicatie bij betaling: </span><span t-field="o.payment_reference"/><br/>
+
+	            </p>
+
+				<!-- QR Payment Code -->
+				<!--
+				<t t-if="(o.company_id.qr_code) and (o.currency_id.name == 'EUR') and (o.invoice_partner_bank_id.acc_number != False)">
+					<div id="qrcode" >
+					    <p t-if="(o.invoice_partner_bank_id.qr_code_valid)">
+					        <strong class="text-center">Of scan de QR-code voor een gemakkelijke betaling</strong><br/><br/>
+					        <img class="border border-dark rounded" t-att-src="o.invoice_partner_bank_id.build_qr_code_url(o.amount_residual,(o.ref) if (o.ref) else o.name)"/>
+					    </p>
+					</div>
+				</t>
+				-->
+
+				<!-- Notes -->
+				<t t-if="o.narration">
+					<p name="comment">
+					    <span t-field="o.narration"/>
+					</p>
+				</t>
+
+	        </div>
+	    </xpath>
+
+	</template>
+</odoo>

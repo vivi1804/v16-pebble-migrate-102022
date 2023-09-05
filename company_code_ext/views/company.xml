@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="view_company_form_extended" model="ir.ui.view">
+	        <field name="name">view.company.form.extended</field>
+	        <field name="model">res.company</field>
+	        <field name="inherit_id" ref="base.view_company_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='partner_id']" position="before">
+					<field name="code_id"/>
+				</xpath>
+			</field>
+    	</record>
+
+    	<record id="account_journal_dashboard_kanban_view_extended" model="ir.ui.view">
+	        <field name="name">account.journal.dashboard.kanban.view.extended</field>
+	        <field name="model">account.journal</field>
+	        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//kanban/templates//div//div//div//a" position="attributes">
+                    <attribute name="invisible">1</attribute>
+ 				</xpath>
+ 				<xpath expr="//kanban/templates//div//div//div//a" position="after">
+                    <a type="object" name="open_action"><field name="display_name"/></a>
+ 				</xpath>
+ 			</field>		
+    	</record>
+    </data>
+</openerp>

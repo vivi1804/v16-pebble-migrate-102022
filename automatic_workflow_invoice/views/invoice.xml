@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_move_form_extended" model="ir.ui.view">
+            <field name="name">view.move.form.extended</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_date']" position="after">
+                    <field name="install_datum" attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_reference']" position="after">
+                    <field name="factuur_type_id" options="{'no_create':true,'no_open':true}" attrs="{'invisible': [('move_type','!=','out_invoice')], 'readonly': [('state','=','posted')]}"/>
+                    <field name="versturen_op" attrs="{'invisible': [('move_type','!=','out_invoice')]}"/>
+                    <field name="auto_versturen" attrs="{'invisible': [('move_type','!=','out_invoice')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- FACTUUR MENU -->
+        <!--    TREE VIEW -->
+        <record id="factuur_type_tree_view" model="ir.ui.view">
+            <field name="name">factuur.type.tree</field>
+            <field name="model">account.move.factuur</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="factuur_type"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--SEARCH VIEW-->
+        <record model="ir.ui.view" id="factuur_type_filter">
+            <field name="name">factuur.type.search</field>
+            <field name="model">account.move.factuur</field>
+            <field name="arch" type="xml">
+                <search string="Search Factuur Type">
+                    <field name="factuur_type"/>
+                    <field name="aantal_dagen"/>
+                    <field name="auto_versturen"/>
+                </search>
+          </field>
+        </record>
+
+        <!--FORM VIEW-->
+        <record model="ir.ui.view" id="factuur_type_form">
+            <field name="name">factuur.type.form</field>
+            <field name="model">account.move.factuur</field>
+            <field name="arch" type="xml">
+                <form name="faactur_type">
+                    <sheet string="Invoice type">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="factuur_type" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                 <field name="aantal_dagen" string="Aantal dagen" help="Aantal dagen versturen voor factuur datum"/>
+                                <field name="auto_versturen" string="Automatisch versturen?"/>
+                            </group>
+                            <group/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--ACTION -->
+        <record model="ir.actions.act_window" id="action_factuur_type_tree_view">
+            <field name="name">factuur.type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.move.factuur</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_in_progress': 1}</field>
+        </record>
+
+        <!--ACTION BIND-->
+        <!--    TREE -->
+        <record model="ir.actions.act_window.view" id="action_factuur_type_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_factuur_type_tree_view"/>
+        </record>
+
+        <!--    FORM -->
+        <record model="ir.actions.act_window.view" id="action_factuur_type_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_factuur_type_tree_view"/>
+            <field name="view_id" ref="factuur_type_form"/>
+        </record>
+
+        <!--MENU ITEMS-->
+        <menuitem id="menu_factuur_type"
+              name="Factuur Type"
+              sequence="99"
+              parent="account.account_invoicing_menu"
+              action="action_factuur_type_tree_view"/>
+    </data>
+</openerp>

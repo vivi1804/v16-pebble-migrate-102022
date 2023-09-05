@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Project task -->
+        <record id="project_task_detailed_resources_view_form_3" model="ir.ui.view">
+            <field name="name">project.task.detailed.resources.view.form.3</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='res_employee_ids']" position="after">
+                    <field name="res_equipment_ids" widget="many2many_tags" domain="[[&quot;res_type&quot;,&quot;=&quot;,&quot;equipment&quot;]]" options="{&quot;color_field&quot;: &quot;x_color&quot;}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="detailed_resources_form_3" model="ir.ui.view">
+            <field name="name">detailed.resources.form.form.3</field>
+            <field name="model">detailed.resources</field>
+            <field name="inherit_id" ref="planning_basic.detailed_resources_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="after">
+                    <field name="equipment_id" attrs="{&quot;invisible&quot;: [[&quot;res_type&quot;,&quot;!=&quot;,&quot;equipment&quot;]]}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

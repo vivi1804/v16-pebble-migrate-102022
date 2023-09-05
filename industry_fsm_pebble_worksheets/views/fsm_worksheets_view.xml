@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Model of the template consist :
+        1. Form view : the view of the worksheet form 
+        2. Action : to open the worksheet form in the task
+        3. Qweb view : will be included inside the pdf report 
+        all of these will be called when creating the template worksheet 
+        -->
+
+        <record id="view_sale_order_worksheet" model="ir.ui.view">
+          <field name="name">view.sale.order.worksheet</field>
+          <field name="model">sale.order</field>
+          <field name="inherit_id" ref="sale.view_order_form"/>
+          <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_task']" position="after">
+              <button name="action_view_worksheet" type="object" class="oe_stat_button" icon="fa-pencil">
+                <div class="o_field_widget o_stat_info">
+                  <span class="o_stat_value"><field name="worksheet_count"/></span>
+                  <span class="o_stat_text"> Worksheets</span>
+                </div>
+              </button>
+            </xpath>
+            <!--<xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other_information']/group[2]" position="after">
+              <group>
+                <field name="worksheet_count"/>
+                <field name="worksheet_ids"/>
+              </group>
+            </xpath>-->
+          </field>
+        </record>
+
+        <!-- FORM VIEW OF THE MODEL -->
+        <record id="worksheets_custom_form_view_opname" model="ir.ui.view">
+            <field name="name">worksheets.custom.form.view.opname</field>
+            <field name="model">worksheets.opname</field>    
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group invisible="True">
+                            <group>
+                                <field name="x_task_id"/>
+                                <field name="x_partner_id"/>
+                            </group>
+                        </group>
+                        <group name="x_group_1" class="o_fsm_worksheet_form">
+                            <group name="x_group_1_left">
+                                <field name="x_comments" string="Algmene opmerkingen:" placeholder="Plaats hier de algemene opmerkingen" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                <field name="bool_x_comments" invisible="1"/>
+                                <label for="x_comments_b" string="Algmene opmerkingen:" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                  <field name="x_comments_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_comments','=',False)]}"/>
+                                  <field name="x_comments_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_comments','!=',False)]}"/>
+                                </div>
+                            </group>
+                            <group name="x_group_1_right"></group>
+                        </group>
+
+                        <notebook name="x_notebook_opname" class="o_fsm_worksheet_form">
+                            <page name="x_page_sales" string="Verkoop" attrs="{'invisible': [['x_task_id','!=',False]]}">
+                              <!-- ACTIVATE WHEN WE HAVE MORE DETAILS ABOUT CUSTOMER NEEDS-->
+                              <group name="x_group_algemeen_sales_1">
+                                <field name="x_sale_comments" string="Opmerkingen"/>
+                              </group>
+                              <group name="x_group_algemeen_sales_2">
+                              </group> 
+                            </page>
+
+                            <page name="x_page_algemeen" string="Algemeen">
+                                <group name="x_group_algemeen_1">
+                                    <group name="x_group_algemeen_1_left">
+                                        <field name="x_internet" string="Internet" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_internet" invisible="1"/>
+                                        <label for="x_internet_b" string="Internet" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_internet_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_internet','=',False)]}"/>
+                                          <field name="x_internet_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_internet','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_rs_1" string="RS 1:" domain="[[&quot;default_code&quot;,&quot;ilike&quot;,&quot;VAL&quot;]]" options="{&quot;no_create&quot;:true}" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_rs_1" invisible="1"/>
+                                        <label for="x_rs_1_b" string="RS 1:" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_rs_1_b" domain="[[&quot;default_code&quot;,&quot;ilike&quot;,&quot;VAL&quot;]]" nolabel="1"/>
+                                          <span style="color:red;" attrs="{'invisible':[('bool_x_rs_1','=',False)]}">(Changed) </span>
+                                        </div>
+                                        <field name="x_rs_2" string="RS 2:" domain="[[&quot;default_code&quot;,&quot;ilike&quot;,&quot;VAL&quot;]]" options="{&quot;no_create&quot;:true}" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_rs_2" invisible="1"/>
+                                        <label for="x_rs_2_b" string="RS 2:" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_rs_2_b" domain="[[&quot;default_code&quot;,&quot;ilike&quot;,&quot;VAL&quot;]]" nolabel="1"/>
+                                          <span style="color:red;" attrs="{'invisible':[('bool_x_rs_2','=',False)]}"> (Changed) </span>
+                                        </div>
+                                        <field name="x_rs_3" string="RS 3:" domain="[[&quot;default_code&quot;,&quot;ilike&quot;,&quot;VAL&quot;]]" options="{&quot;no_open&quot;:true,&quot;no_create&quot;:true}" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_rs_3" invisible="1"/>
+                                        <label for="x_rs_3_b" string="RS 3:" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_rs_3_b" domain="[[&quot;default_code&quot;,&quot;ilike&quot;,&quot;VAL&quot;]]" nolabel="1"/>
+                                          <span style="color:red;" attrs="{'invisible':[('bool_x_rs_3','=',False)]}"> (Changed) </span>
+                                        </div>
+                                        <field name="x_afmetingen_rs_steiger_1" string="Afmetingen RS / steiger:" placeholder="Vul hier de breedte en lengte van de RS / steiger hierin" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_afmetingen_rs_steiger_1" invisible="1"/>
+                                        <label for="x_afmetingen_rs_steiger_1" string="Afmetingen RS / steiger:" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_afmetingen_rs_steiger_1_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_afmetingen_rs_steiger_1','=',False)]}"/>
+                                          <field name="x_afmetingen_rs_steiger_1_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_afmetingen_rs_steiger_1','!=',False)]}"/>
+                                        </div>
+                                    </group>
+                                    <group name="x_group_algemeen_1_right">
+                                        <field name="x_bereikbaarheid" string="Bereikbaarheid" placeholder="beschrijf de bereikbaarheid van de woning" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_bereikbaarheid" invisible="1"/>
+                                        <label for="x_bereikbaarheid" string="Bereikbaarheid" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_bereikbaarheid_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_bereikbaarheid','=',False)]}"/>
+                                          <field name="x_bereikbaarheid_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_bereikbaarheid','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_aantal_monteurs" string="Aantal monteurs" required="1" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_aantal_monteurs" invisible="1"/>
+                                        <label for="x_aantal_monteurs" string="Aantal monteurs" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_aantal_monteurs_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_aantal_monteurs','=',False)]}"/>
+                                          <field name="x_aantal_monteurs_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_aantal_monteurs','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_aantal_dagen" string="Aantal dagen" required="1" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_aantal_dagen" invisible="1"/>
+                                        <label for="x_aantal_dagen_b" string="Aantal dagen" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_aantal_dagen_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_aantal_dagen','=',False)]}"/>
+                                          <field name="x_aantal_dagen_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_aantal_dagen','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_dak_doorvoer_nodig" string="Dak doorvoer nodig?" widget="radio" required="1" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_dak_doorvoer_nodig" invisible="1"/>
+                                        <label for="x_dak_doorvoer_nodig_b" string="Dak doorvoer nodig?" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_dak_doorvoer_nodig_b" nolabel="1" style="color:red;" widget="radio" attrs="{'invisible':[('bool_x_dak_doorvoer_nodig','=',False)]}"/>
+                                          <field name="x_dak_doorvoer_nodig_b" nolabel="1" style="color:black;" widget="radio" attrs="{'invisible':[('bool_x_dak_doorvoer_nodig','!=',False)]}"/>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group name="x_group_algemeen_2">
+                                    <group name="x_group_algemeen_2_left" string="AC">
+                                        <field name="x_ac_route" string="AC Route" placeholder="beschrijf de AC route" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_ac_route" invisible="1"/>
+                                        <label for="x_ac_route" string="AC Route" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_ac_route_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_ac_route','=',False)]}"/>
+                                          <field name="x_ac_route_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_ac_route','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_ac_kabel" string="AC Kabel" domain="[[&quot;name&quot;,&quot;ilike&quot;,&quot;YMVK&quot;]]" options="{&quot;no_create&quot;:true}" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_ac_kabel" invisible="1"/>
+                                        <label for="x_ac_kabel" string="AC Kabel" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_ac_kabel_b" domain="[[&quot;name&quot;,&quot;ilike&quot;,&quot;YMVK&quot;]]" nolabel="1"/>
+                                          <span style="color:red;" attrs="{'invisible':[('bool_x_ac_kabel','=',False)]}"> (Changed) </span>
+                                        </div>
+                                        <field name="x_lengte_in_mtr_ac" string="Lengte in mtr" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_lengte_in_mtr_ac" invisible="1"/>
+                                        <label for="x_lengte_in_mtr_ac_b" string="Lengte in mtr" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_lengte_in_mtr_ac_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_lengte_in_mtr_ac','=',False)]}"/>
+                                          <field name="x_lengte_in_mtr_ac_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_lengte_in_mtr_ac','!=',False)]}"/>
+                                        </div>
+                                    </group>
+                                    <group name="x_group_algemeen_2_right" string="DC">
+                                        <field name="x_dc_route" string="DC Route" placeholder="beschrijf de DC route" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_dc_route" invisible="1"/>
+                                        <label for="x_ac_route" string="DC Route" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_dc_route_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_dc_route','=',False)]}"/>
+                                          <field name="x_dc_route_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_dc_route','!=',False)]}"/>
+                                        </div>  
+                                        <field name="x_dc_dikte" widget="radio" string="DC dikte" options="{&quot;horizontal&quot;:true}" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_dc_dikte" invisible="1"/>
+                                        <label for="x_dc_dikte_b" string="DC dikte" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_dc_dikte_b" nolabel="1" style="color:red;" widget="radio" attrs="{'invisible':[('bool_x_dc_dikte','=',False)]}"/>
+                                          <field name="x_dc_dikte_b" nolabel="1" style="color:black;" widget="radio" attrs="{'invisible':[('bool_x_dc_dikte','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_lengte_in_mtr_dc" string="Lengte in mtr" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_lengte_in_mtr_dc" invisible="1"/>
+                                        <label for="x_lengte_in_mtr_dc_b" string="Lengte in mtr" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_lengte_in_mtr_dc_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_lengte_in_mtr_dc','=',False)]}"/>
+                                          <field name="x_lengte_in_mtr_dc_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_lengte_in_mtr_dc','!=',False)]}"/>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page name="x_page_materkast" string="Meterkast">
+                                <group name="x_group_meterkast">
+                                    <group name="x_group_meterkast_left">
+                                        <field name="x_hoofdschakelaar_aanwezig" string="Hoofdschakelaar aanwezig" widget="radio" required="1" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_hoofdschakelaar_aanwezig" invisible="1"/>
+                                        <label for="x_hoofdschakelaar_aanwezig" string="Hoofdschakelaar aanwezig" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_hoofdschakelaar_aanwezig_b" nolabel="1" style="color:red;" widget="radio" attrs="{'invisible':[('bool_x_hoofdschakelaar_aanwezig','=',False)]}"/>
+                                          <field name="x_hoofdschakelaar_aanwezig_b" nolabel="1" style="color:black;" widget="radio" attrs="{'invisible':[('bool_x_hoofdschakelaar_aanwezig','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_teruglevering_geschikt" string="Teruglevering geschikt" widget="radio" required="1" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]]}"/>
+                                        <field name="bool_x_teruglevering_geschikt" invisible="1"/>
+                                        <label for="x_teruglevering_geschikt" string="Teruglevering geschikt" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_teruglevering_geschikt_b" nolabel="1" style="color:red;" widget="radio" attrs="{'invisible':[('bool_x_teruglevering_geschikt','=',False)]}"/>
+                                          <field name="x_teruglevering_geschikt_b" nolabel="1" style="color:black;" widget="radio" attrs="{'invisible':[('bool_x_teruglevering_geschikt','!=',False)]}"/>
+                                        </div>
+                                        <field name="x_aansluitwaarde" string="Aansluitwaarde" attrs="{'readonly': [['x_task_id','!=',False]],'invisible': [['x_task_id','!=',False]],  'required': [['x_partner_id','!=',False]]}"/>
+                                        <field name="bool_x_aansluitwaarde" invisible="1"/>
+                                        <label for="x_aansluitwaarde" string="Aansluitwaarde" attrs="{'invisible': [['x_task_id','=',False]]}"/>
+                                        <div attrs="{'invisible': [['x_task_id','=',False]]}">
+                                          <field name="x_aansluitwaarde_b" nolabel="1" style="color:red;" attrs="{'invisible':[('bool_x_aansluitwaarde','=',False)]}"/>
+                                          <field name="x_aansluitwaarde_b" nolabel="1" style="color:black;" attrs="{'invisible':[('bool_x_aansluitwaarde','!=',False)]}"/>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="partner_obstacles" string="Daken en Obstakels">
+                                <field name="roofdata_ids">
+                                    <form>
+                                        <group string="Dak informatie">
+                                            <field name="partner_id" invisible="1" groups="base.group_system"/>
+                                            <field name="roof_length"/>
+                                            <field name="rooftype"/>
+                                            <field name="roofslope_id"/>
+                                            <field name="roofheight"/>
+                                            <field name="compass_id"/>
+                                            <field name="roof_width"/>
+                                            <field name="roofcolour"/>
+                                            <field name="roofcover"/>
+                                        </group>
+                                        <group string="Bijlage(n)">
+                                            <field name="photo_1" widget="image" options="{'size':[0,270]}"/>
+                                        </group>
+                                    </form>
+                                    <tree string="Dak informatie">
+                                        <field name="roof_length" string="Dak lengte in mtr" />
+                                        <field name="roof_width" string="Dak breedte in mtr" />
+                                        <field name="compass_id"/>
+                                        <field name="rooftype"/>
+                                        <field name="roofslope_id"/>
+                                        <field name="photo_1" widget="image" class="oe_avatar oe_left"/>
+                                    </tree>
+                                </field>
+                                <group string="Obstakels"> 
+                                    <field colspan="2" name="obstacles_ids" nolabel="1">
+                                        <form>
+                                            <group string="Omschrijving">
+                                                <field name="partner_id" invisible="1" groups="base.group_system"/>
+                                                <field name="description" placeholder="Schoorsteen"/>
+                                            </group>
+                                            <group string="Foto's">
+                                                <field name="photo" widget="image" options="{'size':[0,270]}"/>
+                                            </group>
+                                        </form>
+                                        <tree>
+                                            <field name="partner_id" invisible="1" groups="base.group_system"/>
+                                            <field name="description" placeholder="Schoorsteen"/>
+                                            <field name="photo" widget="image" class="oe_avatar oe_left"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="x_page_extra" string="Extra Foto's">
+                                <group string="Overige foto's"> 
+                                    <field colspan="2" name="extra_photo_ids" nolabel="1">
+                                        <form>
+                                            <group string="Omschrijving">
+                                                <field name="partner_id" invisible="1" groups="base.group_system"/>
+                                                <field name="description" placeholder="Meterkast"/>
+                                            </group>
+                                            <group string="Foto's">
+                                                <field name="photo" widget="image" options="{'size':[0,270]}"/>
+                                            </group>
+                                        </form>
+                                        <tree>
+                                            <field name="description" placeholder="Schoorsteen"/>
+                                            <field name="photo" widget="image" class="oe_avatar oe_left"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACTION OF THE MODEL -->
+        <record model="ir.actions.act_window" id="action_worksheets_custom_opname">
+            <field name="name">Opname</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">worksheets.opname</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- QWEB VIEW OF THE MODEL -->
+        <record id="qweb_worksheets_custom_opname" model="ir.ui.view">
+            <field name="name">qweb.worksheets.custom.opname</field>
+            <field name="type">qweb</field>
+            <field name="model_data_id" ref="model_worksheets_opname"/>    
+            <field name="arch" type="xml">
+                <t t-name="qweb_worksheet_custom_opname">
+                    <div>
+                        <div class="row mb-2" style="page-break-inside: avoid">
+                            <div class="col-3 font-weight-bold">Comments</div>
+                            <div modifiers="{}" class="text-wrap col-9" t-field="worksheet.x_comments"/>
+                        </div>
+                    </div>
+                </t>
+            </field>
+        </record>
+
+        <!-- Partner Worksheet -->
+        <record id="view_partner_form_ext" model="ir.ui.view">
+            <field name="name">view.partner.form.ext</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button string="Opname" class="oe_stat_button" name="action_fsm_worksheet_partner" icon="fa-pencil" type="object"/>
+                </div>
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="worksheet_template_id" groups="base.group_system"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
