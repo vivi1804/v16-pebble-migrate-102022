@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_form_extended" model="ir.ui.view">
+            <field name="name">view.partner.form.extended</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='vat']" position="before">
+                	<field name="gemeente_id" options="{'no_create': True}"/>
+                	<field name="wijk_id" options="{'no_create': True}"/>
+                    <field name="buurt_id" options="{'no_create': True}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- VIEW -->
+        <!--    TREE VIEW -->
+        <record id="res_wijk_tree_view" model="ir.ui.view">
+            <field name="name">res.wijk.tree</field>
+            <field name="model">res.wijk</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="cbs_wijkcode"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_buurt_tree_view" model="ir.ui.view">
+            <field name="name">res.buurt.tree</field>
+            <field name="model">res.buurt</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="cbs_buurtcode"/>
+                    <field name="wijk_id"/>
+                    <field name="name"/>
+                    <field name="inwoner_aantal"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_gemeente_tree_view" model="ir.ui.view">
+            <field name="name">res.gemeente.tree</field>
+            <field name="model">res.gemeente</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="gm_code"/>
+                    <field name="name"/>
+                    <field name="state_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--SEARCH VIEW-->
+        <record model="ir.ui.view" id="res_wijk_filter">
+            <field name="name">Wijk Search</field>
+            <field name="model">res.wijk</field>
+            <field name="arch" type="xml">
+                <search string="Search Wijk">
+                    <field name="cbs_wijkcode"/>
+                    <field name="name"/>
+                </search>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_buurt_filter">
+            <field name="name">Buurt Search</field>
+            <field name="model">res.buurt</field>
+            <field name="arch" type="xml">
+                <search string="Search Buurt">
+                    <field name="cbs_buurtcode"/>
+                    <field name="wijk_id"/>
+                    <field name="name"/>
+                </search>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_gemeente_filter">
+            <field name="name">Gemeente Search</field>
+            <field name="model">res.gemeente</field>
+            <field name="arch" type="xml">
+                <search string="Search Gemeente">
+                    <field name="code"/>
+                    <field name="gm_code"/>
+                    <field name="name"/>
+                    <field name="state_id"/>
+                </search>
+          </field>
+        </record>
+
+        <!--FORM VIEW-->
+        <record model="ir.ui.view" id="res_wijk_form">
+            <field name="name">Wijk Form</field>
+            <field name="model">res.wijk</field>
+            <field name="arch" type="xml">
+                <form string="Wijk">
+                    <sheet>
+                        <group>
+                            <div class="oe_title oe_left">
+                                <h1><field name="name" class="oe_inline"/></h1>
+                            </div>
+                        </group>
+                        <group> 
+                            <group>
+                                <field name="cbs_wijkcode"/>
+                                <field name="gemeente_id"/>
+                            </group>
+                            <group>
+                                <field name="kaart" widget="image"/>
+                            </group>
+                        </group>
+                        <field colspan="4" name="buurt_ids" nolabel="1" widget="one2many_list">
+                            <tree>
+                                <field name="cbs_buurtcode"/>
+                                <field name="wijk_id"/>
+                                <field name="name"/>
+                                <field name="inwoner_aantal"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_buurt_form">
+            <field name="name">Buurt Form</field>
+            <field name="model">res.buurt</field>
+            <field name="arch" type="xml">
+                <form string="Wijk">
+                    <sheet>
+                        <group>
+                            <div class="oe_title oe_left">
+                                <h1><field name="name" class="oe_inline"/></h1>
+                            </div>
+                        </group>
+                        <group> 
+                            <group>
+                                <field name="wijk_id"/>
+                                <field name="cbs_buurtcode"/>
+                                <field name="inwoner_aantal"/>
+                                <field name="oppvlakte_totaal_ha"/>
+                                <field name="oppvlakte_land"/>
+                            </group>
+                            <group>
+                                <field name="kaart" widget="image"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_gemeente_form">
+            <field name="name">gemeente Form</field>
+            <field name="model">res.gemeente</field>
+            <field name="arch" type="xml">
+                <form string="Gementee">
+                    <sheet>
+                        <group>
+                            <field name="code"/>
+                            <field name="gm_code"/>
+                            <field name="name"/>
+                            <field name="state_id"/>
+                        </group>
+                        <field colspan="4" name="wijk_ids" nolabel="1" widget="one2many_list">
+                            <tree>
+                                <field name="cbs_wijkcode"/>
+                                <field name="gemeente_id"/>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--ACTION -->
+        <record model="ir.actions.act_window" id="action_res_wijk_tree_view">
+            <field name="name">Wijk</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.wijk</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_in_progress': 1}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_res_buurt_tree_view">
+            <field name="name">Buurt</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.buurt</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_in_progress': 1}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_res_gemeente_tree_view">
+            <field name="name">Gemeente</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.gemeente</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_in_progress': 1}</field>
+        </record>
+
+        <!--ACTION BIND-->
+        <!--    TREE -->
+        <record model="ir.actions.act_window.view" id="action_res_wijk_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_res_wijk_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_res_buurt_tree_mode">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_res_buurt_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_gemeente_tree_mode">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_res_gemeente_tree_view"/>
+        </record>
+
+        <!--    FORM -->
+        <record model="ir.actions.act_window.view" id="action_res_wijk_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_res_wijk_tree_view"/>
+            <field name="view_id" ref="res_wijk_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_res_buurt_form_mode">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_res_buurt_tree_view"/>
+            <field name="view_id" ref="res_buurt_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_res_gemeente_form_mode">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_res_gemeente_tree_view"/>
+            <field name="view_id" ref="res_gemeente_form"/>
+        </record>
+
+        <!--MENU ITEMS-->
+        <menuitem id="menu_wijk_buurt"
+              name="Wijken and Burten"
+              sequence="99"
+              parent="contacts.res_partner_menu_config"/>
+
+        <menuitem id="menu_gemeente"
+              name="Gemeente"
+              sequence="100"
+              action="action_res_gemeente_tree_view"
+              parent="menu_wijk_buurt"/>
+
+        <menuitem id="menu_wijk"
+            name="Wijken"
+            sequence="101"
+            parent="menu_wijk_buurt"
+            action="action_res_wijk_tree_view"/>
+
+        <menuitem id="menu_buurt"
+            name="Buurten"
+            sequence="102"
+            parent="menu_wijk_buurt"
+            action="action_res_buurt_tree_view"/>
+    </data>
+</openerp>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="pebble_layout">
+            <field name="name">Pebble layout</field>
+            <!--<field name="model"></field>-->
+            <field name="inherit_id" ref="web.external_layout_standard"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@t-attf-class='header o_company_#{company.id}_layout']" position="replace">
+                    <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                        <div class="row">
+                            <div class="col-3 mb4">
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-width: 250px;" alt="Logo"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+                <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']" position="replace"> 
+                    <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+                        <div class="text-center" style="border-top: 1px solid black; font-size: 13px !important;">
+                            <!--<t t-if="company.street"><span t-field="company.street"/>, </t>
+                            <t t-if="company.zip"><span t-field="company.zip"/> </t>
+                            <t t-if="company.city"><span t-field="company.city"/>  |  </t>-->
+                            <t t-if="company.phone"> Tel: <span t-field="company.phone"/> | </t>
+                            <t t-if="company.email"> Email: <span t-field="company.email"/> | </t>
+                            <t t-if="company.website"><span t-field="company.website"/></t>
+                            <t t-if="company.report_footer"><br/><span t-field="company.report_footer"/> </t>
+                            <div t-if="report_type == 'pdf'" class="text-muted">
+                            Pagina: <span class="page"/> / <span class="topage"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</openerp>

@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_template_conditions,sale_template_conditions_user,model_sale_template_conditions,base.group_user,1,1,1,1
+access_sale_rooftype,sale_rooftype user,model_sale_rooftype,base.group_user,1,1,1,1
+access_sale_roofslope,sale_roofslope user,model_sale_roofslope,base.group_user,1,1,1,1
+access_sale_cover,sale_cover user,model_sale_cover,base.group_user,1,1,1,1
+access_sale_colour,sale_colour user,model_sale_colour,base.group_user,1,1,1,1
+access_sale_compass,sale_compass user,model_sale_compass,base.group_user,1,1,1,1
+access_sale_tablehespul,sale_tablehespul user,model_sale_tablehespul,base.group_user,1,1,1,1
+access_sale_obstacles,sale_obstacles user,model_sale_obstacles,base.group_user,1,1,1,1
+access_sale_roofdata,sale_roofdata user,model_sale_roofdata,base.group_user,1,1,1,1
+access_sale_obstacles_data,sale_obstacles_data user,model_sale_obstacles_data,base.group_user,1,1,1,1
+access_sale_roofdata_data,sale_roofdata_data user,model_sale_roofdata_data,base.group_user,1,1,1,1

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_order_form_extended">
+            <field name="name">Sales Order Form Extended</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="contact_person"  attrs="{'required': [('order_type', '=', 'b2c_solar')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="order_type" />
+                    <field name="vat_reduction_type"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="solar_pdf" filename="solar_pdf_file" string="External Document" attrs="{'invisible': [('order_type', '!=', 'b2c_solar')]}"/>
+                    <field name="solar_pdf_file" invisible="1" />
+                    <field name="plan" widget="image" options="{'size':[0,270]}" attrs="{'invisible': [('order_type', '!=', 'b2c_solar')]}"/>
+
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@name='customer_signature']" position="after">
+                    <page name="sale_conditions" string="Conditions" attrs="{'invisible': [('order_type', '!=', 'b2c_solar')]}">
+                      <group>
+                        <group>
+                           <field name="sale_condition_id"/>
+                        </group>
+                        <group></group>
+                      </group>
+                      <label for="html_sale_conditions" string="Condities"/>
+                      <field colspan="2" name="html_sale_conditions" nolabel="1" force_save="1" readonly="0"/>
+                    </page>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page name="sale_roof" string="Daken" attrs="{'invisible': [('order_type', '!=', 'b2c_solar')]}">
+                        <button name="action_get_partner_roofdata" states="draft" type="object" string="Get Data"/>
+                        <field name="roofdata_line_ids">
+                            <tree string="Dak informatie" editable="bottom">
+                                <field name="roofdata_id" invisible="1"/>
+                                <field name="description"/>
+                                <field name="roof_length"  />
+                                <field name="roof_width"  />
+                                <field name="compass_id"/>
+                                <field name="rooftype"/>
+                                <field name="roofslope_id"/>
+                                <field name="photo_1" widget="image" class="oe_avatar oe_left" readonly="1"/>
+                                <field name="is_printed"/>
+                            </tree>
+                        </field>
+                        <group string="Obstakels"> 
+                            <field colspan="2" name="obstacles_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="obstacles_id" invisible="1"/>
+                                    <field name="description"/>
+                                    <field name="photo" widget="image" class="oe_avatar oe_left" readonly="1"/>
+                                    <field name="is_printed"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                    <page name="sale_cons" string="Energie &amp; ROI" attrs="{'invisible': [('order_type', '!=', 'b2c_solar')]}"> 
+                        <group>
+                            <group string="Energie informatie">
+                                <field name="powercon" placeholder="5000"/>
+                                <field name="desireprod" placeholder="4500"/>
+                                <field name="energycost" placeholder="0.25"/>
+                            </group>
+                            <group string="Verwachte ROI">
+                                <field name="co2reduction" readonly="0" force_save="1"/>
+                                <field name="elecprod" readonly="0"/>
+                                <field name="savings" readonly="0" force_save="1"/>
+                                <field name="forfair_vat" force_save="1" invisible="1"/>
+                                <field name="roi_years" force_save="1" invisible="1"/>
+                                <field name="vat_amount" force_save="1" invisible="1"/>
+                                <field name="vat_reduction" force_save="1" invisible="1"/>
+                                <field name="net_investment" force_save="1" invisible="1"/>
+                            </group>
+                        </group> 
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="product_template_form_extended" model="ir.ui.view">
+            <field name="name">product.template.form.extended</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[2]" position="after">
+                    <group string="B2C Zonnepanelen report - Instellingen">
+                        <field name="show_in_b2c"/>
+                    </group>
+                    <group string="Verkooporder Omschrijving" attrs="{'invisible': [('show_in_b2c', '!=', True)]}">
+                        <field colspan="2" name="html_product_details" nolabel="1"/>
+                    </group>
+                    <!--<group string="Verkooporder Omschrijving 2" attrs="{'invisible': [('show_in_b2c', '!=', True)]}">-->
+                    <group string="Verkooporder Omschrijving 2" >
+                        <field colspan="2" name="html_product_details_2" nolabel="1"/>
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+
+                <!-- VIEW -->
+        <!--    TREE VIEW -->
+        <record id="sale_template_conditions_tree_view" model="ir.ui.view">
+            <field name="name">sale.template.conditions.tree</field>
+            <field name="model">sale.template.conditions</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--SEARCH VIEW-->
+        <record model="ir.ui.view" id="sale_template_conditions_filter">
+            <field name="name">sale.template.conditions.search</field>
+            <field name="model">sale.template.conditions</field>
+            <field name="arch" type="xml">
+                <search string="Search Sale Template Condition">
+                    <field name="name"/>
+                    <field name="sale_condition"/>
+                </search>
+          </field>
+        </record>
+
+        <!--FORM VIEW-->
+        <record model="ir.ui.view" id="sale_template_conditions_form">
+            <field name="name">sale.template.conditions.form</field>
+            <field name="model">sale.template.conditions</field>
+            <field name="arch" type="xml">
+                <form string="Sale Template Conditions">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="sale_condition"/> 
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--ACTION -->
+        <record model="ir.actions.act_window" id="action_sale_template_conditions_tree_view">
+            <field name="name">sale.template.conditions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.template.conditions</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_in_progress': 1}</field>
+        </record>
+
+        <!--ACTION BIND-->
+        <!--    TREE -->
+        <record model="ir.actions.act_window.view" id="action_sale_template_conditions_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sale_template_conditions_tree_view"/>
+        </record>
+
+        <!--    FORM -->
+        <record model="ir.actions.act_window.view" id="action_sale_template_conditions_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sale_template_conditions_tree_view"/>
+            <field name="view_id" ref="sale_template_conditions_form"/>
+        </record>
+
+        <!--MENU ITEMS-->
+        <menuitem id="menu_sale_template_conditions"
+              name="Sale Template Conditions"
+              sequence="99"
+              parent="sale.menu_sale_config"
+              action="action_sale_template_conditions_tree_view"/>
+
+    </data>
+</openerp>

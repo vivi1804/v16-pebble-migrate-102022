@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- CHANGE CRM VIEW CONTEXT -->
+        <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
+            <field name="context">{'default_type': 'opportunity', 'search_default_assigned_to_me': 1, 'active_test': False}</field>
+        </record>
+        
+        <record id="crm_lead_order_form" model="ir.ui.view">
+            <field name="name">crm.lead.order.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[last()]" position="after">
+                    <page string="Order">
+                        <group>
+                            <group>
+                                <field colspan="2" name="is_true" nolabel="1"/>
+                                <field name="datum_aanvraag"/>
+                                <field name="datum_opname_verkoper"/>
+                                <field name="datum_eerste_offerte"/>
+                                <field name="datum_conclusie"/>
+                                <field name="order_datum"/>
+                            </group>
+                            <group>
+                                <field name="hellend"/>
+                                <field name="plat"/>
+                                <field name="veld"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Panelen">
+                                <field name="paneel_one" required="0"/>
+                                <field name="wattpiek_paneel_one"/>
+                                <field name="aantal_paneel_one"/>
+                                <field name="total_wattpiek_paneel_one"/>
+                                <field name="paneel_two" required="0"/>
+                                <field name="wattpiek_paneel_two"/>
+                                <field name="aantal_paneel_two"/>
+                                <field name="total_wattpiek_paneel_two"/>
+                                <field name="total_wattpiek_paneel"/>
+                            </group>
+                            <group string="Omvormers">
+                                <field name="inverter_one" required="0"/>
+                                <field name="inverter_two" required="0"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Time Frame">
+                                <field name="datum_ao"/>
+                                <field name="datum_ac"/>
+                            </group>
+                            <group string="SO Details">
+                                <field name="sales_order_id" domain= "[('opportunity_id', '=', name),('state', 'in', ('sale','done'))]"/>
+                                <field name="currency_id"/>
+                                <field name="omzet"/>
+                                <field name="marge_voorcalculatie"/>
+                                <field name="aantal_dagen_installatie_voorcalculatie"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_crm_order" model="ir.ui.view">
+            <field name="name">product.template.crm.order</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='uom_id']" position="before">
+                    <field name="wattpiek"/>
+                    <field name="st_zichtbaar_in_fieldservice"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

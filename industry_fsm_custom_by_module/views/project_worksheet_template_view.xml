@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="worksheet_template_view_form_inherit"
+        model="ir.ui.view">
+        <field name="name">worksheet.template.form.inherit
+        </field>
+        <field name="model">worksheet.template</field>
+        <field name="inherit_id"
+            ref="worksheet.worksheet_template_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="module_template" invisible="0" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

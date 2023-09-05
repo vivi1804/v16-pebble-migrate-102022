@@ -1,0 +1,177 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* solar_extended
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-18 08:18+0000\n"
+"PO-Revision-Date: 2020-08-18 15:29+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: nl\n"
+"X-Generator: Poedit 2.3\n"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "&amp;nbsp;<span>on</span>&amp;nbsp;"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<b>Conditions</b>"
+msgstr "<b>Conditie</b>"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<span style=\"font-size:18px\">Product</span>"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<span style=\"font-size:18px\">Quantity</span>"
+msgstr "<span style=\"font-size:18px\">Aantal</strong>"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<span>Pro-Forma Invoice # </span>"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Expiration:</strong>"
+msgstr "<strong>Vervaldatum</strong>"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Order Date:</strong>"
+msgstr "<strong>Besteldatum</strong>"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Quotation Date:</strong>"
+msgstr "<strong>Offerte Datum</strong>"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Salesperson:</strong>"
+msgstr "<strong>Verkoper</strong>"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Shipping Address:</strong>"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Subtotal</strong>"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Total</strong>"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "<strong>Your Reference:</strong>"
+msgstr "<strong>Uw Referentie</strong>"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "Advice team"
+msgstr "Adviesteam"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "Agreed:"
+msgstr "Voor akkoord:"
+
+#. module: solar_extended
+#: model:ir.model.fields.selection,name:solar_extended.selection__sale_order__order_type__b2c_solar
+msgid "B2C Zonnepanelen report"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "Best regards,"
+msgstr "Met vriendelijke groeten,"
+
+#. module: solar_extended
+#: model:ir.model.fields,field_description:solar_extended.field_sale_order__html_sale_conditions
+#: model_terms:ir.ui.view,arch_db:solar_extended.view_order_form_extended
+msgid "Conditions"
+msgstr "Conditie"
+
+#. module: solar_extended
+#: model:ir.model.fields,field_description:solar_extended.field_sale_order__solar_pdf
+#: model_terms:ir.ui.view,arch_db:solar_extended.view_order_form_extended
+msgid "External Document"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "Invoicing Address:"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "Invoicing and Shipping Address:"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "Order #"
+msgstr ""
+
+#. module: solar_extended
+#: model:ir.model.fields,field_description:solar_extended.field_sale_order__solar_pdf_file
+msgid "PDF File"
+msgstr ""
+
+#. module: solar_extended
+#: model:ir.model,name:solar_extended.model_product_template
+msgid "Product Template"
+msgstr "Productsjabloon"
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "Quotation #"
+msgstr ""
+
+#. module: solar_extended
+#: model:ir.model,name:solar_extended.model_ir_actions_report
+msgid "Report Action"
+msgstr "Rapport actie"
+
+#. module: solar_extended
+#: model:ir.model,name:solar_extended.model_sale_order
+msgid "Sales Order"
+msgstr "Verkooporder"
+
+#. module: solar_extended
+#: model:ir.model.fields.selection,name:solar_extended.selection__sale_order__order_type__default
+msgid "Standaard Odoo"
+msgstr ""
+
+#. module: solar_extended
+#: model:ir.model.fields,field_description:solar_extended.field_sale_order__order_type
+msgid "Type"
+msgstr ""
+
+#. module: solar_extended
+#: model:ir.model.fields,field_description:solar_extended.field_product_product__html_product_details
+#: model:ir.model.fields,field_description:solar_extended.field_product_template__html_product_details
+#: model_terms:ir.ui.view,arch_db:solar_extended.product_template_form_extended
+msgid "Verkooporder Omschrijving"
+msgstr ""
+
+#. module: solar_extended
+#: model_terms:ir.ui.view,arch_db:solar_extended.report_saleorder_document_solar
+msgid "d.d..............."
+msgstr ""

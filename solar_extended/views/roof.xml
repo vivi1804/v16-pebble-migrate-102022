@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+           <!-- VIEW -->
+        <!--    TREE VIEW -->
+        <record id="sale_rooftype_tree_view" model="ir.ui.view">
+            <field name="name">sale.rooftype.tree</field>
+            <field name="model">sale.rooftype</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sale_roofslope_tree_view" model="ir.ui.view">
+            <field name="name">sale.roofslope.tree</field>
+            <field name="model">sale.roofslope</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="degrees"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sale_cover_tree_view" model="ir.ui.view">
+            <field name="name">sale.cover.tree</field>
+            <field name="model">sale.cover</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sale_colour_tree_view" model="ir.ui.view">
+            <field name="name">sale.colour.tree</field>
+            <field name="model">sale.colour</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="colour"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sale_compass_tree_view" model="ir.ui.view">
+            <field name="name">sale.compass.tree</field>
+            <field name="model">sale.compass</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="degrees"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sale_tablehespul_tree_view" model="ir.ui.view">
+            <field name="name">sale.tablehespul.tree</field>
+            <field name="model">sale.tablehespul</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="compass_degrees"/>
+                    <field name="roof_slope"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--SEARCH VIEW-->
+        <record model="ir.ui.view" id="sale_rooftype_filter">
+            <field name="name">sale.rooftype.search</field>
+            <field name="model">sale.rooftype</field>
+            <field name="arch" type="xml">
+                <search string="Search Roof Type">
+                    <field name="description"/>
+                </search>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_roofslope_filter">
+            <field name="name">sale.roofslope.search</field>
+            <field name="model">sale.roofslope</field>
+            <field name="arch" type="xml">
+                <search string="Search Roof Slope">
+                    <field name="degrees"/>
+                    <field name="description"/>
+                </search>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_cover_filter">
+            <field name="name">sale.cover.search</field>
+            <field name="model">sale.cover</field>
+            <field name="arch" type="xml">
+                <search string="Search Roof Cover">
+                    <field name="description"/>
+                </search>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_colour_filter">
+            <field name="name">sale.colour.search</field>
+            <field name="model">sale.colour</field>
+            <field name="arch" type="xml">
+                <search string="Search Roof Colour">
+                    <field name="colour"/>
+                </search>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_compass_filter">
+            <field name="name">sale.compass.search</field>
+            <field name="model">sale.compass</field>
+            <field name="arch" type="xml">
+                <search string="Search Roof Compass">
+                    <field name="degrees"/>
+                    <field name="description"/>
+                </search>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_tablehespul_filter">
+            <field name="name">sale.tablehespul.search</field>
+            <field name="model">sale.tablehespul</field>
+            <field name="arch" type="xml">
+                <search string="Search Table of Hespul">
+                    <field name="compass_degrees"/>
+                    <field name="roof_slope"/>
+                    <field name="value"/>
+                </search>
+          </field>
+        </record>
+
+        <!--FORM VIEW-->
+        <record model="ir.ui.view" id="sale_rooftype_form">
+            <field name="name">sale.rooftype.form</field>
+            <field name="model">sale.rooftype</field>
+            <field name="arch" type="xml">
+                <form string="Soorten">
+                    <sheet>
+                        <group string="Soorten"> 
+                            <field name="description"/>   
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_roofslope_form">
+            <field name="name">sale.roofslope.form</field>
+            <field name="model">sale.roofslope</field>
+            <field name="arch" type="xml">
+                <form string="Hellingsgraden">
+                    <sheet>
+                        <group string="Hellingsgraden">
+                            <field name="degrees"/> 
+                            <field name="description"/>   
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_cover_form">
+            <field name="name">sale.cover.form</field>
+            <field name="model">sale.cover</field>
+            <field name="arch" type="xml">
+                <form string="Dakbedekking">
+                    <sheet>
+                        <group string="Dakbedekking"> 
+                            <field name="description"/>   
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_colour_form">
+            <field name="name">sale.colour.form</field>
+            <field name="model">sale.colour</field>
+            <field name="arch" type="xml">
+                <form string="Kleuren">
+                    <sheet>
+                        <group string="Kleuren"> 
+                            <field name="colour"/>   
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_compass_form">
+            <field name="name">sale.compass.form</field>
+            <field name="model">sale.compass</field>
+            <field name="arch" type="xml">
+                <form string="Kompas richtingen">
+                    <sheet>
+                        <group string="Kompas richtingen">
+                            <field name="degrees"/> 
+                            <field name="description"/>   
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_tablehespul_form">
+            <field name="name">sale.tablehespul.form</field>
+            <field name="model">sale.tablehespul</field>
+            <field name="arch" type="xml">
+                <form string="Tabel van Hespul">
+                    <sheet>
+                        <group string="Tabel van Hespul">
+                            <field name="compass_degrees"/>
+                            <field name="roof_slope"/>
+                            <field name="value"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--ACTION -->
+        <record model="ir.actions.act_window" id="action_sale_rooftype_tree_view">
+            <field name="name">Rooftype</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.rooftype</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context"></field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sale_roofslope_tree_view">
+            <field name="name">Roofslope</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.roofslope</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context"></field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sale_cover_tree_view">
+            <field name="name">Salecover</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.cover</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context"></field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sale_colour_tree_view">
+            <field name="name">Roofcolour</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.colour</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context"></field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sale_compass_tree_view">
+            <field name="name">Roofcompass</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.compass</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context"></field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sale_tablehespul_tree_view">
+            <field name="name">saletablehespul</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.tablehespul</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context"></field>
+        </record>
+
+        <!--ACTION BIND-->
+        <!--    TREE -->
+        <record model="ir.actions.act_window.view" id="action_sale_rooftype_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sale_rooftype_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_roofslope_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sale_roofslope_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_colour_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sale_colour_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_cover_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sale_cover_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_compass_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sale_compass_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_tablehespul_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sale_tablehespul_tree_view"/>
+        </record>
+
+        <!--    FORM -->
+        <record model="ir.actions.act_window.view" id="action_sale_rooftype_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sale_rooftype_tree_view"/>
+            <field name="view_id" ref="sale_rooftype_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_roofslope_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sale_roofslope_tree_view"/>
+            <field name="view_id" ref="sale_roofslope_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_cover_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sale_cover_tree_view"/>
+            <field name="view_id" ref="sale_cover_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_colour_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sale_colour_tree_view"/>
+            <field name="view_id" ref="sale_colour_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_compass_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sale_compass_tree_view"/>
+            <field name="view_id" ref="sale_compass_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sale_tablehespul_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sale_tablehespul_tree_view"/>
+            <field name="view_id" ref="sale_tablehespul_form"/>
+        </record>
+
+        <!--MENU ITEMS-->
+        <menuitem id="menu_sale_roof"
+              name="Dak instellingen"
+              sequence="99"
+              parent="sale.menu_sale_config"/>
+
+        <menuitem id="menu_sale_rooftypes"
+              name="Daksoorten"
+              sequence="99"
+              action="action_sale_rooftype_tree_view"
+              parent="menu_sale_roof"/>
+
+        <menuitem id="menu_sale_roofslope"
+              name="Hellingsgraden"
+              sequence="99"
+              action="action_sale_roofslope_tree_view"
+              parent="menu_sale_roof"/>
+
+        <menuitem id="menu_sale_colour"
+              name="Kleuren"
+              sequence="99"
+              action="action_sale_colour_tree_view"
+              parent="menu_sale_roof"/>
+
+        <menuitem id="menu_sale_cover"
+              name="Dakbedekking"
+              sequence="99"
+              action="action_sale_cover_tree_view"
+              parent="menu_sale_roof"/>
+
+        <menuitem id="menu_sale_compass"
+              name="Kompas richtingen"
+              sequence="99"
+              action="action_sale_compass_tree_view"
+              parent="menu_sale_roof"/>       
+
+        <menuitem id="menu_sale_tablehespul"
+              name="Tabel van Hespul"
+              sequence="99"
+              action="action_sale_tablehespul_tree_view"
+              parent="menu_sale_roof"/> 
+    </data>
+</openerp>

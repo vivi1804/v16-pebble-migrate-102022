@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- type of service on product level -->
+        <record id="product_template_form_view_extended" model="ir.ui.view">
+            <field name="name">product.template.form.view.extended</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='detailed_type']" position="after">
+                    <field name="type_of_service" attrs="{'invisible': [('type','!=','service')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- additional field on field service -->
+        <record id="project_task_view_form_extended" model="ir.ui.view">
+            <field name="name">project.task.view.form.extended</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                 <!-- additional sales order line and stage -->
+                <xpath expr="//group/field[@name='partner_id']" position="after">
+                    <field name="sale_line_id"/>
+                </xpath>
+                <xpath expr="//field[@name='stage_id']" position="attributes">
+                    <attribute name="invisible"/>
+                    <attribute name="attrs">{}</attribute>
+                </xpath>
+                <!-- additional field after description -->
+                <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+                    <group>
+                        <group name="group_settings" string="Settings">
+                            <field name="type_of_service" string="Type of service"/>
+                            <!--<field name="auto_update_delivery" string="Automatic update deliveries" attrs="{'invisible': [('type_of_service','!=','montage')]}"/>-->
+                            <field name="auto_update_delivery" string="Automatic update deliveries"/>
+                            <field name="auto_update_invoice" string="Automatic update invoices"/>
+                        </group>
+                        <group name="group_rss" string="RSS">
+                            <field name="eigen_kraan" string="Eigen Hulpmiddelen" attrs="{'invisible': [('type_of_service','=','kraan')]}"/>
+                            <field name="rss" string="Hulpmiddelen" attrs="{'invisible':[('eigen_kraan','!=',True)],'required':[('eigen_kraan','=',True)]}"/>
+                            <field name="inkooporder"/>
+                            <field name="state_inkoop" string="Status inkoop"/>
+                            <field name="inkoop_datum" string="Inkooporder geplande datum" attrs="{'invisible': ['&amp;',('state_inkoop','!=','purchase'),('state_inkoop','!=','done')]}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        -->
+
+        <!-- additional tab in sales order -->
+        <record id="view_order_form_extended" model="ir.ui.view">
+            <field name="name">view.order.form.extended</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page name="sale_order_datum" string="Datums">
+                        <group>
+                            <group name="group_left">
+                                <field name="schouw_datum" string="Schouw datum" readonly="1"/>
+                                <field name="installatie_datum" string="Installatie datum" attrs="{}" readonly="1"/>
+                                <field name="auto_update_delivery" string="Automatic update deliveries"/>
+                                <field name="auto_update_invoice" string="Automatic update invoices"/>
+                            </group>
+                            <group name="group_right">
+                                <field name="kraan_datum" string="Kraan datum" attrs="{}" readonly="1"/>
+                                <field name="inzet_eigen_middelen" string="Inzet eigen hulpmiddelen" attrs="{}" readonly="1"/>
+                                <field name="kraan_inkooporder" string="Kraan inkooporder" attrs="{'invisible': [('inzet_eigen_middelen','=',True)]}" readonly="1"/>
+                                <field name="state_inkooporder" string="Status PO" attrs="{'invisible': [('inzet_eigen_middelen','=',True)]}"/>
+                                <field name="geplande_levering_po" string="Geplande levering PO" attrs="{'invisible': [('inzet_eigen_middelen','=',True)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other_information']/group[1]/group[@name='sale_info']/field[@name='invoice_status']" position="after">
+                    <field name="auto_update_invoice" string="Auto update ?"/>
+                </xpath>
+                <xpath expr="//field[@name='picking_policy']" position="after">
+                    <field name="auto_update_delivery" string="Auto update ?"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</openerp>

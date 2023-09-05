@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_detailed_resources","detailed_resources_user","model_detailed_resources","base.group_user",1,1,1,1
+"access_detailed_planning","detailed_planning_user","model_detailed_planning","base.group_user",1,1,1,1

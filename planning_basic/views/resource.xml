@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- sales order -->
+        <record id="view_order_form_extended" model="ir.ui.view">
+            <field name="name">view.order.form.extended</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='client_order_ref']" position="before">
+                    <field name="closed_project" string="Closed project"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Project task -->
+        <record id="project_task_detailed_resources_view_form" model="ir.ui.view">
+            <field name="name">project.task.detailed.resources.view.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                     <field name="free_text" readonly="0"/>
+                </xpath>
+                <xpath expr="//field[@name='user_ids']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_ids']" position="after">
+                    <field name="res_employee_ids" widget="many2many_tags" domain="[[&quot;res_type&quot;,&quot;=&quot;,&quot;employee&quot;]]" options="{&quot;color_field&quot;: &quot;x_color&quot;}"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+                    <field name="detailed_planning_ids">
+                        <form name="detail_plan_form">
+                            <sheet string="Detailed planning" name="detail_plan_sheet">
+                                <div class="oe_title">
+                                    <h1><field class="oe_inline" name="name" required="1"/></h1>
+                                </div>
+                                <group>
+                                    <group string="Date &amp; time">
+                                        <field name="start_datetime" string="Start date/time"/>
+                                        <field name="end_datetime" string="End date/time "/>
+                                        <field name="free_text" force_save="1"/>
+                                        <field name="partner_address" invisible="1"/>
+                                    </group>
+                                    <group groups="base.group_system" string="Additional information">
+                                        <field name="resource_id"/>
+                                        <field name="res_type_id"/>
+                                        <field name="task_id"/>
+                                        <field name="klant_id" string="Klant" widget="res_partner_many2one"/>
+                                        <field name="contact_id" string="Contact Person" widget="res_partner_many2one"/>
+                                        <field name="verkooporder_id" string="Verkooporder"/>
+                                        <field name="closed_project" string="Closed project"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                        <tree>
+                            <field name="id" invisible="1"/>
+                            <field name="name" invisible="1"/>
+                            <field name="free_text" invisible="1" force_save="1"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="resource_id"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- VIEW -->
+        <!--    TREE VIEW -->
+        <record id="detailed_resources_tree_view" model="ir.ui.view">
+            <field name="name">detailed.resources.tree</field>
+            <field name="model">detailed.resources</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="res_type"/>
+                    <field name="employee_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--SEARCH VIEW-->
+        <record model="ir.ui.view" id="detailed_resources_filter">
+            <field name="name">Resources Search</field>
+            <field name="model">detailed.resources</field>
+            <field name="arch" type="xml">
+                <search string="Search Resources">
+                    <field name="name"/>
+                    <field name="res_type"/>
+                    <field name="employee_id"/>
+                </search>
+          </field>
+        </record>
+
+        <!--FORM VIEW-->
+         <record model="ir.ui.view" id="detailed_planning_form">
+            <field name="name">Planning Form</field>
+            <field name="model">detailed.planning</field>
+            <field name="arch" type="xml">
+                <form name="detail_plan_form">
+                    <sheet string="Detailed planning" name="detail_plan_sheet">
+                        <div class="oe_title">
+                            <h1><field name="name" required="1" class="oe_inline"/></h1>
+                        </div>
+                        <group>
+                            <group string="Date &amp; time">
+                                <field name="start_datetime" string="Start date/time"/>
+                                <field name="end_datetime" string="End date/time "/>
+                                <field name="free_text"/>
+                                <field name="partner_address" invisible="1"/>
+                            </group>
+                            <group groups="base.group_system" string="Additional information">
+                                <field name="resource_id"/>
+                                <field name="res_type_id"/>
+                                <field name="task_id"/>
+                                <field name="klant_id" string="Klant" widget="res_partner_many2one"/>
+                                <field name="contact_id" string="Contact Person" widget="res_partner_many2one"/>
+                                <field name="verkooporder_id" string="Verkooporder"/>
+                                <field name="closed_project" string="Closed project"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter" name="studio_div_394590">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="detailed_resources_form">
+            <field name="name">Resources Form</field>
+            <field name="model">detailed.resources</field>
+            <field name="arch" type="xml">
+                <form string="Resources">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" class="oe_inline"/></h1>
+                        </div>
+                        <group> 
+                            <group>
+                                <field colspan="2" name="res_type"/>
+                                <field colspan="2" name="employee_id" attrs="{&quot;invisible&quot;: [[&quot;res_type&quot;,&quot;!=&quot;,&quot;employee&quot;]]}"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--ACTION -->
+        <record model="ir.actions.act_window" id="action_detailed_resources_tree_view">
+            <field name="name">Resources</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detailed.resources</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <!--ACTION BIND-->
+        <!--    TREE -->
+        <record model="ir.actions.act_window.view" id="action_detailed_resources_tree_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_detailed_resources_tree_view"/>
+        </record>
+
+
+        <!--    FORM -->
+        <record model="ir.actions.act_window.view" id="action_detailed_resources_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_detailed_resources_tree_view"/>
+            <field name="view_id" ref="detailed_resources_form"/>
+        </record>
+
+        <!--MENU ITEMS-->
+        <menuitem id="menu_field_resources"
+            name="Resources"
+            sequence="49"
+            parent="industry_fsm.fsm_menu_settings"
+            action="action_detailed_resources_tree_view"/>
+
+        <record  id="industry_fsm.fsm_menu_planning"  model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+        <record  id="industry_fsm.project_task_menu_planning_by_user_fsm"  model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+        <record  id="industry_fsm.project_task_menu_planning_by_project_fsm"  model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <!-- Resource gantt -->
+
+        <!-- search -->
+        <record id="detailed_planning_gantt_search" model="ir.ui.view">
+            <field name="name">detailed.planning.gantt.search</field>
+            <field name="model">detailed.planning</field>
+            <field name="arch" type="xml">
+                <search string="Search planning">
+                    <filter string="Closed Project" name="closed_project" domain="[('closed_project','=',True)]"/>
+                    <filter string="Running Project" name="running_project" domain="[('closed_project','=',False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Resource" name="groupby_resource" context="{'group_by': 'resource_id'}"/>
+                        <filter string="Task" name="groupby_task" context="{'group_by': 'task_id'}"/>
+                        <filter string="Klant" name="groupby_klant" context="{'group_by':'klant_id'}"/>
+                        <filter string="Verkooporder" name="groupby_verkooporder" context="{'group_by':'verkooporder_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Gantt -->
+        <record id="detailed_planning_view_gantt" model="ir.ui.view">
+            <field name="name">detailed.planning.view.gantt</field>
+            <field name="model">detailed.planning</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <gantt date_start="start_datetime"
+                    date_stop="end_datetime"
+                    default_scale="week"
+                    scales="day,week,month,year"
+                    color="resource_id"
+                    string="Planning"
+                    precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:full'}">
+                    <templates>
+                        <div t-name="gantt-popover" class="container-fluid">
+                            <div class="row no-gutters">
+                                <div class="col">
+                                    <ul class="pl-1 mb-0">
+                                        <li t-if="klant_id"><strong>Customer: </strong> <t t-esc="klant_id[1]"/></li>
+                                        <li t-if="free_text"><strong>Text: </strong> <t t-esc="free_text"/></li>
+                                        <li t-if="verkooporder_id"><strong>SO Number: </strong> <t t-esc="verkooporder_id[1]"/></li>
+                                        <li t-if="partner_address"><strong>Address: </strong> <t t-esc="partner_address"/></li>
+                                        <br/>
+                                        <li t-if="resource_id"><strong> Resource: </strong> <t t-esc="resource_id[1]"/></li>
+                                        <li>
+                                            <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD HH:mm:ss')"/> - <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD HH:mm:ss')"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </templates>
+                    <field name="name"/>
+                    <field name="klant_id"/>
+                    <field name="free_text"/>
+                    <field name="partner_address"/>
+                    <field name="verkooporder_id"/>
+                    <field name="resource_id"/>
+                </gantt>
+            </field>
+        </record>
+
+        <!-- Calendar -->
+        <record id="detailed_planning_view_calendar" model="ir.ui.view">
+            <field name="name">detailed.planning.view.calendar</field>
+            <field name="model">detailed.planning</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <calendar date_start="start_datetime" date_stop="end_datetime" string="Planning" mode="week" color="resource_id" quick_add="0">
+                    <field name="klant_id"/>
+                    <field name="free_text"/>
+                    <field name="verkooporder_id"/>
+                    <field name="partner_address"/>
+                    <field name="resource_id"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!--ACTION -->
+        <record model="ir.actions.act_window" id="planned_by_agenda_view">
+            <field name="name">Planned By Agenda</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detailed.planning</field>
+            <field name="view_mode">calendar</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="planned_by_project_view">
+            <field name="name">Planned By Project</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detailed.planning</field>
+            <field name="view_mode">gantt,calendar</field>
+            <field name="search_view_id" ref="detailed_planning_gantt_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_running_project':1, 'search_default_groupby_verkooporder':1}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="planned_by_resources_view">
+            <field name="name">Planned By Resource</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detailed.planning</field>
+            <field name="view_mode">gantt</field>
+            <field name="search_view_id" ref="detailed_planning_gantt_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_running_project':1, 'search_default_groupby_resource':1, 'search_default_groupby_task':1}</field>
+        </record>
+
+        <menuitem id="menu_field_planning"
+            name="Planning"
+            sequence="20"
+            parent="industry_fsm.fsm_menu_root"/>
+
+        <menuitem id="menu_field_planning_by_agenda"
+            name="Planning by Agenda"
+            sequence="1"
+            parent="menu_field_planning"
+            action="planned_by_agenda_view"/>
+
+        <menuitem id="menu_field_planning_by_project"
+            name="Planning by Project"
+            sequence="2"
+            parent="menu_field_planning"
+            action="planned_by_project_view"/>
+
+        <menuitem id="menu_field_planning_by_resource"
+            name="Planning by Resources"
+            sequence="3"
+            parent="menu_field_planning"
+            action="planned_by_resources_view"/>
+
+    </data>
+</openerp>
