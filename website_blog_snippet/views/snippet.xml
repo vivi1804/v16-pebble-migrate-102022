@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="blog_post_snippet_id" inherit_id="website.snippets" name="Blog Post Snippet id">
+            <xpath expr="//div[@id='snippet_feature']//t[@t-snippet][last()]" position="after">
+                <t t-snippet="website_blog_snippet.blog_post_snippet" t-thumbnail="/website_blog_snippet/static/src/img/thumbnail.jpg"/>
+            </xpath>
+        </template>
+
+        <template id="blog_post_snippet" name="Blog Post Snippet">
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div id="blog_post">
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+    </data>
+</odoo>

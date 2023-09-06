@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- so email template config -->
+    <record id="ir_param_blog_news_id" model="ir.config_parameter">
+        <field name="key">blog_news_id</field>
+        <field name="value">2</field>
+    </record>
+</odoo>

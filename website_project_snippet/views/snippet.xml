@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="reference_snippet_id" inherit_id="website.snippets" name="Reference Snippet id">
+            <xpath expr="//div[@id='snippet_feature']//t[@t-snippet][last()]" position="after">
+                <t t-snippet="website_project_snippet.reference_snippet" t-thumbnail="/website_project_snippet/static/src/img/thumbnail.jpg"/>
+            </xpath>
+        </template>
+
+        <template id="reference_snippet" name="Reference Snippet">
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div id="references">
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+    </data>
+</odoo>
