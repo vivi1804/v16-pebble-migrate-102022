@@ -1,8 +1,7 @@
 #client_order_ref# -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from PyPDF2 import PdfFileWriter, PdfFileReader
-from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
+from PyPDF2 import PdfFileMerger, PdfFileReader
 import tempfile
 import os
 import base64
@@ -70,8 +69,9 @@ class SaleOrderSolar(models.Model):
 
     @api.onchange('elecprod','energycost')   
     def getsum_total_elecprod(self):
-        self.co2reduction = self.elecprod * 0.23314
-        self.savings = self.elecprod * self.energycost 
+        for rec in self:
+            rec.co2reduction = rec.elecprod * 0.23314
+            rec.savings = rec.elecprod * rec.energycost 
 
     @api.onchange('elecprod','amount_total', 'amount_tax', 'vat_reduction_type') 
     def get_net_investment(self):
@@ -138,28 +138,30 @@ class ProductSolar(models.Model):
 
 class IrActionsReport(models.Model):
     _inherit = 'ir.actions.report'
+    
     def _post_pdf(self, save_in_attachment, pdf_content=None, res_ids=None):
         res = super(IrActionsReport, self)._post_pdf(save_in_attachment, pdf_content, res_ids)
-        if self.report_name in ('solar_extended.report_saleorder_document_solar','sale.report_saleorder'):
+        
+        if self.report_name in ('solar_extended.report_saleorder_document_solar', 'sale.report_saleorder'):
             streams = []
-            streams.append(io.BytesIO(res))
-            for solar in self.env['sale.order'].search([('id', 'in', res_ids)]):
+            
+            for solar in self.env['sale.order'].browse(res_ids):
                 if solar.solar_pdf:
-                    result_fd1, result_file_name1 = tempfile.mkstemp()
-                    try:
-                        os.write(result_fd1, base64.decodestring(solar.solar_pdf))
-                        streams.append(result_file_name1)
-                    finally:
-                        os.close(result_fd1)
+                    print("Reading solar_pdf from record, ", solar.id)
+                    streams.append(io.BytesIO(solar.solar_pdf))
+            
             merger = PdfFileMerger(strict=False)
+            
             for stream in streams:
                 reader = PdfFileReader(stream)
                 merger.append(reader, import_bookmarks=False)
+            
             result_stream = io.BytesIO()
-            streams.append(result_stream)
             merger.write(result_stream)
             result = result_stream.getvalue()
+            
             return result
+        
         return res
 
 class solar_rooftype(models.Model):
