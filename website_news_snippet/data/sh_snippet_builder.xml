@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="latest_news_snippet" model="sh.snippet.builder">
+            <field name="name">Latest News Snippet</field>
+        </record>
+
+        <record id="blog_blog_news" model="blog.blog">
+            <field name="name">News</field>
+            <field name="subtitle">staat voot duurzame energie</field>
+        </record>
+
+    </data>
+</odoo>

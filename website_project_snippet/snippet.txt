@@ -1,0 +1,18 @@
+<div class="col-lg-4 s_col_no_bgcolor pt16 pb16">
+  <div class="card bg-gamma" id="ref_card" style="">
+    <div id="ref_cover">
+      <img class="card-img-top" src="/web/image?model=website.project.customer&amp;id=2&amp;field=project_image" style="object-fit: cover;height:230px;" alt="Latest Projects"/>
+    </div>
+    <div class="card-body" id="ref_card_body">
+      <h3 class="card-title" style="font-size:27px !important;">
+        <font style="font-size: 24px;">Gerealiseerde projecten</font>
+      </h3>
+      <p class="card-text" id="ref_post" style="height:130px !important; margin-top:25px"/>
+    </div>
+    <div class="card-footer" id="ref_card_footer">
+      <div class="s_btn pb0 pt0 text-center" data-name="Button" id="ref_url">
+        <a href="/references/9x-sunpower-max6-ac-435wp-met-enphase-micro-omvormers-in-oosterhout-2" class="btn btn-primary btn-sm o_default_snippet_text">Lees Meer</a>
+      </div>
+    </div>
+  </div>
+</div>

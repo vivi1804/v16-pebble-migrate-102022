@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- VIEW -->
+    <!--    TREE VIEW -->
+    <record id="website_project_customer_view" model="ir.ui.view">
+        <field name="name">website_project_customer_tree</field>
+        <field name="model">website.project.customer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="website_project_tag_view" model="ir.ui.view">
+        <field name="name">website_project_tag_tree</field>
+        <field name="model">website.project.tag</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <!--SEARCH VIEW-->
+    <record model="ir.ui.view" id="website_project_customer_filter">
+        <field name="name">website_project_customer_filter</field>
+        <field name="model">website.project.customer</field>
+        <field name="arch" type="xml">
+            <search string="Website Project Customer">
+                <field name="name" filter_domain="[('name','ilike', self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="website_project_tag_filter">
+        <field name="name">website_project_tag_filter</field>
+        <field name="model">website.project.tag</field>
+        <field name="arch" type="xml">
+            <search string="Website Project Tag">
+                <field name="name" filter_domain="[('name','ilike', self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!--FORM VIEW-->
+    <record model="ir.ui.view" id="website_project_customer_form">
+        <field name="name">website_project_customer_form</field>
+        <field name="model">website.project.customer</field>
+        <field name="arch" type="xml">
+            <form name="website_project_customer_form">
+                <header>
+                    <button name="action_publish" string="Publish" type="object" 
+                        attrs="{'invisible': [['post_state','=','st_publish']]}"/>/>
+                    <button name="action_unpublish" string="Unpublish" type="object"
+                        attrs="{'invisible': [['post_state','=','st_draft']]}"/>/>
+                    <field name="post_state" attrs="{'clickable':'0'}" widget="statusbar"/>
+                </header>
+                <sheet string="Website Project Customer" name="website_project_customer_sheet">
+                    <field name="project_image" widget="image" class="oe_avatar" options="{'size':[0,256]}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Project Name..."/>
+                        </h1>
+                        <field name="tag_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="gemeente_id" options="{'no_create': True}"/>
+                            <field name="wijk_id" options="{'no_create': True}"/>
+                            <field name="buurt_id" options="{'no_create': True}"/>
+                            <field name="post_layout" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="project_description_page" string="Description">
+                            <group name="short_desc" string="Short Description">
+                                <field name="short_description" nolabel="1" colspan="2"/>
+                            </group>
+                            <group name="long_desc" string="Long Description">
+                                <field name="long_description" nolabel="1" colspan="2"/>
+                            </group>
+                        </page>
+                        <page name="project_images_page" string="Images">
+                            <group name="project_images" string="Images">
+                                <field name="image_ids" colspan="2" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="photo" widget="image" options="{'size':[0,64]}" nolabel="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>      
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="website_project_tag_form">
+        <field name="name">website_project_tag_form</field>
+        <field name="model">website.project.tag</field>
+        <field name="arch" type="xml">
+            <form name="website_project_tag_form">
+                <sheet string="Website Project Tag" name="website_project_tag_sheet">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--ACTION -->
+    <record model="ir.actions.act_window" id="action_website_project_customer_tree_view">
+        <field name="name">Website Project Customer</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">website.project.customer</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_website_project_tag_tree_view">
+        <field name="name">Website Project Tag</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">website.project.tag</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!--ACTION BIND-->
+    <!--    TREE -->
+    <record model="ir.actions.act_window.view" id="action_website_project_customer_mode">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="act_window_id" ref="action_website_project_customer_tree_view"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_website_project_tag_mode">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="act_window_id" ref="action_website_project_tag_tree_view"/>
+    </record>
+
+    <!--FORM-->
+    <record model="ir.actions.act_window.view" id="action_website_project_customer_form_mode">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="act_window_id" ref="action_website_project_customer_tree_view"/>
+        <field name="view_id" ref="website_project_customer_form"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_website_project_tag_form_mode">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="act_window_id" ref="action_website_project_tag_tree_view"/>
+        <field name="view_id" ref="website_project_tag_form"/>
+    </record>
+</odoo>

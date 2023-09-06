@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MENU ITEM -->
+    <menuitem id="menu_website_project_root"
+        name="Website Project"
+        web_icon="website_project,static/src/img/icon.png"/>
+
+    <menuitem id="menu_website_project_customer"
+        name="Projects"
+        sequence="1"
+        parent="menu_website_project_root"
+        action="action_website_project_customer_tree_view"/>
+
+    <menuitem id="menu_website_project_configuration"
+        name="Configuration"
+        sequence="2"
+        parent="menu_website_project_root"/>
+
+    <menuitem id="menu_website_project_tag"
+        name="Website Project Tags"
+        sequence="3"
+        parent="menu_website_project_configuration"
+        action="action_website_project_tag_tree_view"/>
+
+    <menuitem id="menu_website_product_category"
+        name="Website Product Category"
+        sequence="4"
+        parent="menu_website_project_configuration"
+        action="action_website_product_category_tree_view"/>
+</odoo>

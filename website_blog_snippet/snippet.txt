@@ -1,0 +1,18 @@
+<div class="col-lg-4 s_col_no_bgcolor pt16 pb16">
+  <div class="card bg-gamma" id="blog_card" style="">
+    <div id="blog_cover">
+      <img class="card-img-top" src="/web/image/516-50c19001/de9bkx6-b6710153-e2ea-4c8a-b7ce-8d96cb7022d8.png" style="object-fit: cover;height:230px;" alt="Latest News"/>
+    </div>
+    <div class="card-body" id="blog_card_body">
+      <h3 class="card-title">
+        <font style="font-size: 26px;">Blog</font>
+      </h3>
+      <p class="card-text" id="blog_post" style="height:135px !important;"></p>
+    </div>
+    <div class="card-footer" id="blog_card_footer">
+      <div class="pt0 s_btn pb0 text-center" data-name="Button" id="blog_url">
+        <a href="/blog/blogs-1/post/test-new-post-2" class="btn btn-primary btn-sm o_default_snippet_text">Lees Meer</a>
+      </div>
+    </div>
+  </div>
+</div>

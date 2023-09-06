@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="menu_website_product" model="website.menu">
+        <field name="name">Producten</field>
+        <field name="url" eval="'/product_info'"/>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">50</field>
+    </record>
+
+    <!-- MAIN PAGES OF THE REFERENCES -->
+    <template id="product_index" name="Product Informatie">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <section>
+                        <h1 class="mt16 mb16 text-center"> Product Informatie </h1>
+                    </section>
+                </div>
+                <div class="container mb32">
+                    <div class="row mt8" id="categories_column">
+                        <div class="col-lg-2" id="prod_page_left_column">
+                            <style>
+                                .text-category {
+                                    color: grey;
+                                }
+                                
+                                .text-category:hover {
+                                    color: black;
+                                }
+                            </style>
+                            <!-- LEFT COLUMN TAG-->
+                            <h4 t-if="len(categories)"><strong>Categories</strong></h4>
+                            <ul class="nav nav-pills flex-column mt16 mb32" t-if="len(categories)">
+                                <li class="nav-item"><a class="nav-link mr8" t-attf-href="/product_info">
+                                    <span style="font-size: 20px;"> <span class="fa fa-1x fa-tags"/> All </span></a></li>
+                                <li t-foreach="categories" t-as="o_categ" class="nav-item">
+                                    <span style="font-size: 24px;">
+                                        <a t-attf-class="nav-link badge badge-#{o_categ.name} text-category" t-esc="o_categ.name" t-att-style="category and category.id==o_categ.id and 'text-decoration: underline'" t-attf-href="/product_info/?category_id=#{slug(o_categ)}"/>
+                                    </span>
+                                </li>
+                            </ul>  
+                        </div>
+                        <div class="col-lg-9 offset-lg-1" id="prod_page_content">
+                            <div class='d-flex mb8'>
+                                <t t-call="website.pager">
+                                    <t t-set="name" t-value="'float-left'"/>
+                                </t>
+                                <form action="" method="get" class="navbar-search ml-auto pagination form-inline">
+                                    <div class="form-group">
+                                        <input type="text" name="search" class="search-query form-control"
+                                            placeholder="Search" t-att-value="post.get('search', '')"/>
+                                    </div>
+                                </form>
+                            </div>
+                          
+                            <div class="row">
+                                <p t-if="not products"> No Result Found </p>
+                                <t t-foreach="products" t-as="product">
+                                    <div class="col-lg-2 mt16 text-center">
+                                        <a t-attf-href="/product_info/#{slug(product)}"
+                                            t-field="product.image_1920"
+                                            t-options='{"widget": "image", "class": "mr-3"}'>
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-10 mt8" style="min-height: 64px;">
+                                        <a t-attf-href="/product_info/#{slug(product)}">
+                                            <span t-field="product.name"/>
+                                        </a>
+                                        <div t-field="product.short_description"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- REFERENCES DETAIL PAGE -->
+    <template id="product_details" name="Products Detail">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- LAYOUT DEFAULT-->
+                <div class="container mt16" id="product_page_details">
+                    <div class="row">
+                        <div class="col-lg-12 mt8">
+                            <ol t-if="not edit_page" class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/product_info">Our Products</a></li>
+                                <li class="breadcrumb-item active"><span t-field="product.name"/></li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-7 text-center">
+                            <div class="mr-4" t-field="product.image_1920" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                        </div>
+                        <div class="col-lg-5">
+                            <h3><div t-field="product.name"/></h3>
+                            <hr/>
+                            <div class="mt16" t-field="product.short_description"/>
+                            <ul class="nav nav-pills">
+                                <li class="nav-item mr-1" t-foreach="product.website_category_ids" t-as="categ">
+                                    <span class="badge badge-secondary"><t t-esc="categ.name"/></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt16 mb32">
+                        <div class="col-lg-12 mr-4">
+                          <h4>Product Description</h4>
+                          <div t-field="product.long_description"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure" id="oe_structure_website_product_details_2"/>
+            </div>
+        </t>
+    </template>
+</odoo>

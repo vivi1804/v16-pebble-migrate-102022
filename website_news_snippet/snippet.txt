@@ -1,0 +1,19 @@
+<div class="col-lg-4 s_col_no_bgcolor pt16 pb16">
+  <div class="card bg-gamma" id="news_card" style="">
+      <div id="news_cover">
+        <img class="card-img-top" src="/web/image/64929/Bankrashof_Pebble_Green_Systems_8365.jpg?access_token=e02ad60f-70bb-45ca-bc30-31bdca67fc60" style="object-fit: cover;height:230px;" alt="Latest News"/>
+      </div>
+      <div class="card-body" id="news_card_body">
+        <h3 class="card-title">
+          <font style="font-size: 24px;">Over Pebble Zonnepanelen</font>
+        </h3>
+        <p class="card-text" id="news_post" style="height:135px !important;">
+        </p>
+      </div>
+      <div class="card-footer" id="news_card_footer">
+        <div class="s_btn pb0 pt0 text-center" data-name="Button" id="news_url">
+          <a href="/blog/over-pebble-zonnepanelen-2/post/de-4-stappen-van-pebble-18" class="btn btn-primary btn-sm o_default_snippet_text">Lees Meer</a>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="menu_website_project" model="website.menu">
+        <field name="name">References</field>
+        <field name="url" eval="'/references'"/>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">50</field>
+    </record>
+
+    <!-- MAIN PAGES OF THE REFERENCES -->
+    <template id="index" name="Projecten">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <style>
+                    .fa-star {
+                        color: #f3da35;
+                    }
+                </style>
+                <div class="oe_structure">
+                    <section>
+                        <h1 class="text-center mt16">
+                            Onze Projecten
+                        </h1>
+                    </section>
+                </div>
+                <div class="container">
+                    <div class="row mt8" id="tags_column">
+                        <div class="col-lg-3" id="ref_page_left_column">
+                            <!-- LEFT COLUMN TAG-->
+                            <h4 t-if="len(tags)">Project by Tag</h4>
+                            <ul class="nav nav-pills flex-column mt16 mb32" t-if="len(tags)">
+                                <li class="nav-item"><a class="nav-link mr8" 
+                                t-attf-href="/references/#{ current_gemeente_id and 'gemeente/%s' % slug(current_gemeente) or '' }#{ current_wijk_id and 'wijk/%s' % slug(current_wijk) or '' }#{ current_buurt_id and 'buurt/%s' % slug(current_buurt) or '' }">
+                                    <span class="fa fa-1x fa-tags"/> Alle </a></li>
+                                <li t-foreach="tags" t-as="o_tag" class="nav-item">
+                                    <a t-attf-class="nav-link badge badge-#{o_tag.name}" t-esc="o_tag.name" t-att-style="tag and tag.id==o_tag.id and 'text-decoration: underline'"
+                                    t-attf-href="/references/#{ current_gemeente_id and 'gemeente/%s' % slug(current_gemeente) or '' }#{ current_wijk_id and 'wijk/%s' % slug(current_wijk) or '' }#{ current_buurt_id and 'buurt/%s' % slug(current_buurt) or '' }?tag_id=#{slug(o_tag)}"/>
+                                </li>
+                            </ul>  
+
+                            <!-- LEFT COLUMN GEMEENTE-->
+                            <h4>Project by Gemeente</h4>
+                            <ul class="nav nav-pills flex-column mt16 mb32">
+                                <t t-foreach="gemeentes" t-as="gemeente_dict">
+                                    <t t-if="gemeente_dict['gemeente_id']">
+                                        <li class="nav-item">
+                                            <a t-attf-href="/references/#{ gemeente_dict['gemeente_id'][0] and 'gemeente/%s' % slug(gemeente_dict['gemeente_id']) or '' }#{ search_path }"
+                                            t-attf-class="nav-link#{gemeente_dict['gemeente_id'][0] == current_gemeente_id and ' active' or ''}">
+                                                <span class="badge badge-pill float-right" t-esc="gemeente_dict['gemeente_id_count'] or '0'"/>
+                                                <t t-esc="gemeente_dict['gemeente_id'][1]"/>
+                                            </a>
+                                        </li>
+                                    </t>
+                                </t>
+                            </ul>
+
+                            <!-- LEFT COLUMN WIJK-->
+                            <h4>Project by Wijk</h4>
+                            <ul class="nav nav-pills flex-column mt16 mb32">
+                                <t t-foreach="wijks" t-as="wijk_dict">
+                                    <t t-if="wijk_dict['wijk_id']">
+                                        <li class="nav-item">
+                                            <a t-attf-href="/references/#{ wijk_dict['wijk_id'][0] and 'wijk/%s' % slug(wijk_dict['wijk_id']) or '' }#{ search_path }"
+                                            t-attf-class="nav-link#{wijk_dict['wijk_id'][0] == current_wijk_id and ' active' or ''}">
+                                                <span class="badge badge-pill float-right" t-esc="wijk_dict['wijk_id_count'] or '0'"/>
+                                                <t t-esc="wijk_dict['wijk_id'][1]"/>
+                                            </a>
+                                        </li>
+                                    </t>
+                                </t>
+                            </ul>
+
+                            <!-- LEFT COLUMN BUURT-->
+                            <h4>Project by Buurt</h4>
+                            <ul class="nav nav-pills flex-column mt16 mb32">
+                                <t t-foreach="buurts" t-as="buurt_dict">
+                                    <t t-if="buurt_dict['buurt_id']">
+                                        <li class="nav-item">
+                                            <a t-attf-href="/references/#{ buurt_dict['buurt_id'][0] and 'buurt/%s' % slug(buurt_dict['buurt_id']) or '' }#{ search_path }"
+                                            t-attf-class="nav-link#{buurt_dict['buurt_id'][0] == current_buurt_id and ' active' or ''}">
+                                                <span class="badge badge-pill float-right" t-esc="buurt_dict['buurt_id_count'] or '0'"/>
+                                                <t t-esc="buurt_dict['buurt_id'][1]"/>
+                                            </a>
+                                        </li>
+                                    </t>
+                                </t>
+                            </ul>
+
+                        </div>
+
+                        <div class="col-lg-8 offset-lg-1" id="ref_page_content">
+                            <div class='d-flex mb8'>
+                                <t t-call="website.pager">
+                                    <t t-set="name" t-value="'float-left'"/>
+                                </t>
+                                <form action="" method="get" class="navbar-search ml-auto pagination form-inline">
+                                    <div class="form-group">
+                                        <input type="text" name="search" class="search-query form-control"
+                                            placeholder="Search" t-att-value="post.get('search', '')"/>
+                                    </div>
+                                </form>
+                            </div>
+                          
+                            <div class="row">
+                                <p t-if="not projects"> No Result Found </p>
+                                <t t-foreach="projects" t-as="project">
+                                    <div class="col-lg-4 mt16 mb16 text-center">
+                                        <a t-attf-href="/references/#{slug(project)}"
+                                            t-field="project.project_image"
+                                            t-options='{"widget": "image", "class": "mr-3", "style": "height: 125px; width: 100%; object-fit: cover;"}'>
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-8 mt8 mb16" style="min-height: 64px;">
+                                        <a t-attf-href="/references/#{slug(project)}">
+                                            <span t-field="project.name"/>
+                                        </a>
+                                        <div t-field="project.short_description"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- REFERENCES DETAIL PAGE -->
+    <template id="details" name="Reference Detail">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <style>
+                      .image-container {
+                        position: relative;
+                        width: 100%;
+                        padding-bottom: 100%; /* create a square aspect ratio by setting the padding-bottom to the same value as the width */
+                        overflow: hidden;
+                      }
+
+                      .image-container img {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover; /* scale the image to cover the container without distorting it */
+                      }
+
+                      .fa-star {
+                        color: #f3da35;
+                      }
+
+                      </style>
+
+                <!-- LAYOUT DEFAULT-->
+                <div class="container mt16 mb32" id="post_lo_def" t-if="project.post_layout == 'layout_default'">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="/references">&lt;&lt; Onze Projecten </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 text-center">
+                        <h1><div t-field="project.name"/></h1>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div t-field="project.project_image" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                        <div class="row col-lg-12 mt8">
+                          <div class="mr-1 ml-1"><i class="fa fa-map-marker"/></div>
+                          <ul class="list-unstyled">
+                            <li><span t-field="project.gemeente_id.name"/></li>
+                            <li><span t-field="project.wijk_id.name"/></li>
+                            <li><span t-field="project.buurt_id.name"/></li>
+                            <li t-foreach="project.tag_ids" t-as="o_tag">
+                                <span class="badge badge-secondary"><t t-esc="o_tag.name"/></span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-lg-8">
+                        <div t-field="project.long_description"/>
+                      </div>
+                    </div>
+                </div>
+                
+                <!-- LAYOUT 1-->
+                <div class="container mt16 mb32" id="post_lo_1" t-if="project.post_layout == 'layout_1'">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="/references">&lt;&lt; Onze Projecten </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 text-center">
+                        <h1><div t-field="project.name"/></h1>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 text-center">
+                        <div t-field="project.project_image" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                      </div>
+                    </div>
+                    <div class="row mt32">
+                      <div class="col-lg-9">
+                        <div t-field="project.long_description"/>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="row col-lg-12">
+                          <div class="mr-1 ml-1"><i class="fa fa-map-marker"/></div>
+                          <ul class="list-unstyled">
+                            <li><span t-field="project.gemeente_id.name"/></li>
+                            <li><span t-field="project.wijk_id.name"/></li>
+                            <li><span t-field="project.buurt_id.name"/></li>
+                            <li t-foreach="project.tag_ids" t-as="o_tag">
+                                <span class="badge badge-secondary"><t t-esc="o_tag.name"/></span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt16">
+                      <div class="col-lg-12">
+                        <div class="row">
+                          <t t-foreach="project.image_ids" t-as="img">
+                            <div class="col-lg-3 mt16 text-center">
+                              <div class="image-container">
+                                <div t-field="img.photo" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                              </div>
+                            </div>
+                          </t>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                
+                <!-- LAYOUT 2-->
+                <div class="container mt16 mb32" id="post_lo_2" t-if="project.post_layout == 'layout_2'">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="/references">&lt;&lt; Onze Projecten </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 text-center">
+                        <h1><div t-field="project.name"/></h1>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div t-field="project.project_image" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                        <div class="row col-lg-12 mt8">
+                          <div class="mr-1 ml-1"><i class="fa fa-map-marker"/></div>
+                          <ul class="list-unstyled">
+                            <li><span t-field="project.gemeente_id.name"/></li>
+                            <li><span t-field="project.wijk_id.name"/></li>
+                            <li><span t-field="project.buurt_id.name"/></li>
+                            <li t-foreach="project.tag_ids" t-as="o_tag">
+                                <span class="badge badge-secondary"><t t-esc="o_tag.name"/></span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-lg-8">
+                        <div t-field="project.long_description"/>
+                      </div>
+                    </div>
+                    <div class="row mt16">
+                      <div class="col-lg-4"></div>
+                      <div class="col-lg-8">
+                        <div class="row">
+                          <t t-foreach="project.image_ids" t-as="img">
+                            <div class="col-lg-4 mt16 text-center">
+                              <div class="image-container">
+                                <div t-field="img.photo" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                              </div>
+                            </div>
+                          </t>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                
+                <!-- LAYOUT 3-->
+                <div class="container mt16 mb32" id="post_lo_3" t-if="project.post_layout == 'layout_3'">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="/references">&lt;&lt; Onze Projecten </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 text-center">
+                        <h1><div t-field="project.name"/></h1>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div t-field="project.long_description"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9 text-center">
+                            <div t-field="project.project_image" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="row col-lg-12">
+                                <div class="mr-1 ml-1"><i class="fa fa-map-marker"/></div>
+                                <ul class="list-unstyled">
+                                    <li><span t-field="project.gemeente_id.name"/></li>
+                                    <li><span t-field="project.wijk_id.name"/></li>
+                                    <li><span t-field="project.buurt_id.name"/></li>
+                                    <li t-foreach="project.tag_ids" t-as="o_tag">
+                                        <span class="badge badge-secondary"><t t-esc="o_tag.name"/></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure" id="oe_structure_website_customer_details_2"/>
+            </div>
+        </t>
+    </template>
+</odoo>

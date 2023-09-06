@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+website_project_customer_manager,website.project.customer.manager,model_website_project_customer,,1,1,1,1
+website_project_tag_manager,website.project.tag.manager,model_website_project_tag,,1,1,1,1
+website_project_customer_images_manager,website.project.customer.images.manager,model_website_project_customer_images,,1,1,1,1
+website_product_category_manager,website.product.category.manager,model_website_product_category,,1,1,1,1
