@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="crm_lead_offerte_form" model="ir.ui.view">
+            <field name="name">crm.lead.offerte.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[last()]" position="after">
+                    <page string="Website Aanvrag">
+                        <group>
+                            <group>
+                                <field name="x_studio_titel" string="Titel"/>
+                                <field name="x_studio_voornaam" string="Voornaam"/>
+                                <field name="x_studio_achternaam" string="Achternaam"/>
+                                <field name="x_studio_postcode" string="Postcode"/>
+                                <field name="x_studio_huisnummer" string="Huisnummer"/>
+                                <field name="x_studio_dak_orientatie" string="Dak orientatie" help="Wat is u dak orientatie?"/>
+                                <field name="x_studio_investeringsredenen" string="Investeringsredenen"/>
+                            </group>
+                            <group>
+                                <field name="x_studio_energie_verbruik_per_jaar" string="Energie verbruik per jaar"/>
+                                <field name="x_studio_zonnepanelen_" string="Zonnepanelen ?"/>
+                                <field name="x_studio_infraroodverwarming_" string="Infraroodverwarming ?"/>
+                                <field name="x_studio_laadpaal_" string="Laadpaal ?"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='opportunity_partner']/field[@name='partner_id']" position="after">
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='extra']/group[1]/group[@name='categorization']/field[@name='medium_id']" position="move"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='user_id']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman_all_leads</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='lead']/group[1]/group[@name='Misc']/field[@name='company_id']" position="after">
+                    <field name="create_date"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

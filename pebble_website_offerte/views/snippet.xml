@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="daytime_snippet_id" inherit_id="website.snippets" name="Daytime Snippet id">
+            <xpath expr="//div[@id='snippet_feature']//t[@t-snippet][last()]" position="after">
+                <t t-snippet="website_daytime.daytime_snippet" t-thumbnail="/website_daytime/static/src/img/thumbnail.jpg"/>
+            </xpath>
+        </template>
+
+        <template id="daytime_snippet" name="Daytime Snippet">
+            <section style="background-color: #88b028;">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 pb0 pt8">
+                            <style class="o_default_snippet_text">
+                                #website_daytime_container h2{
+                                    text-transform: uppercase;
+                                    font-weight: bold;
+                                    font-size: 14px;
+                                    margin: 5px 10px 0 0;
+                                    color: black;
+                                    border-radius: 3px;
+                                    padding: 3px 0px;
+                                }
+
+                                #website_daytime_container .time{
+                                    color: black;
+                                    display: block;
+                                    font-size: 90%;
+                                    line-height: 110%;
+                                }            
+                            </style>
+
+                            <div id="website_daytime_container">
+                                <div class="row mt8">
+                                    <div class="col-lg-1"/>
+                                    <div class="col-lg-2">
+                                        <div class="row">
+                                        <div class="col-3 mt8 text-right">
+                                            <img src="/website_daytime/static/src/img/calendar.png" style="width: 40px;" alt="Date"/>
+                                        </div>
+                                        <div class="col-9 text-left text-black">
+                                            <h2 class="o_default_snippet_text"><span id="daytime_day"/>, </h2>
+                                            <p class="time" id="daytime_date"/>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="row">
+                                        <div class="col-1 mt8"/>
+                                        <div class="col-3 mt8 text-right">
+                                            <img src="/website_daytime/static/src/img/sunrise.svg" style="width: 60px;" alt="Sunrise"/>
+                                        </div>
+                                        <div class="col-7 text-left text-black">
+                                            <h2 class="o_default_snippet_text text-left"> zonsopgang:  </h2>
+                                            <p class="time" id="daytime_sunrise"/>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="row">
+                                        <div class="col-3 mt8 text-right">
+                                            <img src="/website_daytime/static/src/img/sunset.svg" style="width: 60px;" alt="Sunset"/>
+                                        </div>
+                                        <div class="col-9 text-left text-black">
+                                            <h2 class="o_default_snippet_text text-left"> zonsondergang:  </h2>
+                                            <p class="time" id="daytime_sunset"/>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="row">
+                                        <div class="col-3 mt8 text-right">
+                                            <img src="/website_daytime/static/src/img/daylength.png" style="width: 40px;" alt="Daylength"/>
+                                        </div>
+                                        <div class="col-9 text-left text-black">
+                                            <h2 class="o_default_snippet_text text-left"> zonuren:  </h2>
+                                            <p class="time" id="daylength"/>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- FLOATING WIDGET
+        <template id="FloatingDaytime" name="Floating Daytime" inherit_id="website.footer_custom">
+            <xpath expr="//div[@id='connect']" position="after">
+                <style>
+                    .daytime_float {
+                        position:fixed;
+                        width:145px;
+                        height:95px;
+                        top:140px;
+                        left:40px;
+                        background-color:#EEEE45;
+                        color:#FFF;
+                        border-radius: 0.125rem;
+                        text-align:left;
+                        font-size:16px;
+                        box-shadow: 2px 2px 3px #999;
+                        z-index:100;
+                    }
+
+                    .my-float {
+                        margin-top:13px;
+                        color:#FFF;
+                    }
+
+                    @media (max-width: 767px) {
+                        #daytime_float_main_div {
+                            top: 80px;
+                            left:10px;
+                        }
+                    }
+
+                </style>
+
+                <script>
+                    $(document).ready(function() {
+                        // Function to handle menu click event
+                        $('.navbar-toggler').click(function() {
+                            var floatingDiv = $('#daytime_float_main_div');
+                            if ($(this).attr('aria-expanded') === 'true') {
+                                setTimeout(function() {
+                                    floatingDiv.show();
+                                }, 500);
+                            } else {
+                                floatingDiv.hide();
+                            }
+                        });
+                    });
+                </script>
+                <div class="daytime_float" id="daytime_float_main_div" t-attf-style="display: #{'none' if request.httprequest.path != '/' else 'block'};">
+                    <div id="date_div" class="mt4">
+                        <img src="/website_daytime/static/src/img/date.png" alt="Date" style="width: 25px; margin-right: 10px; margin-left: 10px;"/>
+                        <span class="my-float text-black" id="date_float"> </span>
+                    </div>
+                    <div id="sunrise_div" class="mt4">
+                        <img src="/website_daytime/static/src/img/sunrise.svg" alt="Sunrise and Sunset" style="width: 35px; margin-right: 5px;  margin-left: 6px;"/>
+                        <span class="my-float text-black" id="sunrise_float"> </span>
+                    </div>
+                    <div id="sunset_div" class="mt4">
+                        <img src="/website_daytime/static/src/img/sunset.svg" alt="Sunrise and Sunset" style="width: 35px; margin-right: 5px;  margin-left: 6px;"/>
+                        <span class="my-float text-black" id="sunset_float"> </span>
+                    </div>
+                </div>
+            </xpath>
+        </template>-->
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<odoo>
+	<data noupdate="0">
+        <record model="ir.config_parameter" id="website_daytime_latitude">
+            <field name="key">website_daytime_latitude</field>
+            <field name="value">51.9244</field>
+        </record>
+
+        <record model="ir.config_parameter" id="website_daytime_longtitude">
+            <field name="key">website_daytime_longtitude</field>
+            <field name="value">4.4777</field>
+        </record>
+    </data>
+</odoo>
