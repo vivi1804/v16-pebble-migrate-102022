@@ -1,0 +1,14 @@
+<odoo>
+	<data noupdate="0">
+        <record model="ir.cron" id="website_daytime_update">
+            <field name="name">Get daytime data</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_website_daytime"/>
+            <field name="code">model.update_data()</field>
+            <field name="state">code</field>
+        </record>
+    </data>
+</odoo>
