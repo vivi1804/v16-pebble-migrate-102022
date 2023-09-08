@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+		<record id="crm_website_aanvraag_add_follower" model="ir.actions.server">
+			<field name="name">Voeg volgers automatisch toe</field>
+			<field name="model_id" ref="crm.model_crm_lead"/>
+			<field name="state">followers</field>
+		</record>
+
+		<record id="crm_website_aanvraag_update_details" model="ir.actions.server">
+			<field name="name">Vul gegevens aan</field>
+			<field name="model_id" ref="crm.model_crm_lead"/>
+			<field name="state">code</field>
+			<field name="code">
+x_zip = str(record.x_studio_postcode).replace('-','').strip().upper()
+full_zip = ""
+zip_words = x_zip.split()
+for zip_word in zip_words:
+	full_zip += zip_word.strip()
+
+x_housenumber = str(record.x_studio_huisnummer).strip().upper()
+first_name = str(record.x_studio_voornaam)
+last_name = str(record.x_studio_achternaam)
+usage = str(record.x_studio_energie_verbruik_per_jaar or 0)
+
+
+def from_kwh_to_money(kwh):
+	conv_prospect_rate = env['ir.config_parameter'].sudo().search([('key', '=', 'conversion_rate')]) #1.7
+	if not conv_prospect_rate:
+		conv_prospect_rate = 2000
+
+	try:
+		result = kwh * float(conv_prospect_rate.value)
+	except:
+		result = 0
+
+	return result
+
+record.write({
+  "name": full_zip + "-" + x_housenumber + ", " + first_name + " " + last_name + ", " + usage + "kWh - Aanvraag via website",
+  #"medium_id": 1,
+  "country_id": 165,
+  "zip": full_zip,
+  "street": x_housenumber,
+  "contact_name": first_name + " " + last_name,
+  "title": record.x_studio_titel.id or False,
+  "expected_revenue": from_kwh_to_money(record.x_studio_energie_verbruik_per_jaar),
+})
+			</field>
+		</record>
+
+		<record id="crm_update_website_aanvraag" model="base.automation">
+			<field name="name">CRM - Update website aanvraag</field>
+			<field name="model_id" ref="crm.model_crm_lead"/>
+			<field name="trigger">on_create</field>
+			<field name="state">multi</field>
+			<field name="child_ids" eval="[(4, ref('pebble_website_offerte.crm_website_aanvraag_add_follower')), (4, ref('pebble_website_offerte.crm_website_aanvraag_update_details'))]"/>
+			<field name="filter_domain">[('name', 'ilike', 'website')]</field>
+		</record>
+
+		<record id="crm_website_create_relation" model="ir.actions.server">
+			<field name="name">Maak relatie(s) aan</field>
+			<field name="model_id" ref="crm.model_crm_lead"/>
+			<field name="state">code</field>
+			<field name="code">
+PEBBLE_PROSPECT_ID = 1
+
+def check_zip(raw_zip):
+	formated_zip = raw_zip.replace(' ','').replace('-','').upper()
+	if len(formated_zip) == 6:
+		feedback_zip = formated_zip
+	else:
+		feedback_zip =  False
+
+	return feedback_zip
+
+def check_house_nmbr(raw_house_nmbr):
+	#formated_house_nmbr = filter(str.isdigit, raw_house_nmbr)
+	formated_house_nmbr = raw_house_nmbr
+
+	return formated_house_nmbr
+
+def format_full_name(FIRST_NAME, SURNAME):
+	if FIRST_NAME and SURNAME:
+		INITIAL = FIRST_NAME[0]
+		FULL_NAME = '. '.join([INITIAL, SURNAME])
+	else:
+		INITIAL = False
+		FULL_NAME = ' '.join([FIRST_NAME, SURNAME])
+
+	return FULL_NAME
+
+if records:
+	for record in records:
+		if not record.partner_id:
+			# Checks 
+			zipcode = check_zip(record.x_studio_postcode)
+
+			house_nmbr = check_house_nmbr(record.x_studio_huisnummer)
+			
+			COUNTRY_ID = 165
+
+			FULL_NAME = format_full_name(record.x_studio_voornaam, record.x_studio_achternaam)
+
+
+			# Control and create HOUSE
+			if zipcode and house_nmbr:
+
+				c_name = str(zipcode) + "-" + str(house_nmbr)
+				house = env['res.partner'].sudo().search([('name', '=', c_name)], limit=1)
+				if not house:
+					try:
+						house = env['res.partner'].sudo().create({
+			                'name': c_name,
+			                'is_company': True,
+			                'type': 'contact',
+			                'street_number': str(house_nmbr) or False,
+			                'zip': str(zipcode) or False,
+			                'country_id': COUNTRY_ID,
+			                'mobile': record.phone or False,
+			                'phone': False,
+			                'email': record.email_from or False,
+			                #'comment': COMMENT,
+			                #'category_id': [(4, PEBBLE_PROSPECT_ID)],
+			                })
+						house.on_change_zip_street_number()
+					except:
+						log("there is an error ", level='info')
+						msg = ("There is an error when creating house partner")
+						record.message_post(body=msg)
+			
+			# Control and create CONTACT
+			person = env['res.partner'].sudo().search([
+				('name', '=', FULL_NAME),
+				('parent_id', '=', house.id)
+				],limit=1)
+
+			if not person:
+				try:
+					person = env['res.partner'].create({
+						'x_first_name': record.x_studio_voornaam,
+						'name': FULL_NAME,
+						'company_type': 'person',
+						'type': 'contact',
+						'street_number': house_nmbr,
+						'zip': zipcode,
+						'country_id': COUNTRY_ID,
+						'mobile': record.phone or False,
+						'phone': False,
+						'email': record.email_from or False,
+						#'comment': COMMENT,
+						'parent_id': house.id,
+						#'toon_volledig_adres': True,
+						'title': record.x_studio_title.id or False,
+						#'category_id': [(4, PEBBLE_PROSPECT_ID)],
+						})
+					person.on_change_zip_street_number() 
+
+				except:
+					log("there is an error ", level='info')
+					msg = ("There is an error when creating house partner.")
+					record.message_post(body=msg)
+
+
+			record.write({
+				'partner_id': house.id,
+				'phone': record.phone or False,
+				'contact_name': FULL_NAME,
+				'mobile': record.phone or False,
+				
+				})
+
+			</field>
+		</record>
+
+		<record id="crm_lead_V_zonnepanelen_website" model="base.automation">
+			<field name="name">CRM Lead - automatic processing V_zonnepanelen_website</field>
+			<field name="model_id" ref="crm.model_crm_lead"/>
+			<field name="trigger">on_create</field>
+			<field name="state">multi</field>
+			<field name="child_ids" eval="[(4, ref('pebble_website_offerte.crm_website_create_relation'))]"/>
+			<field name="filter_domain">["&amp;",["medium_id","!=",False],["name","ilike","Aanvraag via website"]]</field>
+		</record>
+
+    </data>
+</odoo>

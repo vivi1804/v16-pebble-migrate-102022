@@ -2,9 +2,8 @@
 import string
 from odoo import models, fields, _
 
-class WebsiteDaytime(models.Model):
+class WebsiteOfferte(models.Model):
     _inherit = 'crm.lead'
-    _description = 'Webiste Offerte'
 
     x_studio_titel = fields.Many2one('res.partner.title', string="Titel")
     x_studio_voornaam = fields.Char(string="Voornaam")
@@ -23,3 +22,9 @@ class WebsiteDaytime(models.Model):
     x_studio_zonnepanelen_= fields.Boolean(string="Zonnepanelen ? ")
     x_studio_infraroodverwarming_ = fields.Boolean(string="Infraroodverwarming ? ")
     x_studio_laadpaal_ = fields.Boolean(string="Laadpaal ? ")
+
+
+class PartnerExtended(models.Model):
+    _inherit = 'res.partner'
+
+    x_first_name = fields.Char(string="Voornaam")

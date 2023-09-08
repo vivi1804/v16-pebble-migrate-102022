@@ -33,16 +33,8 @@
     "data" : [
         'views/main.xml',
         'views/portal.xml',
-        # 'views/snippet.xml',
-        # 'data/ir.config_parameter.xml',
-        # 'data/cronjob.xml',
-        # 'security/ir.model.access.csv',
+        'data/action.xml',
     ],
-    # 'assets': {
-    #    'web.assets_frontend': [
-    #        '/website_daytime/static/src/js/website_daytime.js',
-    #    ],
-    # },
     "qweb" : [],
     "images": ['static/description/banner.png'],
     'installable' : True,
