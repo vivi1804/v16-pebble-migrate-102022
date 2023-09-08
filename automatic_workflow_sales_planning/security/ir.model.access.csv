@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-"access_res_wijk","res_wijk_user","model_res_wijk","base.group_user",1,1,1,1
-"access_res_buurt","res_buurt_user","model_res_buurt","base.group_user",1,1,1,1
-"access_res_gemeente","res_gemeente_user","model_res_gemeente","base.group_user",1,1,1,1
