@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="1">
-	<record id="industry_fsm_report.fsm_worksheets_action_settings" model="ir.actions.act_window">
-		<field name="domain"></field>
-	</record>
-	<record id="industry_fsm_report.ir_rule_worksheet_template_project" model="ir.rule">
-		<field name="active">False</field>
-	</record>
-</odoo>
