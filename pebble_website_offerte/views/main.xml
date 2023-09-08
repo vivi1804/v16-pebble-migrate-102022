@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="res_partner_extended_form" model="ir.ui.view">
+            <field name="name">res.partner.ext.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//span[@name='address_name']" position="before">
+                    <field name="x_first_name"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="crm_lead_offerte_form" model="ir.ui.view">
             <field name="name">crm.lead.offerte.form</field>
             <field name="model">crm.lead</field>
