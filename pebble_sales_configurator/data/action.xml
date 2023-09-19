@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="action_sales_config_link_to_crm_portal" model="base.automation">
+            <field name="name">Sales Configurator: Link to CRM (Portal) </field>
+            <field name="model_id" ref="pebble_sales_configurator.model_sales_configurator"/>
+            <field name="trigger">on_write</field>
+            <field name="trigger_field_ids" eval="[(4,ref('pebble_sales_configurator.field_sales_configurator__step_3'))]"/>
+            <field name="filter_domain">["&amp;",["opportunity","!=",False],["create_so","=",False]]</field>
+            <field name="active" eval="True"/>
+            <field name="state">code</field>
+            <field name="code">
+# ------------------ VARIABLES -------------------------
+SALE_ROOFTYPE_ID_HELLEND = 1
+SALE_ROOFTYPE_ID_PLAT = 2
+
+PAYMENT_TERM_ID = 10
+MAX_MOUNT_PRO_DAY = 10
+
+PRODUCT_ID_52 = 967    # Installation / mounting 
+PRODUCT_ID_32 = 963    # Opname
+PRODUCT_ID_42 = 965    # Steiger
+PRODUCT_ID_43 = 966    # Ladderlift
+PRODUCT_ID_44 = 968    # Valbeveiliging
+PRODUCT_ID_45 = 964    # Verrijker
+
+PRODUCT_ID_62 = 989    # Kleinmateriaal
+PRODUCT_ID_63 = 590    # Grondkabel
+PRODUCT_ID_64 = 590    # Dakvlak eenvoudig
+PRODUCT_ID_65 = 1470   # Dakvlak complex
+PRODUCT_ID_66 = 1012   # Dakdoorvoer	
+
+# Enphase Q-Relais Product instellingen
+PRODUCT_ID_12A = 956   # Q-Relais 1 FASE
+PRODUCT_ID_12B = 955   # Q-Relais 3 FASE
+
+# Enphase IQ-kabel Product instellingen
+PRODUCT_ID_13A = 959   # IQ-kabel 1 FASE
+PRODUCT_ID_13B = 960   # IQ-kabel 3 FASE
+
+# Enphase Afsluitstuk Product instellingen
+PRODUCT_ID_14A = 1000   # Afsluitstuk 1 FASE
+PRODUCT_ID_14B = 1001   # Afsluitstuk 3 FASE
+
+# Enphase verdeelkast Product instellingen
+PRODUCT_ID_15A = 990   # Verdeelkast 1 FASE
+PRODUCT_ID_15B = 1349  # Verdeelkast 3 FASE
+
+# Enphase CT Ring Product instellingen
+#PRODUCT_ID_16A =     # Enphase CT Ring 1 FASE (bestaat niet)
+PRODUCT_ID_16B = 954  # Enphase CT Ring 3 FASE
+
+# Enphase Enyoy Product instellingen
+PRODUCT_ID_17A = 951   # Enyoy Metered
+PRODUCT_ID_17B = 952   # Enyoy Standard
+
+
+
+
+# ------------------------------------------------------
+
+
+def customer_order_ref(modules,fase,enyoy, frames):
+
+	name = ''
+	# 12 MAX6-425-WHT, 3F, Metered, Hellend (setup van referentie)
+
+	# Module
+	if modules:
+		for module in modules:
+			qty = str(module.aantal_panelen)
+			paneel_name = module.type_paneel.product_id.name
+			name += qty + ' ' + paneel_name + ', '
+
+	# Fase name
+	if fase == '1-fase':
+	  name += '1F, '
+	else: # 3-fase
+	  name += '3F, '
+
+
+	# Enyoy type
+	if enyoy == 'metered':
+	  name += 'Metered, '
+	else: # enyoy == 'standaard'
+	  name += 'Standard, '
+
+	if frames:
+		for frame in frames:
+			if 'hellend' in frame.type_frame.product_id.name or 'Hellend' in frame.type_frame.product_id.name:
+				name += 'Hellend '
+			elif 'plat' in frame.type_frame.product_id.name or 'Plat' in frame.type_frame.product_id.name :
+				name += 'Plat '
+
+
+	return name
+
+def customer_roof_lines(customer_id, roof_ids):
+	for roof in roof_ids:
+
+		if roof.type == 'hellend':
+			ROOF_TYPE_ID = SALE_ROOFTYPE_ID_HELLEND
+		elif roof.type == 'plat':
+			ROOF_TYPE_ID = SALE_ROOFTYPE_ID_PLAT
+		else:
+			ROOF_TYPE_ID = False
+
+		roof = env['sale.roofdata'].create({
+			'partner_id': customer_id,
+			'description': roof.name,
+			'rooftype': ROOF_TYPE_ID
+			})
+
+def update_customer_info(customer_id, powercon, desireprod):
+	house = env['res.partner'].search([('id','=', crm_id.partner_id.id)])
+	house.write({
+		'powercon': powercon,
+		'desireprod': desireprod,
+		})
+
+if record.opportunity:
+	crm_id = record.opportunity
+	lines_vals = []
+
+	#search contact person
+	contact_person = env['res.partner'].search([('parent_id','=', crm_id.partner_id.id),('type','=',"contact")], limit=1)
+
+	# ---------------- UPDATE CUSTOMER DATA ---------------
+	if record.roof_ids:
+		customer_roof_lines(crm_id.partner_id.id, record.roof_ids)
+
+	update_customer_info(crm_id.partner_id.id, record.powercon, record.desireprod)
+
+	# ---------------- SECTIONS ---------------------------
+	section_00 = (0, 0, {
+	'sequence': 0,
+	'display_type': 'line_section', 
+	'name': 'Zonnepanelen',
+	})
+	section_10 = (0, 0, {
+	'sequence': 11,
+	'display_type': 'line_section' ,
+	'name': 'Omvormer',
+	})
+	section_20 = (0, 0, {
+	'sequence': 21,
+	'display_type': 'line_section',
+	'name': ' Frame',
+	})
+	section_30 = (0, 0, {
+	'sequence': 31,
+	'display_type': 'line_section' ,
+	'name': ' Opname',
+	})
+	section_40 = (0, 0, {
+	'sequence': 41,
+	'display_type': 'line_section' ,
+	'name': ' Valbeveiliging, kranen &amp; RSS',
+	})
+	section_50 = (0, 0, {
+	'sequence': 51,
+	'display_type': 'line_section' ,
+	'name': ' Montage',
+	})
+	section_60 = (0, 0, {
+	'sequence': 61,
+	'display_type': 'line_section' ,
+	'name': 'Overige onderdelen',
+	})
+	lines_vals.append(section_00)
+	lines_vals.append(section_10)
+	lines_vals.append(section_20)
+	lines_vals.append(section_30)
+	lines_vals.append(section_40)
+	lines_vals.append(section_50)
+	lines_vals.append(section_60)
+
+
+	# ---------------- PANELEN / MODULES -------------------
+
+	MODULES = record.paneel_ids
+	MODULE_COUNTER = 0
+	for MODULE in MODULES:
+		DETAIL_1 = (0, 0, {
+		'sequence': 1,
+		'product_id': MODULE.type_paneel.product_id.id,
+		'product_uom_qty': MODULE.aantal_panelen,
+
+		})
+		lines_vals.append(DETAIL_1)
+		MODULE_COUNTER += MODULE.aantal_panelen
+
+	# ------------------- FRAME ----------------------------
+	FRAMES = record.frame_ids
+	for FRAME in FRAMES:
+		DETAIL_21 = (0, 0, {
+		'sequence': 21,
+		'product_id': FRAME.type_frame.product_id.id,
+		'product_uom_qty': FRAME.aantal_frame,
+		})
+		lines_vals.append(DETAIL_21)
+
+	# ------------------- MOUNTING -------------------------
+	# number_of_days = calculation_of_days(record.aantal_panelen)
+
+	installment = env['product.product'].search([('id', '=', PRODUCT_ID_52)])
+
+	if MODULE_COUNTER &lt;= 10:
+		total_sales_price = installment.lst_price * 10
+		total_cost_price = installment.standard_price * 10
+		sales_unit_price = total_sales_price / MODULE_COUNTER
+		cost_unit_price = total_cost_price / MODULE_COUNTER
+	else:
+		total_sales_price = installment.lst_price * MODULE_COUNTER
+		total_cost_price = installment.standard_price * MODULE_COUNTER
+		sales_unit_price = installment.lst_price
+		cost_unit_price = installment.standard_price
+
+
+	DETAIL_52 = (0, 0, {
+		'sequence': 52,
+		'product_id': PRODUCT_ID_52,
+		'product_uom_qty': MODULE_COUNTER,
+		'price_unit': sales_unit_price,
+		'purchase_price': cost_unit_price
+		})
+	lines_vals.append(DETAIL_52)
+
+	# -------------- SINGLE OR TRIPPLE FASE ----------------
+
+	if record.aansluiting == '1-fase':
+		Q_Relais    = PRODUCT_ID_12A
+		IQ_kabel    = PRODUCT_ID_13A
+		Afsluitstuk = PRODUCT_ID_14A
+		Verdeelkast = PRODUCT_ID_15A
+
+	else: # record.aansluiting == '3-fase'
+		Q_Relais    = PRODUCT_ID_12B
+		IQ_kabel    = PRODUCT_ID_13B
+		Afsluitstuk = PRODUCT_ID_14B
+		Verdeelkast = PRODUCT_ID_15B
+
+	if record.enyoy == 'metered' and record.aansluiting == '3-fase': 
+	  CT_Ring = PRODUCT_ID_16B
+	  DETAIL_16 = (0, 0, {
+	    'sequence': 16,
+	    'product_id': CT_Ring,
+	    'product_uom_qty': 4,
+	    })
+	  lines_vals.append(DETAIL_16)
+
+	DETAIL_12 = (0, 0, {
+	'sequence': 12,
+	'product_id': Q_Relais,
+	'product_uom_qty': 1,
+	})
+	DETAIL_13 = (0, 0, {
+	'sequence': 13,
+	'product_id': IQ_kabel,
+	'product_uom_qty': MODULE_COUNTER,
+	})
+	DETAIL_14 = (0, 0, {
+	'sequence': 14,
+	'product_id': Afsluitstuk,
+	'product_uom_qty': 1,
+	})
+	DETAIL_15 = (0, 0, {
+	'sequence': 15,
+	'product_id': Verdeelkast,
+	'product_uom_qty': 1,
+	})
+
+	lines_vals.append(DETAIL_12)
+	lines_vals.append(DETAIL_13)
+	lines_vals.append(DETAIL_14)
+	lines_vals.append(DETAIL_15)
+
+
+
+	# -------------- ENVORY METERED OR STANDAARD ------------
+	if record.enyoy == 'metered':
+		ENYOY_PRODUCT = PRODUCT_ID_17A
+	else: # record.enyoy == 'standaard':
+		ENYOY_PRODUCT = PRODUCT_ID_17B
+
+
+	DETAIL_17 = (0, 0, {
+	'sequence': 17,
+	'product_id': ENYOY_PRODUCT,
+	'product_uom_qty': 1,
+	})
+
+	lines_vals.append(DETAIL_17)
+
+
+	# -------------- OPNAME ------------
+	DETAIL_32 = (0, 0, {
+	'sequence': 32,
+	'product_id': PRODUCT_ID_32,
+	'product_uom_qty': 1,
+	})
+	lines_vals.append(DETAIL_32)
+
+
+	# -------------- RSS ------------
+	if record.steiger == 'ja':
+		DETAIL_42 = (0, 0, {
+		'sequence': 42,
+		'product_id': PRODUCT_ID_42,
+		'product_uom_qty': record.steiger_aantal_dagen,
+		})
+		lines_vals.append(DETAIL_42)
+
+	if record.ladderlift == 'ja':
+		DETAIL_43 = (0, 0, {
+		'sequence': 43,
+		'product_id': PRODUCT_ID_43,
+		'product_uom_qty': record.ladderlift_aantal_dagen,
+		})
+		lines_vals.append(DETAIL_43)
+
+	if record.dakrandbeveiliging == 'ja':
+		DETAIL_44 = (0, 0, {
+		'sequence': 44,
+		'product_id': PRODUCT_ID_44,
+		'product_uom_qty': record.dak_aantal_dagen,
+		})
+		lines_vals.append(DETAIL_44)
+
+	if record.verrijker == 'ja':
+		DETAIL_45 = (0, 0, {
+		'sequence': 45,
+		'product_id': PRODUCT_ID_45,
+		'product_uom_qty': record.verrijker_aantal_dagen,
+		})
+		lines_vals.append(DETAIL_45)
+
+
+	# ----------- KLEIN MATERIAAL ----------
+	
+	if record.klein_aantal_dagen != 0:
+		DETAIL_62 = (0, 0, {
+		    'sequence': 62,
+		    'product_id': PRODUCT_ID_62,
+		    'product_uom_qty': record.klein_aantal_dagen,
+		    })
+		lines_vals.append(DETAIL_62)
+
+	
+	# -------------- GRONDKABEL ------------
+	if record.grondkabel != 0:
+		DETAIL_63 = (0, 0, {
+		    'sequence': 63,
+		    'product_id': PRODUCT_ID_63,
+		    'product_uom_qty': record.grondkabel,
+		    })
+		lines_vals.append(DETAIL_63)
+
+
+	# -------------- EXTRA DAKVLAKKEN EENVOUDIG  ------------
+	if record.extra_dakvlakken_eenvoudig != 0:
+		DETAIL_64 = (0, 0, {
+		    'sequence': 64,
+		    'product_id': PRODUCT_ID_64,
+		    'product_uom_qty': record.extra_dakvlakken_eenvoudig,
+		    })
+		lines_vals.append(DETAIL_64)
+
+
+	# -------------- EXTRA DAKVLAKKEN COMPLEX  ------------
+	if record.extra_dakvlakken_complex != 0:
+		DETAIL_65 = (0, 0, {
+		    'sequence': 65,
+		    'product_id': PRODUCT_ID_65,
+		    'product_uom_qty': record.extra_dakvlakken_complex,
+		    })
+		lines_vals.append(DETAIL_65)
+
+	# -------------- DAKDOORVOER  ------------
+	if record.dakdoorvoer:
+		DETAIL_66 = (0, 0, {
+		    'sequence': 66,
+		    'product_id': PRODUCT_ID_66,
+		    'product_uom_qty': 1,
+		    })
+		lines_vals.append(DETAIL_66)
+
+
+	##create sales order 
+	sale_order = env['sale.order'].sudo().create({
+		'partner_id': crm_id.partner_id.id,
+		'contact_person': contact_person.id or crm_id.partner_id.id,
+		'partner_invoice_id': contact_person.id or crm_id.partner_id.id,
+		'order_type': "b2c_solar",
+		'plan': record.legplan,
+		'opportunity_id': crm_id.id,
+		'origin': crm_id.name,
+		'client_order_ref': customer_order_ref(record.paneel_ids, record.aansluiting,record.enyoy, record.frame_ids),
+		'user_id': record.verkoper.id,
+		'payment_term_id': PAYMENT_TERM_ID,
+		'vat_reduction_type': 'no',
+		'powercon': record.powercon,
+		'desireprod': record.desireprod,
+		'energycost': record.energycost,
+		#'co2reduction': record.co2reduction,
+		'elecprod': record.elecprod,
+		'order_line': lines_vals,
+		#'savings': record.savings,
+		'sale_condition_id': record.sales_condition_id.id,
+		'html_sale_conditions': record.condition_txt,
+		'note': record.notes,
+		})
+	sale_order.onchange_partner_id()
+	sale_order.action_get_partner_roofdata()
+	sale_order.getsum_total_elecprod()
+	sale_order.get_net_investment()
+	sale_order.get_roi_in_years()
+
+	sale_order.write({
+		'partner_invoice_id': contact_person.id or crm_id.partner_id.id,
+		})
+
+	record.write({'create_so': True})
+	
+	#sale_order.get_sale_condition_id() # No need because we putting the values hard inside through the sale.configurator tool
+	# sale_order.action_quotation_send() # Does not want to work
+
+            
+
+            </field>
+        </record>
+
+        <record id="action_sales_config_copy_attachment_portal" model="base.automation">
+            <field name="name">Sales Configurator: Copy Attachment (Portal)</field>
+            <field name="model_id" ref="pebble_sales_configurator.model_sales_configurator"/>
+            <field name="trigger">on_write</field>
+            <field name="trigger_field_ids" eval="[(4,ref('pebble_sales_configurator.field_sales_configurator__step_3'))]"/>
+            <field name="filter_domain">["&amp;",["opportunity","!=",False],["copy_attachment","=",False]]</field>
+            <field name="active" eval="False"/>
+            <field name="state">code</field>
+            <field name="code">
+if record.opportunity:
+  msg_lines = record.message_ids
+  for msg in msg_lines:
+    if msg.attachment_ids:
+      attachments = msg.attachment_ids
+      for line in attachments:
+        env['ir.attachment'].create({
+          'name': line.name, 
+          'type': "binary", 
+          'res_model': "res.partner", 
+          'res_id':  record.opportunity.partner_id.id, 
+          'datas': line.datas, 
+          'mimetype': 'image/png'})
+  record.write({'copy_attachment': True})
+            </field>
+        </record>
+
+		<record id="action_sales_config_link_to_crm_portal_upload" model="base.automation">
+            <field name="name">Sales Configurator: Link to CRM (Portal - Upload) </field>
+            <field name="model_id" ref="pebble_sales_configurator.model_sales_configurator"/>
+            <field name="trigger">on_create</field>
+            <field name="filter_domain">[["sales_configurator_type.name","=","Images Upload"]]</field>
+            <field name="active" eval="True"/>
+            <field name="state">code</field>
+            <field name="code">
+##Check matching opportunity 
+
+opportunity_id = env['crm.lead'].search([('name','ilike',record.name)], limit=1)
+record.write({'opportunity': opportunity_id, 'state': "confirm"})
+			</field>
+		</record>
+
+		<record id="action_sales_config_upload_copy_attachment_portal" model="base.automation">
+            <field name="name">Sales Configurator: Copy Attachment (Portal - Upload)</field>
+            <field name="model_id" ref="base.model_ir_attachment"/>
+            <field name="trigger">on_create</field>
+            <field name="filter_domain">[["res_model","=","sales.configurator"]]</field>
+            <field name="active" eval="True"/>
+            <field name="state">code</field>
+            <field name="code">
+res_id = record.res_id
+res_model = record.res_model
+
+sales_id = env[res_model].search([('id','=',res_id)])
+sales_opportunity = sales_id.opportunity
+
+if sales_id.sales_configurator_type.name == "Images Upload":
+  env['ir.attachment'].create({
+      'name': record.name, 
+      'type': "binary", 
+      'res_model': "res.partner", 
+      'res_id':  sales_opportunity.partner_id.id, 
+      'datas': record.datas, 
+      'mimetype': 'image/png'})
+    
+  sales_id.write({'copy_attachment': True})
+            
+            </field>
+        </record>
+
+    </data>
+</openerp>

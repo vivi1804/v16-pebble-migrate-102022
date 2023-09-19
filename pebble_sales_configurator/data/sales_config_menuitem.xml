@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- MENU ITEM -->
+    <menuitem id="menu_sales_configurator"
+        name="Sales Configurator"
+        sequence="2"
+        parent="crm.crm_menu_root"
+        action="action_sales_configurator_tree_view"/>
+
+    <menuitem id="menu_sales_configurator_type"
+        name="Sales Configurator Type"
+        sequence="20"
+        parent="crm.crm_menu_config"
+        action="action_sales_configurator_type_tree_view"/>
+
+    <menuitem id="menu_sales_configurator_type_paneel"
+        name="Sales Configurator Type Paneel"
+        sequence="20"
+        parent="crm.crm_menu_config"
+        action="action_sales_configurator_type_paneel_tree_view"/>
+
+    <menuitem id="menu_sales_configurator_type_frame"
+        name="Sales Configurator Type Frame"
+        sequence="20"
+        parent="crm.crm_menu_config"
+        action="action_sales_configurator_type_frame_tree_view"/>
+
+    <!-- WEBSITE MENU -->
+    <record id="menu_enphase" model="website.menu">
+        <field name="name">Enphase</field>
+        <field name="url">/enphase</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">20</field>
+        <!-- <field name="group_ids" eval="[(4, ref('pebble_sales_configurator.group_webportal_sales'))]"/> -->
+    </record>
+
+    <record id="menu_images_upload" model="website.menu">
+        <field name="name">Images Upload</field>
+        <field name="url">/images</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">20</field>
+        <!-- <field name="group_ids" eval="[(4, ref('pebble_sales_configurator.group_webportal_sales'))]"/> -->
+    </record>
+
+    <!-- sales config type -->
+    <record id="sales_config_type_enphase" model="sales.configurator.type">
+        <field name="name">Enphase</field>
+    </record>
+
+    <record id="sales_config_type_upload" model="sales.configurator.type">
+        <field name="name">Images Upload</field>
+    </record>
+
+    <!-- so email template config -->
+    <record id="ir_param_pebble_so_mail_template_id" model="ir.config_parameter">
+        <field name="key">pebble_so_mail_template_id</field>
+        <field name="value">36</field>
+    </record>
+</odoo>

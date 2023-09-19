@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="enphase_form" name="Sales Configuration: Submit Product Enphase">
+        <t name="Sales Configurator" priority="29" t-name="sales.configurator">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="container mt8 mb8">
+                        <h1> TEST </h1>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

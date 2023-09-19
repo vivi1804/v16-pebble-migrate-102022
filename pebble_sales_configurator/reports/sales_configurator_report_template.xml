@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report id="sales_configurator_report_template"
+            model="sales.configurator"
+            string="Report"
+            report_type="qweb-pdf"
+            name="pebble_sales_configurator.sales_configurator_template_report"
+            paperformat="base.paperformat_euro"
+            menu="True"/>
+
+    <template id="sales_configurator_template_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12 mb4 mt4">
+                                Name : <span t-field="o.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb4 mt4">
+                                Postcode : <span t-field="o.postcode"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb4 mt4">
+                                Huisnummer : <span t-field="o.huisnummer"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb4 mt4">
+                                Created By : <span t-field="o.verkoper.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb4 mt4">
+                                Legplan <br/>
+                                <img t-if="o.legplan" t-att-src="image_data_uri(o.legplan)" style="max-width: 300px;"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb4 mt4">
+                                Additional Information : <br/>
+                                <span t-field="o.notes"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

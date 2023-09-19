@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- SALES CONDITION -->
+        <record id="sale_template_conditions_form_extended" model="ir.ui.view">
+            <field name="name">sale.template.conditions.form.extended</field>
+            <field name="model">sale.template.conditions</field>
+            <field name="inherit_id" ref="solar_extended.sale_template_conditions_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="is_sales_configurator"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- VIEW -->
+        <!--    TREE VIEW -->
+        <record id="sales_configurator_view" model="ir.ui.view">
+            <field name="name">sales_configurator_tree</field>
+            <field name="model">sales.configurator</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="sales_configurator_type"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_configurator_type_view" model="ir.ui.view">
+            <field name="name">sales_configurator_type_tree</field>
+            <field name="model">sales.configurator.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_configurator_type_paneel_view" model="ir.ui.view">
+            <field name="name">sales_configurator_type_paneel_tree</field>
+            <field name="model">sales.configurator.type_paneel</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_configurator_type_frame_view" model="ir.ui.view">
+            <field name="name">sales_configurator_type_frame_tree</field>
+            <field name="model">sales.configurator.type_frame</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <!--SEARCH VIEW-->
+        <record model="ir.ui.view" id="sales_configurator_filter">
+            <field name="name">sales_configurator_filter</field>
+            <field name="model">sales.configurator</field>
+            <field name="arch" type="xml">
+                <search string="Sales configurator">
+                    <field name="name" filter_domain="[('name','ilike', self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sales_configurator_type_filter">
+            <field name="name">sales_configurator_type_filter</field>
+            <field name="model">sales.configurator.type</field>
+            <field name="arch" type="xml">
+                <search string="Sales configurator type">
+                    <field name="name" filter_domain="[('name','ilike', self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sales_configurator_type_paneel_filter">
+            <field name="name">sales_configurator_type_paneel_filter</field>
+            <field name="model">sales.configurator.type_paneel</field>
+            <field name="arch" type="xml">
+                <search string="Sales configurator type paneel">
+                    <field name="name" filter_domain="[('name','ilike', self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sales_configurator_type_frame_filter">
+            <field name="name">sales_configurator_type_frame_filter</field>
+            <field name="model">sales.configurator.type_frame</field>
+            <field name="arch" type="xml">
+                <search string="Sales configurator type frame">
+                    <field name="name" filter_domain="[('name','ilike', self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!--FORM VIEW-->
+        <record model="ir.ui.view" id="sales_configurator_form">
+            <field name="name">sales_configurator_form</field>
+            <field name="model">sales.configurator</field>
+            <field name="arch" type="xml">
+                <form name="sales_configurator_form">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object"
+                            attrs="{'invisible': [['state','in',['confirm','cancel']]]}"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                            attrs="{'invisible': [['state','in',['confirm','cancel']]]}"/>
+                        <field name="state" attrs="{'clickable':'0'}" widget="statusbar"/>
+                    </header>
+                    <sheet string="sales configurator" name="sales_configurator_sheet">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" default_focus="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="postcode"/>
+                                <field name="huisnummer"/>
+                                <field name="sales_configurator_type" readonly="1"/>
+                                <field name="legplan" widget="image" options="{'size':[0,128]}"/>
+                                <field name="verkoper"/>
+                                <field name="opportunity_id" widget="many2many_tags" options="{'no_create':1}" invisible="1"/>
+                                <field name="opportunity" options="{'no_create':1}"/>
+                                <field name="type_paneel" invisible="1"/>
+                                <field name="aantal_panelen" invisible="1"/>
+                                <field name="type_frame" invisible="1"/>
+                                <field name="aansluiting"/>
+                                <field name="aantal_eindstoppen"/>
+                                <field name="foto_materkast" widget="image" options="{'size':[0,128]}"/>
+                                <field name="enyoy" string="Envoy"/>
+                                <field name="extra_dakvlakken_eenvoudig"/>
+                                <field name="extra_dakvlakken_complex"/>
+                                <field name="dakdoorvoer"/>
+                            </group>
+                            <group>
+                                <field name="steiger" widget="radio"/>
+                                <field name="steiger_aantal_dagen"/>
+                                <field name="steiger_aantal_meter" invisible="1"/>
+                                <field name="ladderlift" widget="radio"/>
+                                <field name="ladderlift_aantal_dagen"/>
+                                <field name="dakrandbeveiliging" widget="radio"/>
+                                <field name="dak_aantal_dagen"/>
+                                <field name="dak_aantal_meter"/>
+                                <field name="klein_materiaal" widget="radio"/>
+                                <field name="klein_aantal_dagen"/>
+                                <field name="verrijker" widget="radio"/>
+                                <field name="verrijker_aantal_dagen"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Energie Information">
+                                <field name="powercon"/>
+                                <field name="desireprod"/>
+                                <field name="energycost"/>
+                                <field name="grondkabel"/>
+                                <field name="elecprod"/>
+                                <field name="co2reduction" invisible="1"/>
+                                <field name="savings" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="step_1" invisible="1"/>
+                                <field name="step_2" invisible="1"/>
+                                <field name="step_3" invisible="1"/>
+                                <field name="step_4" invisible="1"/>
+                                <field name="opportunity_page" invisible="1"/>
+                                <field name="copy_attachment" invisible="1"/>
+                                <field name="create_so" invisible="1"/>
+                            </group>
+                        </group>
+                        <group string="Sales Information">
+                            <field name="sales_condition_id"/>
+                            <field name="aansluitwaarde"/>
+                            <field name="kabeltrace" string="Route AC Kabel"/>
+                            <field name="levertijd" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="condition_txt" nolabel="1"/>
+                        </group>
+                        <group string="Paneel Lines">
+                            <field name="paneel_ids" nolabel="1" colspan="2">
+                                <tree editable="bottom">
+                                    <field name="sale_configurator_id" invisible="1"/>
+                                    <field name="type_paneel"/>
+                                    <field name="aantal_panelen"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Frame Lines">
+                            <field name="frame_ids" nolabel="1" colspan="2">
+                                <tree editable="bottom">
+                                    <field name="sale_configurator_id" invisible="1"/>
+                                    <field name="type_frame"/>
+                                    <field name="aantal_frame"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Roof Lines">
+                            <field name="roof_ids" nolabel="1" colspan="2">
+                                <tree editable="bottom">
+                                    <field name="sale_configurator_id" invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="type"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Additional Information">
+                            <field name="notes" nolabel="1" colspan="2"/>
+                        </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sales_configurator_type_form">
+            <field name="name">sales_configurator_type_form</field>
+            <field name="model">sales.configurator.type</field>
+            <field name="arch" type="xml">
+                <form name="sales_configurator_type_form">
+                    <sheet string="Sales configurator type" name="sales_configurator_type_sheet">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sales_configurator_type_paneel_form">
+            <field name="name">sales_configurator_type_paneel_form</field>
+            <field name="model">sales.configurator.type_paneel</field>
+            <field name="arch" type="xml">
+                <form name="sales_configurator_type_paneel_form">
+                    <sheet string="Sales configurator type paneel" name="sales_configurator_type_paneel_sheet">
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="product_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sales_configurator_type_frame_form">
+            <field name="name">sales_configurator_type_frame_form</field>
+            <field name="model">sales.configurator.type_frame</field>
+            <field name="arch" type="xml">
+                <form name="sales_configurator_type_frame_form">
+                    <sheet string="Sales configurator type frame" name="sales_configurator_type_frame_sheet">
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="product_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--ACTION -->
+        <record model="ir.actions.act_window" id="action_sales_configurator_tree_view">
+            <field name="name">Sales configurator</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.configurator</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sales_configurator_type_tree_view">
+            <field name="name">Sales configurator Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.configurator.type</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sales_configurator_type_paneel_tree_view">
+            <field name="name">Sales configurator Type Paneel</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.configurator.type_paneel</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sales_configurator_type_frame_tree_view">
+            <field name="name">Sales configurator Type Frame</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.configurator.type_frame</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <!--ACTION BIND-->
+        <!--    TREE -->
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sales_configurator_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_type_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sales_configurator_type_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_type_paneel_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sales_configurator_type_paneel_tree_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_type_frame_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sales_configurator_type_frame_tree_view"/>
+        </record>
+
+
+        <!--FORM-->
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sales_configurator_tree_view"/>
+            <field name="view_id" ref="sales_configurator_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_type_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sales_configurator_type_tree_view"/>
+            <field name="view_id" ref="sales_configurator_type_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_type_paneel_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sales_configurator_type_paneel_tree_view"/>
+            <field name="view_id" ref="sales_configurator_type_paneel_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_sales_configurator_type_frame_form_mode">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sales_configurator_type_frame_tree_view"/>
+            <field name="view_id" ref="sales_configurator_type_frame_form"/>
+        </record>
+
+    </data>
+</openerp>

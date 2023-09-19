@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pebble_sales_configurator.model_sales_configurator" model="ir.model">
+        <field name="website_form_access">True</field>
+    </record>
+    
+    <function model="ir.model.fields" name="formbuilder_whitelist">
+        <value>sales.configurator</value>
+        <value eval="[
+            'name',
+            'postcode',
+            'huisnummer',
+            'legplan',
+            'verkoper',
+            'attachments',
+            'step_1',
+            'step_2',
+            'step_3',
+            'step_4',
+            'notes',
+            'type_paneel',
+            'aantal_panelen',
+            'type_frame',
+            'aansluiting',
+            'aantal_eindstoppen',
+            'foto_materkast',
+            'enyoy',
+            'steiger',
+            'steiger_aantal_dagen',
+            'ladderlift',
+            'ladderlift_aantal_dagen',
+            'dakrandbeveiliging',
+            'dak_aantal_dagen',
+            'dak_aantal_meter',
+            'energycost',
+            'klein_materiaal',
+            'klein_aantal_dagen',
+            'sales_configurator_type',
+            'state',
+            'aansluitwaarde',
+            'kabeltrace',
+        ]"/>
+    </function>
+</odoo>
+
