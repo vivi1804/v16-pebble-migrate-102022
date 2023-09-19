@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sales_configurator_res_company" model="ir.ui.view">
+        <field name="name">sales.configurator.res.company</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                <page name="sales_config_instruction" string="Sales Configurator">
+                    <group string="Instruction">
+                        <field name="instruction_html" nolabel="1"/>
+                    </group>
+                    <group string="Instruction - Step 1">
+                        <field name="instruction_html_1" nolabel="1"/>
+                    </group>
+                    <group string="Instruction - Step 2">
+                        <field name="instruction_html_2" nolabel="1"/>
+                    </group>
+                    <group string="Instruction - Step 3">
+                        <field name="instruction_html_3" nolabel="1"/>
+                    </group>
+                    <group string="Instruction - Step 4">
+                        <field name="instruction_html_4" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

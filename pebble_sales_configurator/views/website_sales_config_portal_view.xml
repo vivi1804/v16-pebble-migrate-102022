@@ -1,0 +1,1056 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="enphase_form" name="Sales Configuration: Submit Product Enphase">
+        <t name="Sales Configurator" priority="29" t-name="sales.configurator">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="container mt8 mb8">
+                        <!-- Form Steps / Progress Bar Start -->
+                        <input type="hidden" id="mode" t-att-value="mode"/>
+                        <input type="hidden" id="sales_configurator_type" t-att-value="types.id"/>
+                        <ul class="form-stepper form-stepper-horizontal text-center mx-auto pl-0 mt32">
+                            <!-- Step 1 -->
+                            <li class="form-stepper-active text-center form-stepper-list" t-attf-class="form-stepper-#{mode == 'new' and 'active' or 'completed'}">
+                                <a class="mx-2">
+                                    <span class="form-stepper-circle">
+                                        <span>1</span>
+                                    </span>
+                                    <div class="label">Klantgegevens</div>
+                                </a>
+                            </li>
+                            <!-- Step 2 -->
+                            <li class="form-stepper-unfinished text-center form-stepper-list" t-attf-class="form-stepper-#{mode == 'step2' and 'active' or mode == 'step3' and 'completed' or mode == 'step4' and 'completed' or 'unfinished' }">
+                                <a class="mx-2">
+                                    <span class="form-stepper-circle text-muted">
+                                        <span>2</span>
+                                    </span>
+                                    <div class="label text-muted">Installatie</div>
+                                </a>
+                            </li>
+                            <!-- Step 3 -->
+                            <li class="form-stepper-unfinished text-center form-stepper-list" t-attf-class="form-stepper-#{mode == 'step3' and 'active' or mode == 'step4' and 'completed' or 'unfinished' }">
+                                <a class="mx-2">
+                                    <span class="form-stepper-circle text-muted">
+                                        <span>3</span>
+                                    </span>
+                                    <div class="label text-muted">Bereikbaar- &amp; Veiligheid</div>
+                                </a>
+                            </li>
+                            <!-- Step 4 -->
+                            <li class="form-stepper-unfinished text-center form-stepper-list" t-attf-class="form-stepper-#{mode == 'step4' and 'active' or 'unfinished' } ">
+                                <a class="mx-2">
+                                    <span class="form-stepper-circle text-muted">
+                                        <span>4</span>
+                                    </span>
+                                    <div class="label text-muted">Offerte</div>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- Form Steps / Progress Bar End -->
+
+                        <!-- ########################################################################################################## -->
+                        <!-- ########################################## TEMPLATE STEP 1 ############################################### -->
+                        <!-- ########################################################################################################## -->
+
+                        <div class="row" t-if="mode == 'new'">
+                            <div style="margin-left:24px;" t-field="company_id.instruction_html_1"/>
+                            <br/><br/>
+                            <form id="enphase_form" action="/website_form/" method="post" class="s_website_form o_wprofile_editor_form container-fluid mt32" enctype="multipart/form-data" data-model_name="sales.configurator" data-success_page="/enphase" data-editable-form="false" hide-change-model="true">
+                                <t t-set="user" t-value="default_values['user_id']"/>
+                                <input type="hidden" name="verkoper" t-att-value="user"/>
+                                <input type="hidden" name="sales_configurator_type" t-att-value="types.id"/>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="postcode">Postcode</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="postcode" id="postcode" required="1"
+                                        placeholder="Bijv. 4811ZA" pattern="[0-9]{4}[A-Za-z]{2}" title="Vul de postcode in zonder streepjes bijvoorbeeld 4811AA"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="huisnummer">Huisnummer</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="huisnummer" id="huisnummer" required="1"
+                                        placeholder="Alleen huisnummer zonder toevoeging" pattern="[0-9]{}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7 text-right">
+                                        <button type="submit" class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text">Next</button>
+                                        <span id="o_website_form_result"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- ########################################################################################################## -->
+                        <!-- ########################################## TEMPLATE STEP 2 ############################################### -->
+                        <!-- ########################################################################################################## -->
+
+                        <div class="row" t-if="mode == 'step2'">
+                            <div style="margin-left:24px;" t-field="company_id.instruction_html_2"/>
+                            <br/><br/>
+                            <form id="enphase_step2" method="post" enctype="multipart/form-data" class="s_website_form o_wprofile_editor_form container-fluid mt32">
+                                <input type="hidden" name="id" id="id" t-att-value="sales.id"/>
+                                <div class="form-group row form-field">
+                                    <div class="offset-lg-1 col-lg-7 col-md-8 text-left">
+                                        <h5> Panelen en frame </h5>
+                                    </div>
+                                </div>
+                                <!-- PANEEL -->
+                                <div class="row">
+                                    <div class="offset-lg-1 col-lg-10 col-md-11">
+                                        <div class="form-group row form-field o_website_form_required">
+                                            <div class="col-lg-12 col-md-12 text-left">
+                                                <table class="table table-sm table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" width="60%">Type Paneel</th>
+                                                            <th scope="col" width="30%">Aantal Paneel</th>
+                                                            <th scope="col" width="10%"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr t-foreach="sales.paneel_ids" t-as="paneel">
+                                                            <td><span t-field="paneel.type_paneel.name"/></td>
+                                                            <td><span t-field="paneel.aantal_panelen"/></td>
+                                                            <td class="text-right"><a t-attf-href="/paneel/ref=#{paneel.id}"><i class="fa fa-trash"></i></a></td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td>
+                                                            <select name="type_paneel" id="type_paneel" required="1" style="border:0; background-color: transparent;">
+                                                                <t t-foreach="products_paneel" t-as="pp">
+                                                                    <option t-att-value="pp.id"> <t t-esc="pp.name"/></option>
+                                                                </t>
+                                                            </select>
+                                                          </td>
+                                                          <td>
+                                                             <input type="text" name="aantal_panelen" id="aantal_panelen"
+                                                             style="border:0; background-color: transparent;"/>
+                                                          </td>
+                                                          <td class="text-right">
+                                                             <input type="button" id="add_paneel" class="btn btn-primary btn-lg" value="Add"
+                                                             style="padding-top:5px;padding-bottom:5px;font-size:14px;"/>
+                                                          </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- FRAME -->
+                                <div class="row">
+                                    <div class="offset-lg-1 col-lg-10 col-md-11">
+                                        <div class="form-group row form-field o_website_form_required">
+                                            <div class="col-lg-12 col-md-12 text-left">
+                                                <table class="table table-sm table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" width="60%">Type Frame</th>
+                                                            <th scope="col" width="30%">Aantal Frame</th>
+                                                            <th scope="col" width="10%"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr t-foreach="sales.frame_ids" t-as="frame">
+                                                            <td><span t-field="frame.type_frame.name"/></td>
+                                                            <td><span t-field="frame.aantal_frame"/></td>
+                                                            <td class="text-right"><a t-attf-href="/frame/ref=#{frame.id}"><i class="fa fa-trash"></i></a></td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td>
+                                                            <select name="type_frame" id="type_frame" required="1" style="border:0; background-color: transparent;">
+                                                                <t t-foreach="products_frame" t-as="pf">
+                                                                    <option t-att-value="pf.id"> <t t-esc="pf.name"/></option>
+                                                                </t>
+                                                            </select>
+                                                          </td>
+                                                          <td>
+                                                             <input type="text" name="aantal_frame" id="aantal_frame"
+                                                             style="border:0; background-color: transparent;"/>
+                                                          </td>
+                                                          <td class="text-right">
+                                                             <input type="button" id="add_frame" class="btn btn-primary btn-lg" value="Add"
+                                                             style="padding-top:5px;padding-bottom:5px;font-size:14px;"/>
+                                                          </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                        
+                                
+                                <div class="form-group row form-field mt16">
+                                    <div class="offset-lg-1 col-lg-7 col-md-8 text-left">
+                                        <h5> Elektrotechnische Installatie </h5>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="aansluiting">Aansluiting</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                      <select class="form-control" name="aansluiting" id="aansluiting" required="1">
+                                        <option id="1-fase" value="1-fase" t-att-selected="'selected' if sales.aansluiting == '1-fase' else None">1-fase</option>
+                                        <option id="3-fase" value="3-fase" t-att-selected="'selected' if sales.aansluiting == '3-fase' else None">3-fase</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="aantal_eindstoppen">Aantal Eindstoppen</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="aantal_eindstoppen" id="aantal_eindstoppen" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.aantal_eindstoppen"/>
+                                    </div>
+                                </div>
+
+                                <!-- START : IF ON EDIT MODE THEN DISPLAY EXISTING FOTO_MATERKAST FROM RECORD -->
+                                <div t-if="not sales.legplan" class="form-group row form-field mt8 o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="foto_materkast">Foto Meterkast</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="file" name="foto_materkast" id="foto_materkast" class="form-control o_website_form_input" accept="image/*" required="1"/>
+                                    </div>
+                                </div>
+                                <div t-if="sales.legplan" class="form-group row form-field mt8">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="foto_materkast">Foto Meterkast</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="file" name="foto_materkast" id="foto_materkast" class="form-control o_website_form_input" accept="image/*"/>
+                                    </div>
+                                </div>
+                                <div t-if="sales.foto_materkast" class="row mb16">
+                                    <div class="col-lg-3 col-md-4"/>
+                                    <div class="col-lg-7 col-md-8">
+                                      <div class="row">
+                                        <div class="col-lg-2 col-md-3" t-field="sales.foto_materkast" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                                      </div>
+                                    </div>
+                                </div> 
+                                <!-- END : IF ON EDIT MODE THEN DISPLAY EXISTING FOTO_MATERKAST FROM RECORD -->
+
+                                <!-- START : IF ON EDIT MODE THEN DISPLAY EXISTING LEGPLAN FROM RECORD -->
+                                <div t-if="not sales.legplan" class="form-group row form-field mt8 o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="legplan">Legplan</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="file" name="legplan" id="legplan" class="form-control o_website_form_input" accept="image/*" 
+                                        required="1"/>
+                                    </div>
+                                </div>
+                                <div t-if="sales.legplan" class="form-group row form-field mt8">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="legplan">Legplan</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="file" name="legplan" id="legplan" class="form-control o_website_form_input" accept="image/*"/>
+                                    </div>
+                                </div>
+                                <div t-if="sales.legplan" class="row mb16">
+                                    <div class="col-lg-3 col-md-4"/>
+                                    <div class="col-lg-7 col-md-8">
+                                      <div class="row">
+                                        <div class="col-lg-2 col-md-3" t-field="sales.legplan" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                                      </div>
+                                    </div>
+                                </div> 
+                                <!-- END : IF ON EDIT MODE THEN DISPLAY EXISTING LEGPLAN FROM RECORD -->
+
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="extra_dakvlakken_eenvoudig">Extra dakvlakken eenvoudig</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="extra_dakvlakken_eenvoudig" id="extra_dakvlakken_eenvoudig" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.extra_dakvlakken_eenvoudig or '0'"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="extra_dakvlakken_complex">Extra dakvlakken complex</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="extra_dakvlakken_complex" id="extra_dakvlakken_complex" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.extra_dakvlakken_complex or '0'"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="dakdoorvoer">Dakdoorvoer</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="checkbox" t-att-checked="'checked' if sales.dakdoorvoer == true else None" class="o_website_form_input" id="dakdoorvoer" name="dakdoorvoer"/>
+                                    </div>
+                                </div>
+                                              
+                                <div class="form-group row form-field">
+                                    <div class="offset-lg-1 col-lg-7 col-md-8 text-left">
+                                        <h5> Energie Informatie </h5>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="powercon">Verbruik in kWh</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="powercon" id="powercon" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.powercon"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="desireprod">Gewenst vermogen</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="desireprod" id="desireprod" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.desireprod"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="energycost">Huidige elektra prijs per kWh</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="energycost" id="energycost" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.energycost"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="elecprod">Productie naar schatting</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="elecprod" id="elecprod" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.elecprod"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="grondkabel">Grondkabel in meters</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="grondkabel" id="grondkabel" pattern="[0-9]{}" 
+                                        required="1" t-att-value="sales.grondkabel or '0'"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row form-field">
+                                    <div class="offset-lg-1 col-lg-7 col-md-8 text-left">
+                                        <h5> Enphase Opties </h5>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="enyoy">Envoy</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <select class="form-control" name="enyoy" id="enyoy" required="1">
+                                            <option value="metered" t-att-selected="'selected' if enyoy == 'metered' else None">Metered</option>
+                                            <option value="standaard" t-att-selected="'selected' if enyoy == 'standaard' else None">Standaard</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field">
+                                    <div class="offset-lg-1 col-lg-7 col-md-8 text-left">
+                                        <h5> Verkoop condities </h5>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="sales_condition_id">Verkoopconditie:</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <select class="form-control" name="sales_condition_id" id="sales_condition_id" required="1">
+                                            <t t-foreach="sales_condition" t-as="sc">
+                                              <option t-att-value="sc.id" t-att-selected="'selected' if sc.id == sales.sales_condition_id.id else None"> <t t-esc="sc.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="offset-lg-3 col-lg-9 col-md-10">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12" id="condition_txt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="aansluitwaarde">Aansluitwaarde per fase</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="aansluitwaarde" id="aansluitwaarde" required="1" t-att-value="sales.aansluitwaarde"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="kabeltrace">Route AC kabel</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="kabeltrace" id="kabeltrace" required="1" t-att-value="sales.kabeltrace"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field">
+                                    <div class="offset-lg-1 col-lg-7 col-md-8 text-left">
+                                        <h5> Overige Foto's </h5>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="attachments">Bijlage(n)</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="file" name="attachments" id="attachments" class="form-control o_website_form_input" multiple="true" accept="image/*"/>
+                                    </div>
+                                </div>
+                                
+                                <!-- START : IF ON EDIT MODE THEN DISPLAY EXISTING ATTACHMENTS FROM RECORD -->
+                                <div t-if="attachments_ids" class="row mb16">
+                                    <div class="col-lg-3 col-md-4"/>
+                                    <div class="col-lg-7 col-md-8">
+                                      <div class = "row">
+                                        <t t-foreach="attachments_ids" t-as="attch">
+                                          <div class="col-lg-2 col-md-3" t-field="attch.datas" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                                        </t>
+                                      </div>
+                                    </div>
+                                </div> 
+                                <!-- END : IF ON EDIT MODE THEN DISPLAY EXISTING ATTACHMENTS FROM RECORD -->
+
+                                <div class="form-group row mt32">
+                                    <div class="offset-lg-1 offset-md-2 col-md-3 col-lg-2 text-left">
+                                        <input type="button" id="discard" class="btn btn-secondary btn-lg" value="Discard"/>
+                                    </div>
+                                    <div class="col-md-8 col-lg-7 text-right">
+                                        <input type="button" id="prev2" class="btn btn-secondary btn-lg" value="Prev"/>
+                                        <input type="submit" class="btn btn-primary btn-lg" value="Next"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row" t-if="mode == 'step3'">
+                            <div style="margin-left:24px;" t-field="company_id.instruction_html_3"/>
+                            <br/><br/>
+                            <form id="enphase_step3" method="post" class="s_website_form o_wprofile_editor_form container-fluid mt32">
+                                <input type="hidden" name="id" id="id" t-att-value="sales.id"/>
+                                <div class="form-group row form-field o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="steiger">Steiger</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <select class="form-control" name="steiger" id="steiger" required="1" t-att-value="sales.steiger">
+                                            <option value=""></option>
+                                            <option value="ja" t-att-selected="'selected' if sales.steiger == 'ja' else None">Ja</option>
+                                            <option value="nee" t-att-selected="'selected' if sales.steiger == 'nee' else None">Nee</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required" id="row_steiger_aantal_dagen" style="display:none">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="steiger_aantal_dagen">Aantal dagen</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="steiger_aantal_dagen" id ="steiger_aantal_dagen" 
+                                        pattern="[0-9]{}" t-att-value="sales.steiger_aantal_dagen"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field mt32 o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="ladderlift">Ladderlift</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <select class="form-control" name="ladderlift" id="ladderlift" required="1" t-att-value="ladderlift">
+                                            <option value=""></option>
+                                            <option value="ja" t-att-selected="'selected' if sales.ladderlift == 'ja' else None">Ja</option>
+                                            <option value="nee" t-att-selected="'selected' if sales.ladderlift == 'nee' else None">Nee</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required" id="row_ladderlift_aantal_dagen" style="display:none">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="ladderlift_aantal_dagen">Aantal dagen</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="ladderlift_aantal_dagen" id ="ladderlift_aantal_dagen" 
+                                        pattern="[0-9]{}" t-att-value="sales.ladderlift_aantal_dagen"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field mt32 o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="dakrandbeveiliging">Dakrandbeveiliging</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <select class="form-control" name="dakrandbeveiliging" id="dakrandbeveiliging" required="1"
+                                        t-att-value="dakrandbeveiliging">
+                                            <option value=""></option>
+                                            <option value="ja" t-att-selected="'selected' if sales.dakrandbeveiliging == 'ja' else None">Ja</option>
+                                            <option value="nee" t-att-selected="'selected' if sales.dakrandbeveiliging == 'nee' else None">Nee</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required" id="row_dak_aantal_dagen" style="display:none">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="dak_aantal_dagen">Aantal dagen</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="dak_aantal_dagen" id="dak_aantal_dagen" 
+                                        pattern="[0-9]{}" t-att-value="sales.dak_aantal_dagen"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required" id="row_dak_aantal_meter" style="display:none">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="dak_aantal_meter">Aantal meter</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="dak_aantal_meter" id="dak_aantal_meter" 
+                                        pattern="[0-9]{}" t-att-value="sales.dak_aantal_meter"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field mt32 o_website_form_required">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="verrijker">Verrijker</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <select class="form-control" name="verrijker" id="verrijker" required="1" t-att-value="verrijker">
+                                            <option value=""></option>
+                                            <option value="ja" t-att-selected="'selected' if sales.verrijker == 'ja' else None">Ja</option>
+                                            <option value="nee" t-att-selected="'selected' if sales.verrijker == 'nee' else None">Nee</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required" id="row_verrijker_aantal_dagen" style="display:none">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="verrijker_aantal_dagen">Aantal dagen</label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text" class="form-control o_website_form_input" name="verrijker_aantal_dagen" id ="verrijker_aantal_dagen" 
+                                        pattern="[0-9]{}" t-att-value="sales.verrijker_aantal_dagen"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row mt16" id="row_notes">
+                                    <div class="offset-lg-3 col-md-8 col-lg-7 text-center">
+                                        <h5> Extra opmerkingen op de offerte </h5>
+                                        <textarea class="form-control o_website_form_input" name="notes" id="notes"><t t-esc="sales.notes"/></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row mt32">
+                                    <div class="offset-lg-1 offset-md-2 col-md-3 col-lg-2 text-left">
+                                        <input type="button" id="discard" class="btn btn-secondary btn-lg" value="Discard"/>
+                                    </div>
+                                    <div class="col-md-8 col-lg-7 text-right">
+                                        <input type="button" id="prev3" class="btn btn-secondary btn-lg" value="Prev"/>
+                                        <input type="submit" class="btn btn-primary btn-lg" value="Next"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row" t-if="mode == 'step4'">
+                            <div style="margin-left:24px;" t-field="company_id.instruction_html_4"/>
+                            <br/><br/>
+                            <div class="col-lg-12 col-md-12">
+                                De offerte kan gemailed worden naar het volgende adres <t t-if="sales_order != false" t-esc="sales_order.partner_id.email"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12"/>
+                            <div class="col-lg-12 col-md-12"/>
+                            <div class="offset-lg-5 col-lg-4 col-md-4">
+                                <input type="button" id="send_quotation" class="btn btn-secondary btn-lg" value="Send Quotation"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12"/>
+                            <div class="col-lg-12 col-md-12 text-center mt32" id="download_pdf">
+
+                            </div>
+                            <form id="enphase_confirm" method="post" class="s_website_form o_wprofile_editor_form container-fluid mt32">
+                                <input type="hidden" name="id" id="id" t-att-value="sales.id"/>
+                                <input type="hidden" name="opportunity" id="opportunity" t-att-value="opportunity"/>
+                                <input type="hidden" name="sales_order_id" id="sales_order_id" t-att-value="sales_order.id"/>
+
+                                <div class="form-group row mt16" id="row_condition">
+                                    <div class="col-lg-12 col-md-12">
+                                        <h5> Condition </h5>
+                                        <div id="condition" t-raw="sales.condition_txt"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-lg-5 offset-md-4 col-md-8 col-lg-7 text-right">
+                                        <input type="button" id="prev4" class="btn btn-secondary btn-lg" value="Prev"/>
+                                        <input type="submit" id="submit4" class="btn btn-primary btn-lg" value="Confirm"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                    var mode = document.getElementById("mode");
+                                    if(mode.value == 'step3'){
+
+                                        var steiger = document.getElementById("steiger").value
+                                        var row_steiger_aantal_dagen = document.getElementById("row_steiger_aantal_dagen")
+                                        var steiger_aantal_dagen = document.getElementById("steiger_aantal_dagen")
+                                        if (steiger == 'ja') {
+                                        row_steiger_aantal_dagen.style.display = "flex";
+                                        steiger_aantal_dagen.setAttribute('required', '');
+                                        } else {
+                                        row_steiger_aantal_dagen.style.display = "none";
+                                        steiger_aantal_dagen.removeAttribute('required');
+                                        }
+                                        
+                                        var ladderlift = document.getElementById("ladderlift").value
+                                        var row_ladderlift_aantal_dagen = document.getElementById("row_ladderlift_aantal_dagen")
+                                        var ladderlift_aantal_dagen = document.getElementById("ladderlift_aantal_dagen")
+                                        if (ladderlift == 'ja') {
+                                        row_ladderlift_aantal_dagen.style.display = "flex";
+                                        ladderlift_aantal_dagen.setAttribute('required', '');
+                                        } else {
+                                        row_ladderlift_aantal_dagen.style.display = "none";
+                                        ladderlift_aantal_dagen.removeAttribute('required');
+                                        }
+
+                                        var dakrandbeveiliging = document.getElementById("dakrandbeveiliging").value
+                                        var row_dak_aantal_dagen = document.getElementById("row_dak_aantal_dagen")
+                                        var row_dak_aantal_meter = document.getElementById("row_dak_aantal_meter")
+                                        var dak_aantal_dagen = document.getElementById("dak_aantal_dagen")
+                                        var dak_aantal_meter = document.getElementById("dak_aantal_meter")
+                                        if (dakrandbeveiliging == 'ja') {
+                                        row_dak_aantal_dagen.style.display = "flex";
+                                        row_dak_aantal_meter.style.display = "flex";
+                                        dak_aantal_dagen.setAttribute('required', '');
+                                        dak_aantal_meter.setAttribute('required', '');
+                                        } else {
+                                        row_dak_aantal_dagen.style.display = "none";
+                                        row_dak_aantal_meter.style.display = "none";
+                                        dak_aantal_dagen.removeAttribute('required');
+                                        dak_aantal_meter.removeAttribute('required');
+                                        }
+
+                                        var verrijker = document.getElementById("verrijker").value
+                                        var row_verrijker_aantal_dagen = document.getElementById("row_verrijker_aantal_dagen")
+                                        var verrijker_aantal_dagen = document.getElementById("verrijker_aantal_dagen")
+                                        if (verrijker == 'ja') {
+                                        row_verrijker_aantal_dagen.style.display = "flex";
+                                        verrijker_aantal_dagen.setAttribute('required', '');
+                                        } else {
+                                        row_verrijker_aantal_dagen.style.display = "none";
+                                        verrijker_aantal_dagen.removeAttribute('required');
+                                        }
+                                    }    
+                            });
+
+                            $("#verrijker").on('change', function() {
+                                const verrijker = this.value;
+                                var row_verrijker_aantal_dagen = document.getElementById("row_verrijker_aantal_dagen")
+                                var verrijker_aantal_dagen = document.getElementById("verrijker_aantal_dagen")
+                                if (verrijker == 'ja') {
+                                row_verrijker_aantal_dagen.style.display = "flex";
+                                verrijker_aantal_dagen.setAttribute('required', '');
+                                } else {
+                                row_verrijker_aantal_dagen.style.display = "none";
+                                verrijker_aantal_dagen.removeAttribute('required');
+                                }
+                            });
+
+                            $("#dakrandbeveiliging").on('change', function() {
+                                const dakrandbeveiliging = this.value;
+                                var row_dak_aantal_dagen = document.getElementById("row_dak_aantal_dagen")
+                                var row_dak_aantal_meter = document.getElementById("row_dak_aantal_meter")
+                                var dak_aantal_dagen = document.getElementById("dak_aantal_dagen")
+                                var dak_aantal_meter = document.getElementById("dak_aantal_meter")
+                                if (dakrandbeveiliging == 'ja') {
+                                row_dak_aantal_dagen.style.display = "flex";
+                                row_dak_aantal_meter.style.display = "flex";
+                                dak_aantal_dagen.setAttribute('required', '');
+                                dak_aantal_meter.setAttribute('required', '');
+                                } else {
+                                row_dak_aantal_dagen.style.display = "none";
+                                row_dak_aantal_meter.style.display = "none";
+                                dak_aantal_dagen.removeAttribute('required');
+                                dak_aantal_meter.removeAttribute('required');
+                                }
+                            });
+
+                            $("#ladderlift").on('change', function() {
+                                const ladderlift = this.value;
+                                var row_ladderlift_aantal_dagen = document.getElementById("row_ladderlift_aantal_dagen")
+                                var ladderlift_aantal_dagen = document.getElementById("ladderlift_aantal_dagen")
+                                if (ladderlift == 'ja') {
+                                row_ladderlift_aantal_dagen.style.display = "flex";
+                                ladderlift_aantal_dagen.setAttribute('required', '');
+                                } else {
+                                row_ladderlift_aantal_dagen.style.display = "none";
+                                ladderlift_aantal_dagen.removeAttribute('required');
+                                }
+                            });
+
+                            $("#steiger").on('change', function() {
+                                const steiger = this.value;
+                                var row_steiger_aantal_dagen = document.getElementById("row_steiger_aantal_dagen")
+                                var steiger_aantal_dagen = document.getElementById("steiger_aantal_dagen")
+                                if (steiger == 'ja') {
+                                row_steiger_aantal_dagen.style.display = "flex";
+                                steiger_aantal_dagen.setAttribute('required', '');
+                                } else {
+                                row_steiger_aantal_dagen.style.display = "none";
+                                steiger_aantal_dagen.removeAttribute('required');
+                                }
+                            });
+
+                            var prev2 = document.getElementById('prev2')
+                            if(prev2){
+                                document.getElementById('prev2').onclick = function() {
+                                    var id = document.getElementById('id').value
+                                    var p2_urls = 'http://'+ window.location.host + '/back_step_opp'
+                                    fetch(p2_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(p2_response){
+                                        return p2_response.json()
+                                    }).then(function(p2_data){
+                                        location.reload()
+                                        console.log(p2_data)
+                                    })
+                                }
+                            }
+
+                            var prev3 = document.getElementById('prev3')
+                            if(prev3){
+                                document.getElementById('prev3').onclick = function() {
+                                    var id = document.getElementById('id').value
+                                    var p3_urls = 'http://'+ window.location.host + '/back_step2'
+                                    fetch(p3_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(p3_response){
+                                        return p3_response.json()
+                                    }).then(function(p3_data){
+                                        location.reload()
+                                        console.log(p3_data)
+                                    })
+                                }
+                            }
+
+                            var prev4 = document.getElementById('prev4')
+                            if(prev4){
+                                document.getElementById('prev4').onclick = function() {
+                                    var id = document.getElementById('id').value
+                                    var p4_urls = 'http://'+ window.location.host + '/back_step3'
+                                    fetch(p4_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(p4_response){
+                                        return p4_response.json()
+                                    }).then(function(p4_data){
+                                        location.reload()
+                                        console.log(p4_data)
+                                    })
+                                }
+                            }
+
+                            var add_paneel = document.getElementById('add_paneel')
+                            if(add_paneel){
+                                document.getElementById('add_paneel').onclick = function() {
+                                    var id = document.getElementById('id').value
+                                    var paneel = document.getElementById('type_paneel').value
+                                    var aantal_panelen = document.getElementById('aantal_panelen').value
+                                    var add_paneel_urls = 'http://'+ window.location.host + '/add_paneel'
+                                    fetch(add_paneel_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,paneel:paneel,aantal_panelen:aantal_panelen}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(pnl_response){
+                                        return pnl_response.json()
+                                    }).then(function(pnl_data){
+                                        location.reload()
+                                        console.log(pnl_data)
+                                    })
+                                }
+                            }
+
+                            var add_frame = document.getElementById('add_frame')
+                            if(add_frame){
+                                document.getElementById('add_frame').onclick = function() {
+                                    var id = document.getElementById('id').value
+                                    var frame = document.getElementById('type_frame').value
+                                    var aantal_frame = document.getElementById('aantal_frame').value
+                                    var add_frame_urls = 'http://'+ window.location.host + '/add_frame'
+                                    fetch(add_frame_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,frame:frame,aantal_frame:aantal_frame}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(frm_response){
+                                        return frm_response.json()
+                                    }).then(function(frm_data){
+                                        location.reload()
+                                        console.log(frm_data)
+                                    })
+                                }
+                            }
+
+                            var add_roof = document.getElementById('add_roof')
+                            if(add_roof){
+                                document.getElementById('add_roof').onclick = function() {
+                                    var id = document.getElementById('id').value
+                                    var roof = document.getElementById('roof_type').value
+                                    var roof_name = document.getElementById('roof_name').value
+                                    var add_roof_urls = 'http://'+ window.location.host + '/add_roof'
+                                    fetch(add_roof_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,roof:roof,roof_name:roof_name}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(rf_response){
+                                        return rf_response.json()
+                                    }).then(function(rf_data){
+                                        location.reload()
+                                        console.log(rf_data)
+                                    })
+                                }
+                            }
+
+                            var discard = document.getElementById('discard')
+                            if(discard){
+                                document.getElementById('discard').onclick = function() {
+                                    var id = document.getElementById('id').value
+                                    var discard_urls = 'http://'+ window.location.host + '/discard'
+                                    fetch(discard_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(dsc_response){
+                                        return dsc_response.json()
+                                    }).then(function(dsc_data){
+                                        location.reload()
+                                        console.log(dsc_data)
+                                    })
+                                }
+                            }
+
+                            var send_quotation = document.getElementById('send_quotation')
+                            if(send_quotation){
+                                document.getElementById('send_quotation').onclick = function() {
+                                    var id = document.getElementById('sales_order_id').value
+                                    var sq_urls = 'http://'+ window.location.host + '/send_quotation'
+                                    fetch(sq_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(sq_response){
+                                        return sq_response.json()
+                                    }).then(function(sq_data){
+                                        location.reload()
+                                        console.log(sq_data)
+                                    })
+                                }
+                            }
+                            
+                        </script>
+
+
+                        <div class="row mt64 mb64" t-if="mode == 'no_opportunity' or mode == 'show_opportunity'">
+                            <div style="margin-left:24px;" t-field="company_id.instruction_html"/>
+                            <br/><br/>
+                            <div class="col-lg-12 col-md-12">
+                                <form id="enphase_opportunity" action="/website_form/" method="post" class="container-fluid mt32 o_fake_not_editable s_website_form" enctype="multipart/form-data" data-name="Form Builder" data-model_name="crm.lead" data-success_page="/enphase">
+                                    <input t-if="sales" type="hidden" name="sales_id" id="sales_id" t-att-value="sales.id"/>
+                                    <input t-if="sales.opportunity" type="hidden" name="id" id="id" t-att-value="sales.opportunity.id"/>
+                                    <group>
+                                        <div class="d-none form-field form-group row o_website_form_recaptcha">
+                                            <div class="col-lg-7 col-md-8">
+                                                <input type="text" class="form-control o_website_form_input" name="team_id" value="1"/>
+                                            </div>
+                                            <div class="col-lg-7 col-md-8">
+                                                <input type="text" class="form-control o_website_form_input" name="name" value="Aanvraag via de website"/>
+                                            </div>
+                                        </div>
+                                    </group>
+                                    <div class="row">
+                                        <div class="col-lg-6 pb0 pt32">
+                                            <div class="form-field form-group row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <select class="form-control o_website_form_input" id="dak_orintatie" name="x_studio_dak_orientatie" required="false" tabindex="1">
+                                                    <option value="">Wat is de dak orientatie?</option>
+                                                    <option value="Noord" t-att-selected="'selected' if sales.opportunity.x_studio_dak_orientatie == 'Noord' else None">Noord</option>
+                                                    <option value="Oost" t-att-selected="'selected' if sales.opportunity.x_studio_dak_orientatie == 'Oost' else None">Oost</option>
+                                                    <option value="Zuid" t-att-selected="'selected' if sales.opportunity.x_studio_dak_orientatie == 'Zuid' else None">Zuid</option>
+                                                    <option value="West" t-att-selected="'selected' if sales.opportunity.x_studio_dak_orientatie == 'West' else None">West</option>
+                                                    <option value="Zuid-West" t-att-selected="'selected' if sales.opportunity.x_studio_dak_orientatie == 'Zuid-West' else None">Zuid-West</option>
+                                                    <option value="Zuid-Oost" t-att-selected="'selected' if sales.opportunity.x_studio_dak_orientatie == 'Zuid-Oost' else None">Zuid-Oost</option>
+                                                    <option value="Geen idee" t-att-selected="'selected' if sales.opportunity.x_studio_dak_orientatie == 'Geen idee' else None">Geen idee</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <select class="form-control o_website_form_input" id="investeringsredenen" name="x_studio_investeringsredenen" required="false" tabindex="2">
+                                                    <option value="">Wat is voor u de voornaamste reden om te investeren in zonnepanelen?</option>
+                                                    <option value="Rendement" t-att-selected="'selected' if sales.opportunity.x_studio_investeringsredenen == 'Rendement' else None">Rendement</option>
+                                                    <option value="Eigen energie opwekken, Maandelijkse lasten verminderen" t-att-selected="'selected' if sales.opportunity.x_studio_investeringsredenen == 'Eigen energie opwekken, Maandelijkse lasten verminderen' else None">
+                                                    Eigen energie opwekken, Maandelijkse lasten verminderen</option>
+                                                    <option value="Milieu (duurzaamheid) - Bijdrage aan de wereld" t-att-selected="'selected' if sales.opportunity.x_studio_investeringsredenen == 'Milieu (duurzaamheid) - Bijdrage aan de wereld' else None">
+                                                    Milieu (duurzaamheid) - Bijdrage aan de wereld</option>
+                                                    <option value="Groener energielabel" t-att-selected="'selected' if sales.opportunity.x_studio_investeringsredenen == 'Groener energielabel' else None">
+                                                    Groener energielabel</option>
+                                                    <option value="Waarde stijging van mijn woning" t-att-selected="'selected' if sales.opportunity.x_studio_investeringsredenen == 'Waarde stijging van mijn woning' else None">
+                                                    Waarde stijging van mijn woning</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 pb0 pt32">
+                                            <div class="form-field form-group row o_fake_not_editable o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input type="number" placeholder="Wat is uw huidige verbruik in kWh/jaar? Indien onbekend vul dan 0 in" class="form-control o_website_form_input" t-att-value="sales.opportunity.x_studio_energie_verbruik_per_jaar" id="energie_verbruik" name="x_studio_energie_verbruik_per_jaar" step="1" required="" tabindex="3"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <select class="form-control o_website_form_input" id="medium_id" name="medium_id" required="false" tabindex="4">
+                                                    <option value="">Hoe bent U terecht gekomen bij Pebble Green Systems?</option>
+                                                    <option value="1" t-att-selected="'selected' if sales.opportunity.medium_id.id == 13 else None">Via een bekende</option>
+                                                    <option value="2" t-att-selected="'selected' if sales.opportunity.medium_id.id == 16 else None">Via ONE (Oosterhout Nieuwe Energie)</option>
+                                                    <option value="3" t-att-selected="'selected' if sales.opportunity.medium_id.id == 17 else None">Via Sunpower</option>
+                                                    <option value="4" t-att-selected="'selected' if sales.opportunity.medium_id.id == 15 else None">Via een markt/beurs</option>
+                                                    <option value="5" t-att-selected="'selected' if sales.opportunity.medium_id.id == 18 else None">Geen van de bovenstaande</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 pb0 pt0">
+                                            <div style="margin-bottom: 0px;">
+                                                <span>Ik heb intresse in:</span>
+                                            </div>
+                                            <div class="form-field form-group o_fake_not_editable row" style="margin-bottom: 0px;">
+                                                <div class="col-lg-1 col-md-2">
+                                                    <input type="checkbox" t-att-checked="'checked' if sales.opportunity.x_studio_zonnepanelen_ == true else None" class="o_website_form_input" id="zonnepanelen" name="x_studio_zonnepanelen_" tabindex="5"/>
+                                                </div>
+                                                <div class="col-lg-9 col-md-10">
+                                                    <label class="col-form-label o_fake_editable" style="padding-bottom: 0px;padding-top: 0px; font-weight: 100;" for="x_studio_zonnepanelen_">Zonnepanelen</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group o_fake_not_editable row" style="margin-bottom: 0px;">
+                                                <div class="col-lg-1 col-md-2">
+                                                    <input type="checkbox" t-att-checked="'checked' if sales.opportunity.x_studio_infraroodverwarming_ == true else None" class="o_website_form_input" id="infraroodverwarming" name="x_studio_infraroodverwarming_" tabindex="6"/>
+                                                </div>
+                                                <div class="col-lg-9 col-md-10">
+                                                    <label class="col-form-label o_fake_editable" style="padding-bottom: 0px;padding-top: 0px; font-weight: 100;" for="x_studio_infraroodverwarming_">Infraroodverwarming</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group o_fake_not_editable row">
+                                                <div class="col-lg-1 col-md-2">
+                                                    <input type="checkbox" t-att-checked="'checked' if sales.opportunity.x_studio_laadpaal_ == true else None" class="o_website_form_input" id="laadpaal" name="x_studio_laadpaal_" tabindex="7"/>
+                                                </div>
+                                                <div class="col-lg-9 col-md-10">
+                                                    <label class="col-form-label o_fake_editable" style="padding-bottom: 0px;padding-top: 0px; font-weight: 100;" for="x_studio_laadpaal_">Laadpaal</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 pb0">
+                                            <textarea t-if="mode == 'no_opportunity'" class="form-control o_website_form_input" placeholder="Opmerkingen, indien via een bekende graag vermelden via wie" id="description" name="description" required="" style="margin-top: 0px; margin-bottom: 0px; height: 137px;" tabindex="8"/>
+                                            <textarea t-if="mode == 'show_opportunity'" class="form-control o_website_form_input" id="description" name="description" required="" style="margin-top: 0px; margin-bottom: 0px; height: 137px;" tabindex="8"><t t-esc="sales.opportunity.description"/></textarea>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 pb0 pt0">
+                                            <div class="form-field form-group o_fake_not_editable o_website_form_required_custom row"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 pb0 pt0">
+                                            <div class="form-field form-group o_fake_not_editable row o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <select class="form-control o_website_form_input" id="title" name="x_studio_titel" required="" placeholder="De heer of Mevrouw">
+                                                    <option value="3" t-att-selected="'selected' if sales.opportunity.x_studio_titel == '3' else None">De heer</option>
+                                                    <option value="1" t-att-selected="'selected' if sales.opportunity.x_studio_titel == '1' else None">Mevrouw</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group o_fake_not_editable row o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input type="text" class="form-control o_website_form_input" placeholder="Uw voornaam" t-att-value="sales.opportunity.x_studio_voornaam" id="voornaam" name="x_studio_voornaam" required="" tabindex="9"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group o_fake_not_editable row o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input type="text" class="form-control o_website_form_input" placeholder="Telefoonnummer" t-att-value="sales.opportunity.phone" id="phone" name="phone" required="" tabindex="11"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group o_fake_not_editable row o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input type="text" class="form-control o_website_form_input" placeholder="Huisnummer" id="huisnummer" name="x_studio_huisnummer" readonly="1" tabindex="13" t-att-value="sales.huisnummer"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 pb0 pt0">
+                                            <div class="form-field form-group row o_fake_not_editable o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input type="text" class="form-control o_website_form_input" placeholder="Uw achternaam" t-att-value="sales.opportunity.x_studio_achternaam" id="achternaam" name="x_studio_achternaam" required="" tabindex="10"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group row o_fake_not_editable o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input type="text" class="form-control o_website_form_input" placeholder="Postcode" name="x_studio_postcode" readonly="1" tabindex="12" t-att-value="sales.postcode"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-field form-group row o_fake_not_editable o_website_form_required_custom">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input type="text" class="form-control o_website_form_input" placeholder="E-mailadres" t-att-value="sales.opportunity.email_from" id="email_from" name="email_from" required="" tabindex="14"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3 col-lg-2 text-left">
+                                            <input type="button" id="discard_opp" class="btn btn-secondary btn-lg" value="Discard"/>
+                                        </div>
+                                        <div class="offset-lg-3 offset-md-5 col-lg-5 col-md-6">
+                                            <button t-if="mode == 'no_opportunity'" class="btn btn-lg btn-primary o_default_snippet_text o_website_form_send" style="position: relative; overflow: hidden;" tabindex="15">Create</button>
+                                            <input t-if="mode == 'show_opportunity'" type="submit" class="btn btn-primary btn-lg" value="Next"/>
+                                            <span id="o_website_form_result"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <script>
+                            var discard_opp = document.getElementById('discard_opp')
+                            if(discard_opp){
+                                document.getElementById('discard_opp').onclick = function() {
+                                    var sales_id = document.getElementById('sales_id').value
+                                    var discard_opp_urls = 'http://'+ window.location.host + '/discard_opp'
+                                    fetch(discard_opp_urls, {
+                                        method:'POST',
+                                        body:JSON.stringify({"jsonrpc": "2.0", "params":{id:sales_id}}),
+                                        headers:{"Content-Type": "application/json; charset=UTF-8"}
+                                    }).then(function(dsc_opp_response){
+                                        return dsc_opp_response.json()
+                                    }).then(function(dsc_opp_data){
+                                        location.reload()
+                                        console.log(dsc_opp_data)
+                                    })
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

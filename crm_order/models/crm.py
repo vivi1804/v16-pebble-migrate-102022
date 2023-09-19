@@ -39,6 +39,57 @@ class CrmOrder(models.Model):
     inverter_one = fields.Many2one('product.product', string='Omvormer 1')
     inverter_two = fields.Many2one('product.product', string='Omvormer 2')
 
+    def action_schedule_meeting(self):
+        """ Open meeting's calendar view to schedule meeting on current opportunity.
+            :return dict: dictionary value for created Meeting view
+        """
+        self.ensure_one()
+        action = self.env.ref('calendar.action_calendar_event').read()[0]
+        if self.user_id:
+            partner_ids = self.user_id.partner_id.ids
+        else:
+            partner_ids = self.env.user.partner_id.ids
+        
+        
+        if self.partner_id: 
+            if len(self.partner_id.child_ids) == 1:
+                partner_ids.append(self.partner_id.child_ids.id)
+            else:
+                partner_ids.append(self.partner_id.id)
+
+
+        meeting_name = 'Opname '
+        if self.title:
+            meeting_name += self.title.name + ' '
+        if self.contact_name:
+            meeting_name += self.contact_name + ' '
+        if self.mobile:
+            meeting_name += self.mobile + ' '
+        if self.user_id:
+            meeting_name += ' door ' + self.user_id.name
+
+
+        meeting_address = ''
+        if self.partner_id.street_name :
+            meeting_address += self.partner_id.street_name + ' '
+        if self.partner_id.street_number:
+            meeting_address += self.partner_id.street_number + ' '
+        if self.partner_id.zip:
+            meeting_address += self.partner_id.zip + ' '
+        if self.partner_id.city:
+            meeting_address += self.partner_id.city + ' '
+
+        action['context'] = {
+            'default_opportunity_id': self.id if self.type == 'opportunity' else False,
+            'default_partner_id': self.user_id.id if self.user_id else self.env.user.partner_id.id,
+            'default_partner_ids': partner_ids,
+            'default_team_id': self.team_id.id,
+            'default_name': meeting_name,
+            'default_location': meeting_address,
+            'default_user_id': self.user_id.id if self.user_id else self.env.user.partner_id.id
+        }
+        return action
+
     @api.onchange('wattpiek_paneel_one','aantal_paneel_one')   
     def getsum_total_wattpiek_paneel_one(self):
         self.total_wattpiek_paneel_one = self.wattpiek_paneel_one * self.aantal_paneel_one
