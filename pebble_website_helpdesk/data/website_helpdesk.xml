@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <function model="ir.model.fields" name="formbuilder_whitelist">
-        <value>helpdesk.ticket</value>
-        <value eval="[
-            'postcode',
-            'huisnummer',
-            'ticket_type_id',
-        ]"/>
-    </function>
+    <data noupdate="0">
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>helpdesk.ticket</value>
+            <value eval="[
+                'postcode',
+                'huisnummer',
+                'ticket_type_id',
+            ]"/>
+        </function>
+    </data>
 </odoo>
 

@@ -6,7 +6,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
-            <field name="partner_email" position="after">
+            <field name="partner_id" position="before">
                 <field name="postcode"/>
                 <field name="huisnummer"/>
             </field>

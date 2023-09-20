@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
+    <data noupdate="0">
         <record id="action_website_helpdesk_extended" model="base.automation">
             <field name="name">Helpdesk: Get Sales Order </field>
             <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>

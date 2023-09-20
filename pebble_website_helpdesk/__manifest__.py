@@ -7,6 +7,7 @@
     'description': """
 Additional field zipcode and house number in helpdesk.
     """,
+    'depends': ['website_helpdesk'],
     'data': [
         'views/website_helpdesk_extended.xml',
         'views/website_helpdesk_extended_portal.xml',
