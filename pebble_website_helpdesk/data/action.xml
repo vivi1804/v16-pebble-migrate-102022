@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="action_website_helpdesk_extended" model="base.automation">
+            <field name="name">Helpdesk: Get Sales Order </field>
+            <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+            <field name="trigger">on_create</field>
+            <field name="active" eval="True"/>
+            <field name="state">code</field>
+            <field name="code">
+name = ", ".join([record.partner_id.name, record.partner_name, record.name])
+
+partner = record.partner_id
+sales = env['sale.order'].search([('partner_id','=', partner.id),('state','=',"sale")], limit=1)
+
+record.write({'name': name,'sale_order_id': sales.id, 'user_id': sales.user_id.id})
+            </field>
+        </record>
+    </data>
+</openerp>
