@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--HELPDESK FORM-->
+    <record id="view_helpdesk_ticket_form_extended" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.extended</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_email" position="after">
+                <field name="postcode"/>
+                <field name="huisnummer"/>
+            </field>
+        </field>
+    </record>
+</odoo>
