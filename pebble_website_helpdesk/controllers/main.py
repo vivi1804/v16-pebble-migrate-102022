@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from operator import truediv
 from werkzeug.exceptions import NotFound
 from werkzeug.utils import redirect
 
 import json
+import base64
 
 from odoo import http, _
 from odoo.http import request
 from odoo.osv import expression
 from odoo.addons.website.controllers.form import WebsiteForm
-
 
 class WebsiteHelpdesk(http.Controller):
 
@@ -34,30 +33,63 @@ class WebsiteHelpdesk(http.Controller):
         if not teams:
             raise NotFound()
         
-        types =  request.env['helpdesk.ticket.type'].search([])
+        types =  request.env['helpdesk.ticket.type'].sudo().search([])
 
         result = self.get_helpdesk_team_data(team or teams[0], search=search)
         result['multiple_teams'] = len(teams) > 1
         result['types'] = types
         return request.render("website_helpdesk.team", result)
 
+class CustomWebsiteForm(WebsiteForm):
 
-    @http.route(['/create/ticket/<model_name>'], type='http', auth="public", website=True)
-    def create_helpdesk_ticket(self, **kwargs):
+    @http.route(['/website/form/<model_name>'], type='http', auth="public", website=True, sitemap=True)
+    def _handle_website_form(self, model_name, **kwargs):
         if kwargs.get('postcode') and kwargs.get('huisnummer'):
-            postcode = kwargs.get('postcode') 
-            huisnummer = kwargs.get('huisnummer')
-            customer = "-".join([postcode.replace(" ",""), huisnummer.replace(" ","")])
+            postcode = kwargs.get('postcode').replace(" ", "")
+            huisnummer = kwargs.get('huisnummer').replace(" ", "")
+            partner_name = "-".join([postcode, huisnummer])
 
-            Partner = request.env['res.partner'].sudo().search([('name', '=', customer)])
-            
-            vals = {
-                'postcode': postcode,
-                'huisnummer': huisnummer,
-                'name': "Website aanvrag",
-            }
+            Partner = request.env['res.partner'].sudo().search([('name','=', partner_name)], limit=1)
+            if not Partner:
+                Partner = request.env['res.partner'].sudo().create({
+                    'name': partner_name,
+                    'email': kwargs.get('partner_email'),
+                    'zip': postcode,
+                    'street_number': huisnummer,
+                })
 
-            request.env['helpdesk.ticket'].sudo().create(vals)
-        return request.render("pebble_website_helpdesk.website_helpdesk_ticket_form_extended_team_1", {})
+        # Create the helpdesk ticket
+        ticket = request.env['helpdesk.ticket'].sudo().create({
+            'name': kwargs.get('name'),
+            'partner_id': Partner.id,
+            'postcode': postcode,
+            'huisnummer': huisnummer,
+            'partner_name': kwargs.get('partner_name'),
+            'partner_email': kwargs.get('partner_email'),
+            'description': kwargs.get('description'),
+            'ticket_type_id': kwargs.get('ticket_type_id'),
+        })
+
+        model_record = request.env['ir.model'].sudo().search([('model', '=', model_name)]) 
+        data = self.extract_data(model_record, request.params)
+        attached_files = data.get('attachments')
+        for attachment in attached_files:
+            attached_file = attachment.read()
+            request.env['ir.attachment'].sudo().create({
+                'name': attachment.filename,
+                'res_model': 'helpdesk.ticket',
+                'res_id': ticket.id,
+                'type': 'binary',
+                'datas': base64.encodebytes(attached_file),
+            })
 
 
+        # Send an email message using an email template
+        template_id = request.env.ref('helpdesk.new_ticket_request_email_template').id  # Replace with the actual template ID
+        template = request.env['mail.template'].sudo().browse(template_id)
+        template.send_mail(ticket.id, force_send=True)
+
+        request.session['form_builder_model_model'] = model_record.model
+        request.session['form_builder_model'] = model_record.name
+        request.session['form_builder_id'] = ticket.id
+        return json.dumps({'id': ticket.id})
