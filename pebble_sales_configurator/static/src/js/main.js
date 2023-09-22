@@ -342,6 +342,174 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
         })
     }
 
+    var prev2 = document.getElementById('prev2')
+    if(prev2){
+        document.getElementById('prev2').onclick = function() {
+            var id = document.getElementById('id').value
+            var p2_urls = 'http://'+ window.location.host + '/back_step_opp'
+            fetch(p2_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(p2_response){
+                return p2_response.json()
+            }).then(function(p2_data){
+                location.reload()
+                console.log(p2_data)
+            })
+        }
+    }
+
+    var prev3 = document.getElementById('prev3')
+    if(prev3){
+        document.getElementById('prev3').onclick = function() {
+            var id = document.getElementById('id').value
+            var p3_urls = 'http://'+ window.location.host + '/back_step2'
+            fetch(p3_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(p3_response){
+                return p3_response.json()
+            }).then(function(p3_data){
+                location.reload()
+                console.log(p3_data)
+            })
+        }
+    }
+
+    var prev4 = document.getElementById('prev4')
+    if(prev4){
+        document.getElementById('prev4').onclick = function() {
+            var id = document.getElementById('id').value
+            var p4_urls = 'http://'+ window.location.host + '/back_step3'
+            fetch(p4_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(p4_response){
+                return p4_response.json()
+            }).then(function(p4_data){
+                location.reload()
+                console.log(p4_data)
+            })
+        }
+    }
+
+    var add_paneel = document.getElementById('add_paneel')
+    if(add_paneel){
+        document.getElementById('add_paneel').onclick = function() {
+            var id = document.getElementById('id').value
+            var paneel = document.getElementById('type_paneel').value
+            var aantal_panelen = document.getElementById('aantal_panelen').value
+            var add_paneel_urls = 'http://'+ window.location.host + '/add_paneel'
+            fetch(add_paneel_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,paneel:paneel,aantal_panelen:aantal_panelen}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(pnl_response){
+                return pnl_response.json()
+            }).then(function(pnl_data){
+                location.reload()
+                console.log(pnl_data)
+            })
+        }
+    }
+
+    var add_frame = document.getElementById('add_frame')
+    if(add_frame){
+        document.getElementById('add_frame').onclick = function() {
+            var id = document.getElementById('id').value
+            var frame = document.getElementById('type_frame').value
+            var aantal_frame = document.getElementById('aantal_frame').value
+            var add_frame_urls = 'http://'+ window.location.host + '/add_frame'
+            fetch(add_frame_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,frame:frame,aantal_frame:aantal_frame}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(frm_response){
+                return frm_response.json()
+            }).then(function(frm_data){
+                location.reload()
+                console.log(frm_data)
+            })
+        }
+    }
+
+    var add_roof = document.getElementById('add_roof')
+    if(add_roof){
+        document.getElementById('add_roof').onclick = function() {
+            var id = document.getElementById('id').value
+            var roof = document.getElementById('roof_type').value
+            var roof_name = document.getElementById('roof_name').value
+            var add_roof_urls = 'http://'+ window.location.host + '/add_roof'
+            fetch(add_roof_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,roof:roof,roof_name:roof_name}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(rf_response){
+                return rf_response.json()
+            }).then(function(rf_data){
+                location.reload()
+                console.log(rf_data)
+            })
+        }
+    }
+
+    var discard = document.getElementById('discard')
+    if(discard){
+        document.getElementById('discard').onclick = function() {
+            var id = document.getElementById('id').value
+            var discard_urls = 'http://'+ window.location.host + '/discard'
+            fetch(discard_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(dsc_response){
+                return dsc_response.json()
+            }).then(function(dsc_data){
+                location.reload()
+                console.log(dsc_data)
+            })
+        }
+    }
+
+    var send_quotation = document.getElementById('send_quotation')
+    if(send_quotation){
+        document.getElementById('send_quotation').onclick = function() {
+            var id = document.getElementById('sales_order_id').value
+            var sq_urls = 'http://'+ window.location.host + '/send_quotation'
+            fetch(sq_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(sq_response){
+                return sq_response.json()
+            }).then(function(sq_data){
+                location.reload()
+                console.log(sq_data)
+            })
+        }
+    }
+
+    var discard_opp = document.getElementById('discard_opp')
+    if(discard_opp){
+        document.getElementById('discard_opp').onclick = function() {
+            var sales_id = document.getElementById('sales_id').value
+            var discard_opp_urls = 'http://'+ window.location.host + '/discard_opp'
+            fetch(discard_opp_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:sales_id}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(dsc_opp_response){
+                return dsc_opp_response.json()
+            }).then(function(dsc_opp_data){
+                location.reload()
+                console.log(dsc_opp_data)
+            })
+        }
+    }
+
     // onchage function on sales_condition_id 
     // search condition_id and display the condition text
     $(document).on('change', '#sales_condition_id', function(){
@@ -402,5 +570,119 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
             });
         });
     }
+
+    $(document).ready(function () {
+        var mode = document.getElementById("mode");
+        if(mode.value == 'step3'){
+
+            var steiger = document.getElementById("steiger").value
+            var row_steiger_aantal_dagen = document.getElementById("row_steiger_aantal_dagen")
+            var steiger_aantal_dagen = document.getElementById("steiger_aantal_dagen")
+            if (steiger == 'ja') {
+            row_steiger_aantal_dagen.style.display = "flex";
+            steiger_aantal_dagen.setAttribute('required', '');
+            } else {
+            row_steiger_aantal_dagen.style.display = "none";
+            steiger_aantal_dagen.removeAttribute('required');
+            }
+            
+            var ladderlift = document.getElementById("ladderlift").value
+            var row_ladderlift_aantal_dagen = document.getElementById("row_ladderlift_aantal_dagen")
+            var ladderlift_aantal_dagen = document.getElementById("ladderlift_aantal_dagen")
+            if (ladderlift == 'ja') {
+            row_ladderlift_aantal_dagen.style.display = "flex";
+            ladderlift_aantal_dagen.setAttribute('required', '');
+            } else {
+            row_ladderlift_aantal_dagen.style.display = "none";
+            ladderlift_aantal_dagen.removeAttribute('required');
+            }
+
+            var dakrandbeveiliging = document.getElementById("dakrandbeveiliging").value
+            var row_dak_aantal_dagen = document.getElementById("row_dak_aantal_dagen")
+            var row_dak_aantal_meter = document.getElementById("row_dak_aantal_meter")
+            var dak_aantal_dagen = document.getElementById("dak_aantal_dagen")
+            var dak_aantal_meter = document.getElementById("dak_aantal_meter")
+            if (dakrandbeveiliging == 'ja') {
+            row_dak_aantal_dagen.style.display = "flex";
+            row_dak_aantal_meter.style.display = "flex";
+            dak_aantal_dagen.setAttribute('required', '');
+            dak_aantal_meter.setAttribute('required', '');
+            } else {
+            row_dak_aantal_dagen.style.display = "none";
+            row_dak_aantal_meter.style.display = "none";
+            dak_aantal_dagen.removeAttribute('required');
+            dak_aantal_meter.removeAttribute('required');
+            }
+
+            var verrijker = document.getElementById("verrijker").value
+            var row_verrijker_aantal_dagen = document.getElementById("row_verrijker_aantal_dagen")
+            var verrijker_aantal_dagen = document.getElementById("verrijker_aantal_dagen")
+            if (verrijker == 'ja') {
+            row_verrijker_aantal_dagen.style.display = "flex";
+            verrijker_aantal_dagen.setAttribute('required', '');
+            } else {
+            row_verrijker_aantal_dagen.style.display = "none";
+            verrijker_aantal_dagen.removeAttribute('required');
+            }
+        }    
+    });
+
+    $("#verrijker").on('change', function() {
+        const verrijker = this.value;
+        var row_verrijker_aantal_dagen = document.getElementById("row_verrijker_aantal_dagen")
+        var verrijker_aantal_dagen = document.getElementById("verrijker_aantal_dagen")
+        if (verrijker == 'ja') {
+        row_verrijker_aantal_dagen.style.display = "flex";
+        verrijker_aantal_dagen.setAttribute('required', '');
+        } else {
+        row_verrijker_aantal_dagen.style.display = "none";
+        verrijker_aantal_dagen.removeAttribute('required');
+        }
+    });
+
+    $("#dakrandbeveiliging").on('change', function() {
+        const dakrandbeveiliging = this.value;
+        var row_dak_aantal_dagen = document.getElementById("row_dak_aantal_dagen")
+        var row_dak_aantal_meter = document.getElementById("row_dak_aantal_meter")
+        var dak_aantal_dagen = document.getElementById("dak_aantal_dagen")
+        var dak_aantal_meter = document.getElementById("dak_aantal_meter")
+        if (dakrandbeveiliging == 'ja') {
+        row_dak_aantal_dagen.style.display = "flex";
+        row_dak_aantal_meter.style.display = "flex";
+        dak_aantal_dagen.setAttribute('required', '');
+        dak_aantal_meter.setAttribute('required', '');
+        } else {
+        row_dak_aantal_dagen.style.display = "none";
+        row_dak_aantal_meter.style.display = "none";
+        dak_aantal_dagen.removeAttribute('required');
+        dak_aantal_meter.removeAttribute('required');
+        }
+    });
+
+    $("#ladderlift").on('change', function() {
+        const ladderlift = this.value;
+        var row_ladderlift_aantal_dagen = document.getElementById("row_ladderlift_aantal_dagen")
+        var ladderlift_aantal_dagen = document.getElementById("ladderlift_aantal_dagen")
+        if (ladderlift == 'ja') {
+        row_ladderlift_aantal_dagen.style.display = "flex";
+        ladderlift_aantal_dagen.setAttribute('required', '');
+        } else {
+        row_ladderlift_aantal_dagen.style.display = "none";
+        ladderlift_aantal_dagen.removeAttribute('required');
+        }
+    });
+
+    $("#steiger").on('change', function() {
+        const steiger = this.value;
+        var row_steiger_aantal_dagen = document.getElementById("row_steiger_aantal_dagen")
+        var steiger_aantal_dagen = document.getElementById("steiger_aantal_dagen")
+        if (steiger == 'ja') {
+        row_steiger_aantal_dagen.style.display = "flex";
+        steiger_aantal_dagen.setAttribute('required', '');
+        } else {
+        row_steiger_aantal_dagen.style.display = "none";
+        steiger_aantal_dagen.removeAttribute('required');
+        }
+    });
     
 });

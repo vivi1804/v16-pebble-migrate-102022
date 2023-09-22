@@ -6,7 +6,7 @@ import werkzeug
 from odoo.http import request
 from odoo.addons.website.controllers import form
 
-class WebsiteForm(form.WebsiteForm):
+class SalesConfigWebsiteForm(form.WebsiteForm):
 
     @http.route(['/enphase', '/paneel/ref=<int:paneel_id>',
                 '/frame/ref=<int:frame_id>','/roof/ref=<int:roof_id>'], type='http', auth="public", website=True)
@@ -108,23 +108,25 @@ class WebsiteForm(form.WebsiteForm):
 
     ##STEP 1: Create the draft sales configurator record. 
     ##And pass some value to the fields.
-    @http.route('/website_form/<string:model_name>', type='http', auth="public", methods=['POST'], website=True)
-    def website_form(self, model_name, **kwargs):
+    @http.route('/website/form/<model_name>', type='http', auth="public", methods=['POST'], website=True)
+    def _handle_website_form(self, model_name, **kwargs):
         if model_name == "sales.configurator":
-            param_postcode = request.params.get('postcode')
-            param_huisnummer = request.params.get('huisnummer')
+            param_postcode = kwargs.get('postcode')
+            param_huisnummer = kwargs.get('huisnummer')
             huisnummer = param_huisnummer.strip()
-            request.params['name'] = "-".join([param_postcode,huisnummer])
-            request.params['step_1'] = True
-            request.params['energycost'] = 0.4
-            request.params['klein_materiaal'] = "ja"
-            request.params['klein_aantal_dagen'] = 1
-            request.params['steiger'] = "ja"
-            request.params['steiger_aantal_dagen'] = 1
-            request.params['aansluitwaarde'] = "25"
-            request.params['kabeltrace'] = "Dit wordt bepaald tijdens de opname door de monteur."
+
+            print ("postcode :", param_postcode, "-", huisnummer)
+            kwargs['name'] = "-".join([param_postcode,huisnummer])
+            kwargs['step_1'] = True
+            kwargs['energycost'] = 0.4
+            kwargs['klein_materiaal'] = "ja"
+            kwargs['klein_aantal_dagen'] = 1
+            kwargs['steiger'] = "ja"
+            kwargs['steiger_aantal_dagen'] = 1
+            kwargs['aansluitwaarde'] = "25"
+            kwargs['kabeltrace'] = "Dit wordt bepaald tijdens de opname door de monteur."
             
-        return super(WebsiteForm, self).website_form(model_name, **kwargs) 
+        return super(SalesConfigWebsiteForm, self)._handle_website_form(model_name, **kwargs) 
     
     ## Update opportunity pages.
     @http.route('/step_opp', type='json', auth="public", website=True, csrf=False)
@@ -168,7 +170,7 @@ class WebsiteForm(form.WebsiteForm):
                     'x_studio_infraroodverwarming_' : infraroodverwarming,
                     'x_studio_laadpaal_' : laadpaal,
                     'description' : description,
-                    'x_studio_title' : title,
+                    'x_studio_titel' : title,
                     'x_studio_voornaam' : voornaam,
                     'phone' : phone,
                     'x_studio_achternaam' : achternaam,
@@ -347,9 +349,8 @@ class WebsiteForm(form.WebsiteForm):
         if not sales:
             return None
         pdf, _ = request.env['ir.actions.report']._get_report_from_name(
-            'sale.report_saleorder').sudo().render_qweb_pdf(
-            [int(enphase_id)])
-        pdf_http_headers = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
+            'sale.report_saleorder').sudo()._render_qweb_pdf('sale.report_saleorder',[int(enphase_id)])
+        pdf_http_headers = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)), ('Content-Disposition', 'attachment; filename=Sales_Order.pdf')]
         return request.make_response(pdf, headers=pdf_http_headers)
     
     #PREVIOUS BUTTON
@@ -456,7 +457,8 @@ class WebsiteForm(form.WebsiteForm):
 
         sale_id = request.env['sale.order'].sudo().search([('id','=', id)], limit=1)
 
-        pdf, pdf_name = request.env['ir.actions.report']._get_report_from_name('sale.report_saleorder').sudo().render_qweb_pdf([int(id)])
+        pdf, pdf_name = request.env['ir.actions.report']._get_report_from_name(
+            'sale.report_saleorder').sudo()._render_qweb_pdf('sale.report_saleorder',[int(id)])
         pdf = base64.b64encode(pdf)
         attachment_id = request.env['ir.attachment'].sudo().create({
             'name': sale_id.name + ".pdf",
