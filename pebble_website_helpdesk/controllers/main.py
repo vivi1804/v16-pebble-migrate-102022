@@ -5,10 +5,12 @@ from werkzeug.utils import redirect
 
 import json
 import base64
+from psycopg2 import IntegrityError
 
 from odoo import http, _
 from odoo.http import request
 from odoo.osv import expression
+from odoo.exceptions import ValidationError
 from odoo.addons.website.controllers.form import WebsiteForm
 
 class WebsiteHelpdesk(http.Controller):
@@ -44,52 +46,87 @@ class CustomWebsiteForm(WebsiteForm):
 
     @http.route(['/website/form/<model_name>'], type='http', auth="public", website=True, sitemap=True)
     def _handle_website_form(self, model_name, **kwargs):
-        if kwargs.get('postcode') and kwargs.get('huisnummer'):
-            postcode = kwargs.get('postcode').replace(" ", "")
-            huisnummer = kwargs.get('huisnummer').replace(" ", "")
-            partner_name = "-".join([postcode, huisnummer])
+        if model_name == "helpdesk.ticket":
+            if kwargs.get('postcode') and kwargs.get('huisnummer'):
+                postcode = kwargs.get('postcode').replace(" ", "")
+                huisnummer = kwargs.get('huisnummer').replace(" ", "")
+                partner_name = "-".join([postcode, huisnummer])
 
-            Partner = request.env['res.partner'].sudo().search([('name','=', partner_name)], limit=1)
-            if not Partner:
-                Partner = request.env['res.partner'].sudo().create({
-                    'name': partner_name,
-                    'email': kwargs.get('partner_email'),
-                    'zip': postcode,
-                    'street_number': huisnummer,
-                })
+                Partner = request.env['res.partner'].sudo().search([('name','=', partner_name)], limit=1)
+                if not Partner:
+                    Partner = request.env['res.partner'].sudo().create({
+                        'name': partner_name,
+                        'email': kwargs.get('partner_email'),
+                        'zip': postcode,
+                        'street_number': huisnummer,
+                    })
 
-        # Create the helpdesk ticket
-        ticket = request.env['helpdesk.ticket'].sudo().create({
-            'name': kwargs.get('name'),
-            'partner_id': Partner.id,
-            'postcode': postcode,
-            'huisnummer': huisnummer,
-            'partner_name': kwargs.get('partner_name'),
-            'partner_email': kwargs.get('partner_email'),
-            'description': kwargs.get('description'),
-            'ticket_type_id': kwargs.get('ticket_type_id'),
-        })
-
-        model_record = request.env['ir.model'].sudo().search([('model', '=', model_name)]) 
-        data = self.extract_data(model_record, request.params)
-        attached_files = data.get('attachments')
-        for attachment in attached_files:
-            attached_file = attachment.read()
-            request.env['ir.attachment'].sudo().create({
-                'name': attachment.filename,
-                'res_model': 'helpdesk.ticket',
-                'res_id': ticket.id,
-                'type': 'binary',
-                'datas': base64.encodebytes(attached_file),
+            # Create the helpdesk ticket
+            ticket = request.env['helpdesk.ticket'].sudo().create({
+                'name': kwargs.get('name'),
+                'partner_id': Partner.id,
+                'postcode': postcode,
+                'huisnummer': huisnummer,
+                'partner_name': kwargs.get('partner_name'),
+                'partner_email': kwargs.get('partner_email'),
+                'description': kwargs.get('description'),
+                'ticket_type_id': kwargs.get('ticket_type_id'),
             })
 
+            model_record = request.env['ir.model'].sudo().search([('model', '=', model_name)]) 
+            data = self.extract_data(model_record, request.params)
+            attached_files = data.get('attachments')
+            for attachment in attached_files:
+                attached_file = attachment.read()
+                request.env['ir.attachment'].sudo().create({
+                    'name': attachment.filename,
+                    'res_model': 'helpdesk.ticket',
+                    'res_id': ticket.id,
+                    'type': 'binary',
+                    'datas': base64.encodebytes(attached_file),
+                })
 
-        # Send an email message using an email template
-        template_id = request.env.ref('helpdesk.new_ticket_request_email_template').id  # Replace with the actual template ID
-        template = request.env['mail.template'].sudo().browse(template_id)
-        template.send_mail(ticket.id, force_send=True)
+            # Send an email message using an email template
+            template_id = request.env.ref('helpdesk.new_ticket_request_email_template').id  # Replace with the actual template ID
+            template = request.env['mail.template'].sudo().browse(template_id)
+            template.send_mail(ticket.id, force_send=True)
 
-        request.session['form_builder_model_model'] = model_record.model
-        request.session['form_builder_model'] = model_record.name
-        request.session['form_builder_id'] = ticket.id
-        return json.dumps({'id': ticket.id})
+            request.session['form_builder_model_model'] = model_record.model
+            request.session['form_builder_model'] = model_record.name
+            request.session['form_builder_id'] = ticket.id
+            return json.dumps({'id': ticket.id})
+        else:
+            model_record = request.env['ir.model'].sudo().search(
+                [('model', '=', model_name)])
+            if not model_record:
+                return json.dumps({
+                    'error': _("The form's specified model does not exist")
+                })
+            try:
+                data = self.extract_data(model_record, request.params)
+            # If we encounter an issue while extracting data
+            except ValidationError as e:
+                return json.dumps({'error_fields': e.args[0]})
+            try:
+                id_record = self.insert_record(request, model_record,
+                                               data['record'], data['custom'],
+                                               data.get('meta'))
+                if id_record:
+                    self.insert_attachment(model_record, id_record,
+                                           data['attachments'])
+                    # in case of an email, we want to send it immediately instead of waiting
+                    # for the email queue to process
+                    if model_name == 'mail.mail':
+                        request.env[model_name].sudo().browse(id_record).send()
+
+            # Some fields have additional SQL constraints that we can't check generically
+            # Ex: crm.lead.probability which is a float between 0 and 1
+            # TODO: How to get the name of the erroneous field ?
+            except IntegrityError:
+                return json.dumps(False)
+
+            request.session['form_builder_model_model'] = model_record.model
+            request.session['form_builder_model'] = model_record.name
+            request.session['form_builder_id'] = id_record
+
+            return json.dumps({'id': id_record})
