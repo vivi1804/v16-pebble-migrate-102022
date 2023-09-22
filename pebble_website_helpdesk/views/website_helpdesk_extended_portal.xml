@@ -7,7 +7,7 @@
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="postcode">Postcode</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
+                    <div class="col-lg-7 col-md-8 o_colored_level pb16">
                         <input type="text" class="form-control o_website_form_input" name="postcode" required="1"/>
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="huisnummer">Huisnummer</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
+                    <div class="col-lg-7 col-md-8 o_colored_level pb16">
                         <input type="text" class="form-control o_website_form_input" name="huisnummer" required="1"/>
                     </div>
                 </div>
@@ -23,10 +23,12 @@
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="ticket_type_id">Ticket Type</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
-                        <select  class="form-control"  name="ticket_type_id" required="1">
+                    <div class="col-lg-7 col-md-8 o_colored_level pt0 pb16">
+                        <select class="form-control" name="ticket_type_id" required="1">
                             <t t-foreach="types" t-as="ticket_type">
-                                <option t-att-value="ticket_type.id"> <t t-esc="ticket_type.name"/></option>
+                            <option t-att-value="ticket_type.id">
+                                <t t-esc="ticket_type.name"/>
+                            </option>
                             </t>
                         </select>
                     </div>
@@ -35,7 +37,7 @@
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="partner_name">Your Name</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
+                    <div class="col-lg-7 col-md-8 o_colored_level pb16">
                         <input type="text" class="form-control o_website_form_input" name="partner_name" required="1"/>
                     </div>
                 </div>
@@ -43,15 +45,15 @@
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="partner_email">Your Email</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
-                        <input type='email' class='form-control o_website_form_input' name="partner_email" required="1"/>
+                    <div class="col-lg-7 col-md-8 o_colored_level pb16">
+                        <input type="email" class="form-control o_website_form_input" name="partner_email" required="1"/>
                     </div>
                 </div>
                 <div class="form-group row form-field o_website_form_required">
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="name">Subject</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
+                    <div class="col-lg-7 col-md-8 o_colored_level pb16">
                         <input type="text" class="form-control o_website_form_input" name="name" required="1"/>
                     </div>
                 </div>
@@ -59,7 +61,7 @@
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="description">Description</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
+                    <div class="col-lg-7 col-md-8 o_colored_level pt0 pb16">
                         <textarea class="form-control o_website_form_input" name="description"/>
                     </div>
                 </div>
@@ -67,7 +69,7 @@
                     <div class="col-lg-4 col-md-4 text-right">
                         <label class="col-form-label" for="attachments">Attachment(s)</label>
                     </div>
-                    <div class="col-lg-7 col-md-8">
+                    <div class="col-lg-7 col-md-8 o_colored_level pb16">
                         <input type="file" name="attachments" class="form-control o_website_form_input" multiple="true" accept="image/*,application/pdf,video/*"/>
                     </div>
                 </div>
@@ -80,9 +82,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="offset-lg-4 offset-md-4 col-md-8 col-lg-7">
-                        <button type="submit" class="btn btn-primary btn-lg o_website_form_send o_default_snippet_text">Send</button>
-                        <span id="o_website_form_result"></span>
+                    <div class="offset-lg-4 offset-md-4 col-md-8 col-lg-7 o_colored_level pt16">
+                        <button type="submit" class="btn btn-primary btn-lg o_website_form_send">Send</button>
+                        <span id="o_website_form_result"/>
                     </div>
                 </div>
             </form>
