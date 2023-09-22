@@ -9,13 +9,6 @@
         <!-- <field name="group_ids" eval="[(4, ref('pebble_sales_configurator.group_webportal_sales'))]"/> -->
     </record>
 
-    <record id="thankyou_page" model="website.page">
-        <field name="is_published">True</field>
-        <field name="url">/thankyou</field>
-        <field name="website_indexed" eval="False"/>
-        <field name="view_id" ref="thankyou" />
-    </record>
-
     <function model="ir.model.fields" name="formbuilder_whitelist">
         <value>crm.lead</value>
         <value eval="[
@@ -39,7 +32,7 @@
             <t t-call="website.layout">
                 <div id="wrap" class="oe_structure oe_empty">
                     <div class="container mt8 mb8">
-                        <form id="pebble_offerte_form" action="/website/form/" method="post" class="container-fluid mt32 o_fake_not_editable s_website_form" enctype="multipart/form-data" data-name="Form Builder" data-model_name="crm.lead" data-success_page="/thankyou">
+                        <form id="pebble_offerte_form" action="/website/form/" method="post" class="container-fluid mt32 o_fake_not_editable s_website_form" enctype="multipart/form-data" data-name="Form Builder" data-model_name="crm.lead" data-success_page="/offerte-thankyou">
                             <div class="container">
                                 <h1 class="o_fake_editable o_form_heading">Vrijblijvend een offerte aanvragen?</h1>
                                 <p>Vraag vrijblijvend een offerte aan of maak een afspraak met een van onze adviseurs voor een advies op maat. Wij proberen u zo goed mogelijk te adviseren op uw situatie. Vul hieronder uw gegevens in zodat we contact op kunnen nemen voor een eventuele afspraak.</p>
@@ -98,7 +91,7 @@
                                                         <option value="3">Via ONE (Oosterhout Nieuwe Energie)</option>
                                                         <option value="4">Via Sunpower</option>
                                                         <option value="5">Via een markt/beurs</option>
-                                                        <option value="18">Geen van de bovenstaande</option>
+                                                        <option value="6">Geen van de bovenstaande</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -202,15 +195,22 @@
         </t>
     </template>
 
-    <template id="thankyou" name="Offerte Thank You">
-        <t name="Offerte Thank You" priority="29" t-name="crm.lead">
-            <t t-call="website.layout">
-                <div id="wrap" class="oe_structure oe_empty">
-                    <div class="container mt8 mb8">
-                        Thank You
-                    </div>
-                </div>
-            </t>
-        </t>
-    </template>
+    <record id="offerte_thankyou" model="website.page">
+       <field name="name">Offerte - Thank You</field>
+       <field name="type">qweb</field>
+       <field name="url">/offerte-thankyou</field>
+       <field name="website_indexed" eval="False"/>
+       <field name="is_published">True</field>
+       <field name="key">pebble_website_offerte.offerte_thankyou</field>
+       <field name="arch" type="xml">
+           <t name="Offerte - Thank you" t-name="offerte_thankyou">
+               <t t-call="website.layout">
+                   <div class="container">
+                       <h1>Hello, Thank You!</h1>
+                       <p>Your Request has been submitted</p>
+                   </div>
+               </t>
+           </t>
+       </field>
+   </record>
 </odoo>
