@@ -184,7 +184,7 @@
                             <field name="levertijd" invisible="1"/>
                         </group>
                         <group>
-                            <field name="condition_txt" nolabel="1"/>
+                            <field name="condition_txt" nolabel="1" colspan="2"/>
                         </group>
                         <group string="Paneel Lines">
                             <field name="paneel_ids" nolabel="1" colspan="2">

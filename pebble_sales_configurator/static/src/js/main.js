@@ -474,6 +474,24 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
         }
     }
 
+    var discard_opp = document.getElementById('discard_opp')
+    if(discard_opp){
+        document.getElementById('discard_opp').onclick = function() {
+            var sales_id = document.getElementById('sales_id').value
+            var discard_opp_urls = 'http://'+ window.location.host + '/discard_opp'
+            fetch(discard_opp_urls, {
+                method:'POST',
+                body:JSON.stringify({"jsonrpc": "2.0", "params":{id:sales_id}}),
+                headers:{"Content-Type": "application/json; charset=UTF-8"}
+            }).then(function(dsc_opp_response){
+                return dsc_opp_response.json()
+            }).then(function(dsc_opp_data){
+                location.reload()
+                console.log(dsc_opp_data)
+            })
+        }
+    }
+
     var send_quotation = document.getElementById('send_quotation')
     if(send_quotation){
         document.getElementById('send_quotation').onclick = function() {

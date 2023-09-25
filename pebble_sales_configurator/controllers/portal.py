@@ -111,21 +111,7 @@ class SalesConfigWebsiteForm(form.WebsiteForm):
     @http.route('/website/form/<model_name>', type='http', auth="public", methods=['POST'], website=True)
     def _handle_website_form(self, model_name, **kwargs):
         if model_name == "sales.configurator":
-            param_postcode = kwargs.get('postcode')
-            param_huisnummer = kwargs.get('huisnummer')
-            huisnummer = param_huisnummer.strip()
-
-            print ("postcode :", param_postcode, "-", huisnummer)
-            kwargs['name'] = "-".join([param_postcode,huisnummer])
-            kwargs['step_1'] = True
-            kwargs['energycost'] = 0.4
-            kwargs['klein_materiaal'] = "ja"
-            kwargs['klein_aantal_dagen'] = 1
-            kwargs['steiger'] = "ja"
-            kwargs['steiger_aantal_dagen'] = 1
-            kwargs['aansluitwaarde'] = "25"
-            kwargs['kabeltrace'] = "Dit wordt bepaald tijdens de opname door de monteur."
-            
+            print ("record created")
         return super(SalesConfigWebsiteForm, self)._handle_website_form(model_name, **kwargs) 
     
     ## Update opportunity pages.

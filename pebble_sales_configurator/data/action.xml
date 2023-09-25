@@ -476,7 +476,7 @@ record.write({'opportunity': opportunity_id, 'state': "confirm"})
             <field name="model_id" ref="base.model_ir_attachment"/>
             <field name="trigger">on_create</field>
             <field name="filter_domain">[["res_model","=","sales.configurator"]]</field>
-            <field name="active" eval="True"/>
+            <field name="active" eval="False"/>
             <field name="state">code</field>
             <field name="code">
 res_id = record.res_id
@@ -498,6 +498,28 @@ if sales_id.sales_configurator_type.name == "Images Upload":
             
             </field>
         </record>
+
+		<record id="action_sales_config_creation_details" model="base.automation">
+            <field name="name">Sales Configurator: Creation Details </field>
+            <field name="model_id" ref="pebble_sales_configurator.model_sales_configurator"/>
+            <field name="trigger">on_create</field>
+            <field name="filter_domain">[["sales_configurator_type.name","=","Enphase"]]</field>
+            <field name="active" eval="True"/>
+            <field name="state">code</field>
+            <field name="code">
+#moved from controller 
+
+postcode = record.postcode
+huisnummer = record.huisnummer
+partner_name = "-".join([postcode,huisnummer])
+
+##Check matching opportunity 
+record.write({'name': partner_name, 'step_1': True, 'energycost': 0.4, 'klein_materiaal': "ja",
+              'klein_aantal_dagen': 1, 'steiger': "ja", 'steiger_aantal_dagen': 1,
+              'aansluitwaarde': "25", 'kabeltrace': "Dit wordt bepaald tijdens de opname door de monteur."
+})
+			</field>
+		</record>
 
     </data>
 </openerp>
