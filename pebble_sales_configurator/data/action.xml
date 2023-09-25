@@ -464,10 +464,14 @@ if record.opportunity:
             <field name="active" eval="True"/>
             <field name="state">code</field>
             <field name="code">
+postcode = record.postcode
+huisnummer = record.huisnummer
+partner_name = "-".join([postcode,huisnummer])
+
 ##Check matching opportunity 
 
 opportunity_id = env['crm.lead'].search([('name','ilike',record.name)], limit=1)
-record.write({'opportunity': opportunity_id, 'state': "confirm"})
+record.write({'name': partner_name, 'opportunity': opportunity_id, 'state': "confirm"})
 			</field>
 		</record>
 

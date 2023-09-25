@@ -6,7 +6,7 @@ import werkzeug
 from odoo.http import request
 from odoo.addons.website.controllers import form
 
-class WebsiteForm(form.WebsiteForm):
+class ImageSalesWebsiteForm(form.WebsiteForm):
 
     @http.route(['/images'], type='http', auth="public", website=True)
     def website_sales_images_upload(self, **post):

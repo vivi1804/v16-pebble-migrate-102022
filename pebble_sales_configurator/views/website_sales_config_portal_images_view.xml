@@ -16,7 +16,7 @@
                                         </div>
                                     </div>
 
-                                <form id="enphase_images_form" action="/website_form/" method="post" class="s_website_form o_wprofile_editor_form container-fluid mt32" enctype="multipart/form-data" data-model_name="sales.configurator" data-success_page="/your-entries-has-been-submitted" data-editable-form="false" hide-change-model="true">
+                                <form id="enphase_images_form" action="/website/form/" method="post" class="s_website_form o_wprofile_editor_form container-fluid mt32" enctype="multipart/form-data" data-model_name="sales.configurator" data-success_page="/your-entries-has-been-submitted" data-editable-form="false" hide-change-model="true">
                                     <t t-set="user" t-value="default_values['user_id']"/>
                                     <input type="hidden" name="verkoper" t-att-value="user"/>
                                     <input type="hidden" name="sales_configurator_type" t-att-value="types.id"/>
