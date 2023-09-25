@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <!-- PLANNED DATE -->
+        <record id="project_task_view_form_inherit_project_enterprise" model="ir.ui.view">
+            <field name="name">project.task.form.inherited</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project_enterprise.project_task_view_form"/>
+            <field name="mode">extension</field>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/label[@for='planned_date_begin']" position="attributes">
+                        <attribute name="attrs">{}</attribute>
+                    </xpath>
+                    <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/div[@class='w-100']" position="attributes">
+                        <attribute name="attrs">{}</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
         <!-- sales order -->
         <record id="view_order_form_extended" model="ir.ui.view">
             <field name="name">view.order.form.extended</field>
