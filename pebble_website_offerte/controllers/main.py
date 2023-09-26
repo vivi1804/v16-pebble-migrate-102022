@@ -13,5 +13,5 @@ class WebsiteOfferte(http.Controller):
 class WebsiteForm(form.WebsiteForm):
 
     def _handle_website_form(self, model_name, **kwargs):
-            
+            kwargs['name'] = "Aanvrag via de website"
             return super(WebsiteForm, self)._handle_website_form(model_name, **kwargs)

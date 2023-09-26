@@ -152,7 +152,7 @@ if records:
 						#'comment': COMMENT,
 						'parent_id': house.id,
 						#'toon_volledig_adres': True,
-						'title': record.x_studio_title.id or False,
+						'title': record.x_studio_titel.id or False,
 						#'category_id': [(4, PEBBLE_PROSPECT_ID)],
 						})
 					person.on_change_zip_street_number() 
