@@ -243,9 +243,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
             var huisnummer = document.getElementById('huisnummer').value
             var achternaam = document.getElementById('achternaam').value
             var email_from = document.getElementById('email_from').value
-            var urls_opp = 'http://'+ window.location.host + '/step_opp'
+            var urls_opp = 'https://'+ window.location.host + '/step_opp'
             fetch(urls_opp, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{
                     id:id,
                     dak_orientatie:dak_orientatie,
@@ -289,10 +291,12 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
             var dak_aantal_meter = document.getElementById('dak_aantal_meter').value
             var verrijker = document.getElementById('verrijker').value
             var verrijker_aantal_dagen = document.getElementById('verrijker_aantal_dagen').value
-            var urls3 = 'http://'+ window.location.host + '/step3'
+            var urls3 = 'https://'+ window.location.host + '/step3'
             var notes = document.getElementById('notes').value
             fetch(urls3, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{
                     id:id,
                     steiger:steiger,
@@ -323,10 +327,12 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
             var id = document.getElementById('id').value
             var sale_id = document.getElementById('sales_order_id').value
             var download = document.getElementById('download_pdf')
-            var urls4 = 'http://'+ window.location.host + '/confirm'
-            var dl_url = 'http://'+ window.location.host + '/enphase/report/' + sale_id
+            var urls4 = 'https://'+ window.location.host + '/confirm'
+            var dl_url = 'https://'+ window.location.host + '/enphase/report/' + sale_id
             fetch(urls4, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(response4){
@@ -346,9 +352,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
     if(prev2){
         document.getElementById('prev2').onclick = function() {
             var id = document.getElementById('id').value
-            var p2_urls = 'http://'+ window.location.host + '/back_step_opp'
+            var p2_urls = 'https://'+ window.location.host + '/back_step_opp'
             fetch(p2_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(p2_response){
@@ -364,9 +372,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
     if(prev3){
         document.getElementById('prev3').onclick = function() {
             var id = document.getElementById('id').value
-            var p3_urls = 'http://'+ window.location.host + '/back_step2'
+            var p3_urls = 'https://'+ window.location.host + '/back_step2'
             fetch(p3_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(p3_response){
@@ -382,9 +392,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
     if(prev4){
         document.getElementById('prev4').onclick = function() {
             var id = document.getElementById('id').value
-            var p4_urls = 'http://'+ window.location.host + '/back_step3'
+            var p4_urls = 'https://'+ window.location.host + '/back_step3'
             fetch(p4_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(p4_response){
@@ -402,9 +414,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
             var id = document.getElementById('id').value
             var paneel = document.getElementById('type_paneel').value
             var aantal_panelen = document.getElementById('aantal_panelen').value
-            var add_paneel_urls = 'http://'+ window.location.host + '/add_paneel'
+            var add_paneel_urls = 'https://'+ window.location.host + '/add_paneel'
             fetch(add_paneel_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,paneel:paneel,aantal_panelen:aantal_panelen}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(pnl_response){
@@ -422,9 +436,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
             var id = document.getElementById('id').value
             var frame = document.getElementById('type_frame').value
             var aantal_frame = document.getElementById('aantal_frame').value
-            var add_frame_urls = 'http://'+ window.location.host + '/add_frame'
+            var add_frame_urls = 'https://'+ window.location.host + '/add_frame'
             fetch(add_frame_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,frame:frame,aantal_frame:aantal_frame}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(frm_response){
@@ -442,9 +458,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
             var id = document.getElementById('id').value
             var roof = document.getElementById('roof_type').value
             var roof_name = document.getElementById('roof_name').value
-            var add_roof_urls = 'http://'+ window.location.host + '/add_roof'
+            var add_roof_urls = 'https://'+ window.location.host + '/add_roof'
             fetch(add_roof_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id,roof:roof,roof_name:roof_name}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(rf_response){
@@ -460,9 +478,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
     if(discard){
         document.getElementById('discard').onclick = function() {
             var id = document.getElementById('id').value
-            var discard_urls = 'http://'+ window.location.host + '/discard'
+            var discard_urls = 'https://'+ window.location.host + '/discard'
             fetch(discard_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(dsc_response){
@@ -478,9 +498,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
     if(discard_opp){
         document.getElementById('discard_opp').onclick = function() {
             var sales_id = document.getElementById('sales_id').value
-            var discard_opp_urls = 'http://'+ window.location.host + '/discard_opp'
+            var discard_opp_urls = 'https://'+ window.location.host + '/discard_opp'
             fetch(discard_opp_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:sales_id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(dsc_opp_response){
@@ -496,9 +518,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
     if(send_quotation){
         document.getElementById('send_quotation').onclick = function() {
             var id = document.getElementById('sales_order_id').value
-            var sq_urls = 'http://'+ window.location.host + '/send_quotation'
+            var sq_urls = 'https://'+ window.location.host + '/send_quotation'
             fetch(sq_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(sq_response){
@@ -514,9 +538,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
     if(discard_opp){
         document.getElementById('discard_opp').onclick = function() {
             var sales_id = document.getElementById('sales_id').value
-            var discard_opp_urls = 'http://'+ window.location.host + '/discard_opp'
+            var discard_opp_urls = 'https://'+ window.location.host + '/discard_opp'
             fetch(discard_opp_urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{id:sales_id}}),
                 headers:{"Content-Type": "application/json; charset=UTF-8"}
             }).then(function(dsc_opp_response){
@@ -591,56 +617,58 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
 
     $(document).ready(function () {
         var mode = document.getElementById("mode");
-        if(mode.value == 'step3'){
+        if(mode){
+            if(mode.value == 'step3'){
 
-            var steiger = document.getElementById("steiger").value
-            var row_steiger_aantal_dagen = document.getElementById("row_steiger_aantal_dagen")
-            var steiger_aantal_dagen = document.getElementById("steiger_aantal_dagen")
-            if (steiger == 'ja') {
-            row_steiger_aantal_dagen.style.display = "flex";
-            steiger_aantal_dagen.setAttribute('required', '');
-            } else {
-            row_steiger_aantal_dagen.style.display = "none";
-            steiger_aantal_dagen.removeAttribute('required');
-            }
-            
-            var ladderlift = document.getElementById("ladderlift").value
-            var row_ladderlift_aantal_dagen = document.getElementById("row_ladderlift_aantal_dagen")
-            var ladderlift_aantal_dagen = document.getElementById("ladderlift_aantal_dagen")
-            if (ladderlift == 'ja') {
-            row_ladderlift_aantal_dagen.style.display = "flex";
-            ladderlift_aantal_dagen.setAttribute('required', '');
-            } else {
-            row_ladderlift_aantal_dagen.style.display = "none";
-            ladderlift_aantal_dagen.removeAttribute('required');
-            }
+                var steiger = document.getElementById("steiger").value
+                var row_steiger_aantal_dagen = document.getElementById("row_steiger_aantal_dagen")
+                var steiger_aantal_dagen = document.getElementById("steiger_aantal_dagen")
+                if (steiger == 'ja') {
+                row_steiger_aantal_dagen.style.display = "flex";
+                steiger_aantal_dagen.setAttribute('required', '');
+                } else {
+                row_steiger_aantal_dagen.style.display = "none";
+                steiger_aantal_dagen.removeAttribute('required');
+                }
+                
+                var ladderlift = document.getElementById("ladderlift").value
+                var row_ladderlift_aantal_dagen = document.getElementById("row_ladderlift_aantal_dagen")
+                var ladderlift_aantal_dagen = document.getElementById("ladderlift_aantal_dagen")
+                if (ladderlift == 'ja') {
+                row_ladderlift_aantal_dagen.style.display = "flex";
+                ladderlift_aantal_dagen.setAttribute('required', '');
+                } else {
+                row_ladderlift_aantal_dagen.style.display = "none";
+                ladderlift_aantal_dagen.removeAttribute('required');
+                }
 
-            var dakrandbeveiliging = document.getElementById("dakrandbeveiliging").value
-            var row_dak_aantal_dagen = document.getElementById("row_dak_aantal_dagen")
-            var row_dak_aantal_meter = document.getElementById("row_dak_aantal_meter")
-            var dak_aantal_dagen = document.getElementById("dak_aantal_dagen")
-            var dak_aantal_meter = document.getElementById("dak_aantal_meter")
-            if (dakrandbeveiliging == 'ja') {
-            row_dak_aantal_dagen.style.display = "flex";
-            row_dak_aantal_meter.style.display = "flex";
-            dak_aantal_dagen.setAttribute('required', '');
-            dak_aantal_meter.setAttribute('required', '');
-            } else {
-            row_dak_aantal_dagen.style.display = "none";
-            row_dak_aantal_meter.style.display = "none";
-            dak_aantal_dagen.removeAttribute('required');
-            dak_aantal_meter.removeAttribute('required');
-            }
+                var dakrandbeveiliging = document.getElementById("dakrandbeveiliging").value
+                var row_dak_aantal_dagen = document.getElementById("row_dak_aantal_dagen")
+                var row_dak_aantal_meter = document.getElementById("row_dak_aantal_meter")
+                var dak_aantal_dagen = document.getElementById("dak_aantal_dagen")
+                var dak_aantal_meter = document.getElementById("dak_aantal_meter")
+                if (dakrandbeveiliging == 'ja') {
+                row_dak_aantal_dagen.style.display = "flex";
+                row_dak_aantal_meter.style.display = "flex";
+                dak_aantal_dagen.setAttribute('required', '');
+                dak_aantal_meter.setAttribute('required', '');
+                } else {
+                row_dak_aantal_dagen.style.display = "none";
+                row_dak_aantal_meter.style.display = "none";
+                dak_aantal_dagen.removeAttribute('required');
+                dak_aantal_meter.removeAttribute('required');
+                }
 
-            var verrijker = document.getElementById("verrijker").value
-            var row_verrijker_aantal_dagen = document.getElementById("row_verrijker_aantal_dagen")
-            var verrijker_aantal_dagen = document.getElementById("verrijker_aantal_dagen")
-            if (verrijker == 'ja') {
-            row_verrijker_aantal_dagen.style.display = "flex";
-            verrijker_aantal_dagen.setAttribute('required', '');
-            } else {
-            row_verrijker_aantal_dagen.style.display = "none";
-            verrijker_aantal_dagen.removeAttribute('required');
+                var verrijker = document.getElementById("verrijker").value
+                var row_verrijker_aantal_dagen = document.getElementById("row_verrijker_aantal_dagen")
+                var verrijker_aantal_dagen = document.getElementById("verrijker_aantal_dagen")
+                if (verrijker == 'ja') {
+                row_verrijker_aantal_dagen.style.display = "flex";
+                verrijker_aantal_dagen.setAttribute('required', '');
+                } else {
+                row_verrijker_aantal_dagen.style.display = "none";
+                verrijker_aantal_dagen.removeAttribute('required');
+                }
             }
         }    
     });
