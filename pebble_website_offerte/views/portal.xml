@@ -25,6 +25,10 @@
             'x_studio_laadpaal_',
             'medium_id',
             'name',
+            'phone',
+            'team_id',
+            'email_from',
+            'description',
         ]"/>
     </function>
 
