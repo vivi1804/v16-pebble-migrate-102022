@@ -24,6 +24,7 @@
             'x_studio_infraroodverwarming_',
             'x_studio_laadpaal_',
             'medium_id',
+            'name',
         ]"/>
     </function>
 
