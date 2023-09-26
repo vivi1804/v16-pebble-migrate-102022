@@ -175,9 +175,11 @@ odoo.define('pebble_sales_configurator.main', ['web.ajax','web.rpc'], function (
                 var dakdoorvoer = "False"
             }
 
-            var urls = 'http://'+ window.location.host + '/step2'
+            var urls = 'https://'+ window.location.host + '/step2'
             fetch(urls, {
                 method:'POST',
+                crossDomain: true,
+                dataType: 'jsonp',
                 body:JSON.stringify({"jsonrpc": "2.0", "params":{
                     id:id,
                     aansluiting:aansluiting,
