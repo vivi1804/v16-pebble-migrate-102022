@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.actions.server" id="action_share_timesheet_portal">
+        <field name="name">Approve and send email</field>
+        <field name="model_id" ref="account.model_account_analytic_line"/>
+        <field name="binding_model_id" ref="account.model_account_analytic_line"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_share_link()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_reject_timesheet_portal">
+        <field name="name">To Reject</field>
+        <field name="model_id" ref="account.model_account_analytic_line"/>
+        <field name="binding_model_id" ref="account.model_account_analytic_line"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_reject()
+        </field>
+    </record>
+
+    <record id="timesheet_approval_portal_ext" model="ir.ui.view">
+        <field name="name">timesheet.approval.portal.ext</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='unit_amount']" position="after">
+                <field name="approval_state" optional="show"/>
+                <field name="reason_rejected" optional="show"/>
+                <field name="approval_state_update" optional="show"/>
+            </xpath>
+        </field>
+  </record>
+</odoo>

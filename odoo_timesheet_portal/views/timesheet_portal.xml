@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="odoo_timesheet_portal.timesheet_detail_template" name="Timesheet Detail">
+    <t t-call="website.layout">
+        <title>Timesheet Approval</title>
+        <div id="wrap">
+            <div class="oe_structure">
+            </div>
+            <div class="container mb32 mt32">
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">X</span>
+                        <h3>Reason to reject:</h3>
+                        <form id="reasonForm">
+                            <textarea id="reason" name="reason" rows="4" cols="40"></textarea><br/><br/>
+                            <input type="submit" value="Submit"/>
+                        </form>
+                    </div>
+                </div>
+                <input type="hidden" id="timesheet-ids" t-att-value="','.join(map(str, timesheets.ids))"/>
+                <button class="btn btn-success btn-approve-all" style="float:right;margin-bottom:16px;">Approve All</button>
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+							<th>Project</th>
+							<th>Task</th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+							<th>State</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="timesheets" t-as="timesheet">
+                            <tr>
+								<td><span t-field="timesheet.project_id.name"/></td>
+                                <td><span t-field="timesheet.task_id.name"/></td>
+                                <td><span t-field="timesheet.name"/></td>
+                                <td><span t-field="timesheet.date"/></td>
+                                <td><span t-field="timesheet.unit_amount"/> <span t-field="timesheet.product_uom_id.name"/></td>
+                                <td><span t-field="timesheet.amount"/></td>
+								<td><span t-field="timesheet.approval_state"/></td>
+                                <td>
+                                    <t t-if="timesheet.approval_state == 'wait'">
+                                        <button class="btn btn-success btn-approve" t-att-data-timesheet-id="timesheet.id">Approve</button>
+                                		<button class="btn btn-danger btn-reject" t-att-data-timesheet-id="timesheet.id">Reject</button>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </t>
+</template>
+
+
+
+</odoo>
